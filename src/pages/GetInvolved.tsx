@@ -51,6 +51,11 @@ export default function GetInvolved() {
             <p className="text-gray-600 mb-8 flex-1">
               Your financial contributions allow us to run workshops, host retreats for burnt-out carers, and keep our services free.
             </p>
+            <a
+              href="https://givealittle.co.nz/cause/help-us-be-there-for-carers-today-not-tomorrow"
+              target="_blank"
+              rel="noopener noreferrer"
+              </a>
             <button className="w-full bg-brand-dark text-white py-3 rounded-full font-bold hover:bg-[#202d15] transition shadow-md">
               MAKE A DONATION
             </button>
