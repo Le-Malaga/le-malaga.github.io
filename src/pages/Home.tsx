@@ -119,7 +119,7 @@ export default function Home() {
           
           <div className="space-y-5 mb-10">
             <div className="flex items-center gap-4 text-gray-800 font-medium text-lg">
-              <Calendar className="text-brand-orange" size={24} /> <span>Sunday 25 May 2025</span>
+              <Calendar className="text-brand-orange" size={24} /> <span>Sunday 6 September 2026 </span>
             </div>
             <div className="flex items-center gap-4 text-gray-800 font-medium text-lg">
               <Calendar className="text-brand-orange" size={24} /> <span>8:30pm (NZST)</span>
