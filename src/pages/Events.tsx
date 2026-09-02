@@ -2,7 +2,7 @@ import { MapPin, ArrowRight } from 'lucide-react'
 
 export default function Events() {
   const events = [
-    { date: '14', month: 'JUN', title: 'Le Malaga Tag Tournament', loc: 'Barry Curtis Park, Papakura', desc: 'A fun family day out! Enter a team or just come to support. Food stalls and kids activities available.' },
+    { date: '14', month: 'FEB', title: 'Le Malaga Tag Tournament', loc: 'Barry Curtis Park, Papakura', desc: 'A fun family day out! Enter a team or just come to support. Food stalls and kids activities available.' },
     { date: '09', month: 'AUG', title: 'Indoor Netball Tournament', loc: 'Action Indoor Sports, Auckland', desc: 'Our annual fundraiser. Grab your aiga and register a team for a day of friendly competition.' },
     { date: '20', month: 'SEP', title: 'Carers Workshop & Lunch', loc: 'Auckland (Venue TBA)', desc: 'A dedicated day for carers to receive training on manual handling, stress management, followed by a catered lunch.' },
     { date: '15', month: 'NOV', title: 'End of Year Fiafia Night', loc: 'Mangere Memorial Hall', desc: 'Celebrating our carers and their incredible work throughout the year. Dinner, performances, and awards.' }
