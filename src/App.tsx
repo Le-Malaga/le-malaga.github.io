@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Heart, Users, Shield, Globe, ArrowRight, Calendar, User, Video, MapPin } from 'lucide-react'
+import { Heart, Users, Shield, Globe, ArrowRight, Calendar, User, Video, MapPin, Menu, X } from 'lucide-react'
 import './index.css'
 
 function App() {
   const [toast, setToast] = useState<string | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const handleNav = (page: string) => {
     setToast(`Navigating to ${page}...`)
@@ -23,6 +24,13 @@ function App() {
         <div className="flex items-center cursor-pointer" onClick={() => handleNav('Home')}>
           <img src="/images/logo.png" alt="Le Malaga" className="h-16 object-contain" />
         </div>
+        
+        {/* Mobile Menu Toggle */}
+        <button className="lg:hidden text-brand-dark" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+
+        {/* Desktop Nav */}
         <nav className="hidden lg:flex gap-6 items-center font-medium text-sm">
           <a onClick={() => handleNav('Home')} className="cursor-pointer text-brand-orange border-b-2 border-brand-orange pb-1">HOME</a>
           <a onClick={() => handleNav('About Us')} className="cursor-pointer hover:text-brand-orange transition">ABOUT US</a>
@@ -33,6 +41,20 @@ function App() {
           <a onClick={() => handleNav('Get Involved')} className="cursor-pointer hover:text-brand-orange transition">GET INVOLVED</a>
           <button onClick={() => handleNav('Donate')} className="bg-brand-orange text-white px-6 py-2 rounded-md hover:bg-orange-700 transition font-bold">DONATE</button>
         </nav>
+
+        {/* Mobile Nav */}
+        {isMobileMenuOpen && (
+          <nav className="w-full lg:hidden flex flex-col gap-4 pt-4 mt-4 border-t font-medium text-sm">
+            <a onClick={() => { handleNav('Home'); setIsMobileMenuOpen(false); }} className="cursor-pointer text-brand-orange">HOME</a>
+            <a onClick={() => { handleNav('About Us'); setIsMobileMenuOpen(false); }} className="cursor-pointer">ABOUT US</a>
+            <a onClick={() => { handleNav('Carer Support'); setIsMobileMenuOpen(false); }} className="cursor-pointer">CARER SUPPORT</a>
+            <a onClick={() => { handleNav('Resources'); setIsMobileMenuOpen(false); }} className="cursor-pointer">RESOURCES</a>
+            <a onClick={() => { handleNav('Sunday Sessions'); setIsMobileMenuOpen(false); }} className="cursor-pointer">SUNDAY SESSIONS</a>
+            <a onClick={() => { handleNav('Events'); setIsMobileMenuOpen(false); }} className="cursor-pointer">EVENTS</a>
+            <a onClick={() => { handleNav('Get Involved'); setIsMobileMenuOpen(false); }} className="cursor-pointer">GET INVOLVED</a>
+            <button onClick={() => { handleNav('Donate'); setIsMobileMenuOpen(false); }} className="bg-brand-orange text-white px-6 py-2 rounded-md font-bold mt-2 w-full text-center">DONATE</button>
+          </nav>
+        )}
       </header>
 
       {/* Hero Section */}
@@ -216,21 +238,21 @@ function App() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-xl overflow-hidden shadow-md group cursor-pointer" onClick={() => handleNav('Story: Mere')}>
-            <img src="/images/story1.jpg" alt="Mere" className="w-full h-48 object-cover group-hover:scale-105 transition duration-500" />
+            <img src="/images/story1.jpg" alt="Mere" className="w-full h-48 object-cover object-top group-hover:scale-105 transition duration-500" />
             <div className="p-6">
               <p className="font-medium text-lg mb-2">"Caring for Dad taught me patience and love"</p>
               <p className="text-brand-orange font-bold text-sm">- Mere, Auckland</p>
             </div>
           </div>
           <div className="bg-white rounded-xl overflow-hidden shadow-md group cursor-pointer" onClick={() => handleNav('Story: Sia')}>
-            <img src="/images/story2.jpg" alt="Sia" className="w-full h-48 object-cover group-hover:scale-105 transition duration-500" />
+            <img src="/images/story2.jpg" alt="Sia" className="w-full h-48 object-cover object-top group-hover:scale-105 transition duration-500" />
             <div className="p-6">
               <p className="font-medium text-lg mb-2">"Le Malaga is my safe space to breathe"</p>
               <p className="text-brand-orange font-bold text-sm">- Sia, Manurewa</p>
             </div>
           </div>
           <div className="bg-white rounded-xl overflow-hidden shadow-md group cursor-pointer" onClick={() => handleNav('Story: Junior')}>
-            <img src="/images/story3.jpg" alt="Junior" className="w-full h-48 object-cover group-hover:scale-105 transition duration-500" />
+            <img src="/images/story3.jpg" alt="Junior" className="w-full h-48 object-cover object-top group-hover:scale-105 transition duration-500" />
             <div className="p-6">
               <p className="font-medium text-lg mb-2">"We walk this journey together as aiga"</p>
               <p className="text-brand-orange font-bold text-sm">- Junior, Henderson</p>
