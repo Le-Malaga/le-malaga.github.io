@@ -20,9 +20,9 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-brand-bg text-gray-800 font-sans flex flex-col">
-      <header className="flex flex-wrap items-center justify-between px-8 py-4 bg-[#f3eedf] shadow-sm sticky top-0 z-40">
+      <header className="flex flex-wrap items-center justify-between px-8 py-4 bg-[#fbf8f3] shadow-sm sticky top-0 z-40">
         <Link to="/" className="flex items-center cursor-pointer">
-          <img src="/images/logo.png" alt="Le Malaga" className="h-16 object-contain mix-blend-multiply" />
+          <img src="/images/logo.png" alt="Le Malaga" className="h-16 object-contain" />
         </Link>
         
         <button className="lg:hidden text-brand-dark" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -66,7 +66,7 @@ export default function Layout() {
       <footer className="bg-brand-footer text-white mt-12">
         <div className="max-w-7xl mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <img src="/images/logo.png" alt="Le Malaga" className="h-20 bg-white p-2 rounded-xl object-contain mb-4" />
+            <img src="/images/logo.png" alt="Le Malaga" className="h-20 bg-[#fbf8f3] p-2 rounded-xl object-contain mb-4" />
           </div>
           <div>
             <h3 className="text-xl font-heading font-bold mb-4 uppercase tracking-wide">Contact Us</h3>
