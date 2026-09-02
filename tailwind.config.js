@@ -8,14 +8,15 @@ export default {
     extend: {
       colors: {
         brand: {
-          orange: '#e15b2d',
-          dark: '#304221',
-          bg: '#fcfaf6',
-          footer: '#231f20'
+          orange: '#d95a2b', /* exact orange from design */
+          dark: '#3e4a28',   /* exact dark green from design */
+          bg: '#f3eedf',     /* exact beige background from design */
+          footer: '#242021'
         }
       },
       fontFamily: {
         script: ['"Dancing Script"', 'cursive'],
+        heading: ['Oswald', 'sans-serif'],
       }
     },
   },

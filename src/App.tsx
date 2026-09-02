@@ -60,142 +60,143 @@ function App() {
       {/* Hero Section */}
       <section className="relative px-8 py-16 md:py-24 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
         <div className="flex-1 space-y-6 z-10">
-          <h1 className="text-5xl md:text-6xl font-extrabold text-brand-dark leading-tight uppercase">
-            Walking together,<br/>No one walks alone
+          <h1 className="text-6xl md:text-7xl font-heading font-bold text-brand-dark leading-[1.1] uppercase tracking-wide">
+            Walking together,<br/>
+            <span className="text-brand-orange">No one walks alone</span>
           </h1>
-          <p className="text-lg text-gray-700 max-w-lg font-medium">
+          <p className="text-xl text-gray-800 max-w-lg font-medium leading-relaxed">
             Le Malaga is a Pasifika-led community supporting carers and their aiga through dementia, disability, chronic illness and ageing.
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
             <button onClick={() => handleNav('I Need Support')} className="bg-brand-orange text-white px-8 py-3 rounded-md font-bold flex items-center gap-2 hover:bg-orange-700 transition shadow-lg">
               <Heart size={20} /> I NEED SUPPORT
             </button>
-            <button onClick={() => handleNav('Join Community')} className="bg-[#f0ece1] text-brand-dark border-2 border-brand-dark px-8 py-3 rounded-md font-bold flex items-center gap-2 hover:bg-brand-dark hover:text-white transition shadow-lg">
+            <button onClick={() => handleNav('Join Community')} className="bg-transparent text-brand-dark border-2 border-brand-dark px-8 py-3 rounded-md font-bold flex items-center gap-2 hover:bg-brand-dark hover:text-white transition shadow-lg">
               <Users size={20} /> JOIN OUR COMMUNITY
             </button>
           </div>
         </div>
         <div className="flex-1 relative w-full">
-          <img src="/images/hero-bg.jpg" alt="Pasifika women" className="rounded-2xl shadow-2xl object-cover w-full h-[400px] border-4 border-white" />
+          <img src="/images/hero-bg.jpg" alt="Pasifika women" className="rounded-[2rem] shadow-2xl object-cover w-full h-[500px]" />
         </div>
       </section>
 
       {/* Features Bar */}
-      <section className="bg-brand-dark text-white py-12 px-8 shadow-inner">
+      <section className="bg-brand-dark text-white py-16 px-8 shadow-inner mt-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="flex flex-col md:flex-row items-start gap-4">
-            <Heart className="text-brand-orange w-10 h-10 flex-shrink-0" />
+          <div className="flex flex-col items-center text-center gap-3">
+            <Heart className="text-brand-orange w-12 h-12 flex-shrink-0" />
             <div>
-              <h3 className="font-bold mb-1 uppercase tracking-wider">Lived Experience</h3>
-              <p className="text-sm text-gray-300">We understand because we've walked this journey.</p>
+              <h3 className="font-heading font-semibold text-xl mb-2 uppercase tracking-widest text-brand-bg">Lived Experience</h3>
+              <p className="text-sm text-[#a3a89e] leading-relaxed">We understand because<br/>we've walked this journey.</p>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-start gap-4">
-            <Globe className="text-brand-orange w-10 h-10 flex-shrink-0" />
+          <div className="flex flex-col items-center text-center gap-3">
+            <Globe className="text-brand-orange w-12 h-12 flex-shrink-0" />
             <div>
-              <h3 className="font-bold mb-1 uppercase tracking-wider">Pasifika Grounded</h3>
-              <p className="text-sm text-gray-300">Our values, culture and faith guide us.</p>
+              <h3 className="font-heading font-semibold text-xl mb-2 uppercase tracking-widest text-brand-bg">Pasifika Grounded</h3>
+              <p className="text-sm text-[#a3a89e] leading-relaxed">Our values, culture and<br/>faith guide us.</p>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-start gap-4">
-            <Shield className="text-brand-orange w-10 h-10 flex-shrink-0" />
+          <div className="flex flex-col items-center text-center gap-3">
+            <Shield className="text-brand-orange w-12 h-12 flex-shrink-0" />
             <div>
-              <h3 className="font-bold mb-1 uppercase tracking-wider">Safe & Confidential</h3>
-              <p className="text-sm text-gray-300">A safe space to share, be heard and supported.</p>
+              <h3 className="font-heading font-semibold text-xl mb-2 uppercase tracking-widest text-brand-bg">Safe & Confidential</h3>
+              <p className="text-sm text-[#a3a89e] leading-relaxed">A safe space to share,<br/>be heard and supported.</p>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-start gap-4">
-            <Users className="text-brand-orange w-10 h-10 flex-shrink-0" />
+          <div className="flex flex-col items-center text-center gap-3">
+            <Users className="text-brand-orange w-12 h-12 flex-shrink-0" />
             <div>
-              <h3 className="font-bold mb-1 uppercase tracking-wider">Community Powered</h3>
-              <p className="text-sm text-gray-300">Stronger together as carers and aiga.</p>
+              <h3 className="font-heading font-semibold text-xl mb-2 uppercase tracking-widest text-brand-bg">Community Powered</h3>
+              <p className="text-sm text-[#a3a89e] leading-relaxed">Stronger together as<br/>carers and aiga.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Action Cards */}
-      <section className="py-20 px-8 max-w-7xl mx-auto">
+      <section className="py-24 px-8 max-w-7xl mx-auto relative z-10 -mt-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-[#fdfbf7] rounded-xl p-8 text-center shadow-lg border border-gray-100 flex flex-col items-center hover:-translate-y-1 transition transform duration-300">
-            <div className="w-20 h-20 bg-brand-orange text-white rounded-full flex items-center justify-center mb-6 shadow-md">
-              <Heart size={36} />
+          <div className="bg-[#fcfaf4] rounded-2xl p-8 text-center shadow-xl border border-[#e8e2d2] flex flex-col items-center hover:-translate-y-2 transition transform duration-300">
+            <div className="w-24 h-24 bg-brand-orange text-white rounded-full flex items-center justify-center mb-6 shadow-md border-4 border-white">
+              <Heart size={40} />
             </div>
-            <h3 className="font-bold text-xl text-brand-dark mb-3 leading-tight uppercase">I'm New<br/>To Caring</h3>
-            <p className="text-sm text-gray-600 mb-8 flex-1">I don't know where to begin.</p>
-            <button onClick={() => handleNav('Start Here')} className="w-full bg-brand-orange text-white py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-orange-700 transition">
-              START HERE <ArrowRight size={16} />
+            <h3 className="font-heading font-semibold text-2xl text-brand-orange mb-3 leading-tight uppercase tracking-wider">I'm New<br/>To Caring</h3>
+            <p className="text-sm text-gray-700 mb-8 flex-1 font-medium px-4">I don't know where to begin.</p>
+            <button onClick={() => handleNav('Start Here')} className="w-full bg-brand-orange text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-orange-800 transition shadow-md">
+              START HERE <ArrowRight size={18} />
             </button>
           </div>
-          <div className="bg-[#fdfbf7] rounded-xl p-8 text-center shadow-lg border border-gray-100 flex flex-col items-center hover:-translate-y-1 transition transform duration-300">
-            <div className="w-20 h-20 bg-brand-dark text-white rounded-full flex items-center justify-center mb-6 shadow-md">
-              <Users size={36} />
+          <div className="bg-[#fcfaf4] rounded-2xl p-8 text-center shadow-xl border border-[#e8e2d2] flex flex-col items-center hover:-translate-y-2 transition transform duration-300">
+            <div className="w-24 h-24 bg-brand-dark text-white rounded-full flex items-center justify-center mb-6 shadow-md border-4 border-white">
+              <Users size={40} />
             </div>
-            <h3 className="font-bold text-xl text-brand-dark mb-3 leading-tight uppercase">I Need<br/>Support</h3>
-            <p className="text-sm text-gray-600 mb-8 flex-1">I need someone who understands.</p>
-            <button onClick={() => handleNav('Get Support')} className="w-full bg-brand-dark text-white py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-[#202d15] transition">
-              GET SUPPORT <ArrowRight size={16} />
+            <h3 className="font-heading font-semibold text-2xl text-brand-dark mb-3 leading-tight uppercase tracking-wider">I Need<br/>Support</h3>
+            <p className="text-sm text-gray-700 mb-8 flex-1 font-medium px-4">I need someone who understands.</p>
+            <button onClick={() => handleNav('Get Support')} className="w-full bg-brand-dark text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-[#202d15] transition shadow-md">
+              GET SUPPORT <ArrowRight size={18} />
             </button>
           </div>
-          <div className="bg-[#fdfbf7] rounded-xl p-8 text-center shadow-lg border border-gray-100 flex flex-col items-center hover:-translate-y-1 transition transform duration-300">
-            <div className="w-20 h-20 bg-brand-orange text-white rounded-full flex items-center justify-center mb-6 shadow-md">
-              <Users size={36} />
+          <div className="bg-[#fcfaf4] rounded-2xl p-8 text-center shadow-xl border border-[#e8e2d2] flex flex-col items-center hover:-translate-y-2 transition transform duration-300">
+            <div className="w-24 h-24 bg-brand-orange text-white rounded-full flex items-center justify-center mb-6 shadow-md border-4 border-white">
+              <Users size={40} />
             </div>
-            <h3 className="font-bold text-xl text-brand-dark mb-3 leading-tight uppercase">Join Our<br/>Community</h3>
-            <p className="text-sm text-gray-600 mb-8 flex-1">Connect with other carers and aiga.</p>
-            <button onClick={() => handleNav('Join Now')} className="w-full bg-brand-orange text-white py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-orange-700 transition">
-              JOIN NOW <ArrowRight size={16} />
+            <h3 className="font-heading font-semibold text-2xl text-brand-orange mb-3 leading-tight uppercase tracking-wider">Join Our<br/>Community</h3>
+            <p className="text-sm text-gray-700 mb-8 flex-1 font-medium px-4">Connect with other carers and aiga.</p>
+            <button onClick={() => handleNav('Join Now')} className="w-full bg-brand-orange text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-orange-800 transition shadow-md">
+              JOIN NOW <ArrowRight size={18} />
             </button>
           </div>
-          <div className="bg-[#fdfbf7] rounded-xl p-8 text-center shadow-lg border border-gray-100 flex flex-col items-center hover:-translate-y-1 transition transform duration-300">
-            <div className="w-20 h-20 bg-brand-dark text-white rounded-full flex items-center justify-center mb-6 shadow-md">
-              <Globe size={36} />
+          <div className="bg-[#fcfaf4] rounded-2xl p-8 text-center shadow-xl border border-[#e8e2d2] flex flex-col items-center hover:-translate-y-2 transition transform duration-300">
+            <div className="w-24 h-24 bg-brand-dark text-white rounded-full flex items-center justify-center mb-6 shadow-md border-4 border-white">
+              <Globe size={40} />
             </div>
-            <h3 className="font-bold text-xl text-brand-dark mb-3 leading-tight uppercase">Carer<br/>Resources</h3>
-            <p className="text-sm text-gray-600 mb-8 flex-1">Practical tools and information.</p>
-            <button onClick={() => handleNav('Explore Resources')} className="w-full bg-brand-dark text-white py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-[#202d15] transition">
-              EXPLORE RESOURCES <ArrowRight size={16} />
+            <h3 className="font-heading font-semibold text-2xl text-brand-dark mb-3 leading-tight uppercase tracking-wider">Carer<br/>Resources</h3>
+            <p className="text-sm text-gray-700 mb-8 flex-1 font-medium px-4">Practical tools and information.</p>
+            <button onClick={() => handleNav('Explore Resources')} className="w-full bg-brand-dark text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-[#202d15] transition shadow-md">
+              EXPLORE RESOURCES <ArrowRight size={18} />
             </button>
           </div>
         </div>
       </section>
 
       {/* Events Section */}
-      <section className="py-12 px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-[#f6f2e8] rounded-xl p-8 shadow-sm">
+      <section className="py-12 px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
+        <div className="bg-[#fcfaf4] rounded-2xl p-10 shadow-lg border border-[#e8e2d2]">
           <div className="flex items-center gap-3 mb-6">
-            <Calendar className="text-brand-dark" size={28} />
-            <h2 className="text-2xl font-bold text-brand-dark uppercase">Next Sunday Session</h2>
+            <Calendar className="text-brand-orange" size={32} />
+            <h2 className="text-3xl font-heading font-semibold text-brand-dark uppercase tracking-wide">Next Sunday Session</h2>
           </div>
-          <p className="text-brand-orange font-script text-2xl mb-6 font-semibold italic">You're not alone in this journey</p>
+          <p className="text-brand-orange font-script text-3xl mb-8 font-semibold">You're not alone in this journey</p>
           
-          <div className="space-y-4 mb-8">
-            <div className="flex items-center gap-3 text-gray-700">
-              <Calendar className="text-gray-400" size={20} /> <span>Sunday 25 May 2025</span>
+          <div className="space-y-5 mb-10">
+            <div className="flex items-center gap-4 text-gray-800 font-medium text-lg">
+              <Calendar className="text-brand-orange" size={24} /> <span>Sunday 25 May 2025</span>
             </div>
-            <div className="flex items-center gap-3 text-gray-700">
-              <Calendar className="text-gray-400" size={20} /> <span>8:30pm (NZST)</span>
+            <div className="flex items-center gap-4 text-gray-800 font-medium text-lg">
+              <Calendar className="text-brand-orange" size={24} /> <span>8:30pm (NZST)</span>
             </div>
-            <div className="flex items-center gap-3 text-gray-700">
-              <Video className="text-gray-400" size={20} /> <span>Online via Zoom</span>
+            <div className="flex items-center gap-4 text-gray-800 font-medium text-lg">
+              <Video className="text-brand-orange" size={24} /> <span>Online via Zoom</span>
             </div>
-            <div className="flex items-center gap-3 text-gray-700">
-              <User className="text-gray-400" size={20} /> <span>Guest Speaker: TBA</span>
+            <div className="flex items-center gap-4 text-gray-800 font-medium text-lg">
+              <User className="text-brand-orange" size={24} /> <span>Guest Speaker: TBA</span>
             </div>
           </div>
           
-          <button onClick={() => handleNav('Join Sunday Session Zoom')} className="bg-brand-orange text-white px-8 py-3 rounded-md font-bold flex items-center gap-2 hover:bg-orange-700 transition">
-            JOIN ON ZOOM <ArrowRight size={16} />
+          <button onClick={() => handleNav('Join Sunday Session Zoom')} className="bg-brand-orange text-white px-10 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-orange-800 transition shadow-md w-full sm:w-auto">
+            JOIN ON ZOOM <ArrowRight size={18} />
           </button>
         </div>
 
-        <div className="bg-[#f6f2e8] rounded-xl p-8 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
+        <div className="bg-[#fcfaf4] rounded-2xl p-10 shadow-lg border border-[#e8e2d2]">
+          <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
-              <Calendar className="text-brand-dark" size={28} />
-              <h2 className="text-2xl font-bold text-brand-dark uppercase">Upcoming Events</h2>
+              <Calendar className="text-brand-dark" size={32} />
+              <h2 className="text-3xl font-heading font-semibold text-brand-dark uppercase tracking-wide">Upcoming Events</h2>
             </div>
-            <button onClick={() => handleNav('All Events')} className="text-sm font-bold flex items-center gap-1 hover:text-brand-orange transition">
+            <button onClick={() => handleNav('All Events')} className="text-sm font-bold flex items-center gap-1 hover:text-brand-orange transition uppercase tracking-wider text-gray-600">
               VIEW ALL EVENTS <ArrowRight size={16} />
             </button>
           </div>
@@ -206,16 +207,16 @@ function App() {
               { date: '09', month: 'AUG', title: 'Indoor Netball Tournament', loc: 'Action Indoor Sports, Auckland' },
               { date: '20', month: 'SEP', title: 'Carers Workshop & Lunch', loc: 'Auckland (Venue TBA)' }
             ].map((event, i) => (
-              <div key={i} className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-sm">
-                <div className="text-center w-16">
-                  <div className="text-2xl font-bold text-brand-dark">{event.date}</div>
-                  <div className="text-brand-orange font-bold text-sm">{event.month}</div>
+              <div key={i} className="flex items-center gap-5 bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div className="text-center w-16 flex-shrink-0">
+                  <div className="text-3xl font-heading font-bold text-brand-dark leading-none mb-1">{event.date}</div>
+                  <div className="text-brand-orange font-bold text-sm tracking-widest">{event.month}</div>
                 </div>
-                <div className="flex-1 border-l pl-4 border-gray-200">
-                  <h4 className="font-bold text-gray-900">{event.title}</h4>
-                  <p className="text-sm text-gray-500">{event.loc}</p>
+                <div className="flex-1 border-l-2 pl-5 border-brand-orange/20">
+                  <h4 className="font-bold text-gray-900 text-lg mb-1">{event.title}</h4>
+                  <p className="text-sm text-gray-500 font-medium">{event.loc}</p>
                 </div>
-                <button onClick={() => handleNav(`Event: ${event.title}`)} className="bg-brand-dark text-white px-4 py-1.5 rounded text-xs font-bold hover:bg-[#202d15] transition hidden sm:block">
+                <button onClick={() => handleNav(`Event: ${event.title}`)} className="bg-brand-dark text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#202d15] transition hidden sm:block shadow-sm tracking-wider">
                   MORE INFO
                 </button>
               </div>
@@ -225,37 +226,37 @@ function App() {
       </section>
 
       {/* Stories Section */}
-      <section className="py-12 px-8 max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+      <section className="py-16 px-8 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-brand-dark uppercase">Stories From Our Aiga</h2>
-            <p className="text-gray-600 mt-2">Real stories. Real people. Real journeys.</p>
+            <h2 className="text-4xl font-heading font-semibold text-brand-dark uppercase tracking-wide">Stories From Our Aiga</h2>
+            <p className="text-gray-600 mt-2 text-lg font-medium">Real stories. Real people. Real journeys.</p>
           </div>
-          <button onClick={() => handleNav('All Stories')} className="bg-brand-orange text-white px-6 py-2 rounded-md font-bold hidden sm:flex items-center gap-2 hover:bg-orange-700 transition">
-            READ STORIES <ArrowRight size={16} />
+          <button onClick={() => handleNav('All Stories')} className="bg-brand-orange text-white px-8 py-3 rounded-full font-bold hidden sm:flex items-center gap-2 hover:bg-orange-800 transition shadow-md">
+            READ STORIES <ArrowRight size={18} />
           </button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-xl overflow-hidden shadow-md group cursor-pointer" onClick={() => handleNav('Story: Mere')}>
-            <img src="/images/story1.jpg" alt="Mere" className="w-full h-48 object-cover object-top group-hover:scale-105 transition duration-500" />
-            <div className="p-6">
-              <p className="font-medium text-lg mb-2">"Caring for Dad taught me patience and love"</p>
-              <p className="text-brand-orange font-bold text-sm">- Mere, Auckland</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 group cursor-pointer hover:-translate-y-2 transition duration-300">
+            <img src="/images/story1.jpg" alt="Mere" className="w-full h-56 object-cover object-top group-hover:scale-105 transition duration-700" />
+            <div className="p-8">
+              <p className="font-heading font-semibold text-2xl text-brand-dark mb-4 leading-tight">"Caring for Dad taught me patience and love"</p>
+              <p className="text-brand-orange font-bold tracking-wider text-sm uppercase">- Mere, Auckland</p>
             </div>
           </div>
-          <div className="bg-white rounded-xl overflow-hidden shadow-md group cursor-pointer" onClick={() => handleNav('Story: Sia')}>
-            <img src="/images/story2.jpg" alt="Sia" className="w-full h-48 object-cover object-top group-hover:scale-105 transition duration-500" />
-            <div className="p-6">
-              <p className="font-medium text-lg mb-2">"Le Malaga is my safe space to breathe"</p>
-              <p className="text-brand-orange font-bold text-sm">- Sia, Manurewa</p>
+          <div className="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 group cursor-pointer hover:-translate-y-2 transition duration-300">
+            <img src="/images/story2.jpg" alt="Sia" className="w-full h-56 object-cover object-top group-hover:scale-105 transition duration-700" />
+            <div className="p-8">
+              <p className="font-heading font-semibold text-2xl text-brand-dark mb-4 leading-tight">"Le Malaga is my safe space to breathe"</p>
+              <p className="text-brand-orange font-bold tracking-wider text-sm uppercase">- Sia, Manurewa</p>
             </div>
           </div>
-          <div className="bg-white rounded-xl overflow-hidden shadow-md group cursor-pointer" onClick={() => handleNav('Story: Junior')}>
-            <img src="/images/story3.jpg" alt="Junior" className="w-full h-48 object-cover object-top group-hover:scale-105 transition duration-500" />
-            <div className="p-6">
-              <p className="font-medium text-lg mb-2">"We walk this journey together as aiga"</p>
-              <p className="text-brand-orange font-bold text-sm">- Junior, Henderson</p>
+          <div className="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 group cursor-pointer hover:-translate-y-2 transition duration-300">
+            <img src="/images/story3.jpg" alt="Junior" className="w-full h-56 object-cover object-top group-hover:scale-105 transition duration-700" />
+            <div className="p-8">
+              <p className="font-heading font-semibold text-2xl text-brand-dark mb-4 leading-tight">"We walk this journey together as aiga"</p>
+              <p className="text-brand-orange font-bold tracking-wider text-sm uppercase">- Junior, Henderson</p>
             </div>
           </div>
         </div>
