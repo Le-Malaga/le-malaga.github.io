@@ -39,7 +39,7 @@ export default function Layout() {
               {link.name}
             </Link>
           ))}
-          <Link to="/donate" className="bg-brand-orange text-white px-6 py-2 rounded-md hover:bg-orange-800 transition font-bold shadow-sm">DONATE</Link>
+          <Link to="https://givealittle.co.nz/cause/help-us-be-there-for-carers-today-not-tomorrow" className="bg-brand-orange text-white px-6 py-2 rounded-md hover:bg-orange-800 transition font-bold shadow-sm">DONATE</Link>
         </nav>
 
         {isMobileMenuOpen && (
