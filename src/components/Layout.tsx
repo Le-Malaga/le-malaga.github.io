@@ -20,9 +20,9 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-brand-bg text-gray-800 font-sans flex flex-col">
-      <header className="flex flex-wrap items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-40">
+      <header className="flex flex-wrap items-center justify-between px-8 py-4 bg-[#f3eedf] shadow-sm sticky top-0 z-40">
         <Link to="/" className="flex items-center cursor-pointer">
-          <img src="/images/logo.png" alt="Le Malaga" className="h-16 object-contain" />
+          <img src="/images/logo.png" alt="Le Malaga" className="h-16 object-contain mix-blend-multiply" />
         </Link>
         
         <button className="lg:hidden text-brand-dark" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>

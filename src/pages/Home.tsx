@@ -24,7 +24,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex-1 relative w-full">
-          <img src="/images/hero-bg.jpg" alt="Pasifika women" className="rounded-[2rem] shadow-2xl object-cover w-full h-[500px]" />
+          <img src="/images/hero-bg.jpg" alt="Pasifika women" className="rounded-[2rem] shadow-2xl object-cover object-center w-full h-[500px]" />
         </div>
       </section>
 
