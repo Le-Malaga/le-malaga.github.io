@@ -22,7 +22,7 @@ export default function SundaySessions() {
               <h3 className="text-xl font-heading font-bold text-brand-orange mb-6 border-b pb-4">Next Session Details</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-4 text-gray-800 font-medium">
-                  <Calendar className="text-gray-400" size={24} /> <span>Sunday 25 May 2025</span>
+                  <Calendar className="text-gray-400" size={24} /> <span>Sunday 6 September 2026</span>
                 </div>
                 <div className="flex items-center gap-4 text-gray-800 font-medium">
                   <Clock className="text-gray-400" size={24} /> <span>8:30pm (NZST)</span>
