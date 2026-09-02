@@ -150,7 +150,7 @@ export default function Home() {
           
           <div className="space-y-6">
             {[
-              { date: '14', month: 'JUN', title: 'Le Malaga Tag Tournament', loc: 'Barry Curtis Park, Papakura' },
+              { date: '14', month: 'FEB', title: 'Le Malaga Tag Tournament', loc: 'Barry Curtis Park, Papakura' },
               { date: '09', month: 'AUG', title: 'Indoor Netball Tournament', loc: 'Action Indoor Sports, Auckland' },
               { date: '20', month: 'SEP', title: 'Carers Workshop & Lunch', loc: 'Auckland (Venue TBA)' }
             ].map((event, i) => (
