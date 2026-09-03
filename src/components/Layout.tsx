@@ -29,18 +29,26 @@ export default function Layout() {
           {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
 
-        <nav className="hidden lg:flex gap-6 items-center font-medium text-sm">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.path} 
-              to={link.path} 
-              className={`transition hover:text-brand-orange ${isActive(link.path) ? 'text-brand-orange border-b-2 border-brand-orange pb-1' : ''}`}
-            >
-              {link.name}
-            </Link>
-          ))}
-          <Link to="https://givealittle.co.nz/cause/help-us-be-there-for-carers-today-not-tomorrow" className="bg-brand-orange text-white px-6 py-2 rounded-md hover:bg-orange-800 transition font-bold shadow-sm">DONATE</Link>
-        </nav>
+        <nav className="flex items-center gap-4">
+  {navLinks.map((link) => (
+    <Link
+      key={link.name}
+      to={link.href}
+      className="text-gray-700 hover:text-brand-orange"
+    >
+      {link.name}
+    </Link>
+  ))}
+
+  <a
+    href="https://givealittle.co.nz/cause/help-us-be-there-for-carers-today-not-tomorrow"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="bg-brand-orange text-white px-6 py-2 rounded-md hover:bg-orange-800 transition font-bold shadow-sm"
+  >
+    DONATE
+  </a>
+</nav>
 
         {isMobileMenuOpen && (
           <nav className="w-full lg:hidden flex flex-col gap-4 pt-4 mt-4 border-t font-medium text-sm">
