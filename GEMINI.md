@@ -25,3 +25,8 @@
 - **Local Testing:** ALWAYS run local builds (`npm run build`) and perform testing before pushing any code. Never push blindly.
 - **Pipeline Verification:** After pushing to GitHub, you MUST monitor the GitHub Actions deployment pipeline to ensure it builds successfully.
 - **Proactive Debugging:** If the pipeline fails, you are expected to proactively read the logs, debug the failure, commit a fix, and verify the pipeline again until it succeeds.
+
+## Project State Tracking
+- **State File:** We maintain a `PROJECT_STATUS.md` file at the root of the repository. 
+- **Context Gathering:** Any time you start a new session, you MUST read `PROJECT_STATUS.md` to understand what has already been built and what is currently in progress. 
+- **Updating State:** Whenever you complete a significant milestone or feature, you are required to update `PROJECT_STATUS.md` with your accomplishments so the next agent has up-to-date context.
