@@ -18,22 +18,25 @@ export default function SundaySessions() {
               Our Sunday Sessions are the heartbeat of Le Malaga. Every week we gather online to share a short devotion, hear from a guest speaker on topics relating to health and wellbeing, and most importantly, check in on one another.
             </p>
             
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8">
-              <h3 className="text-xl font-heading font-bold text-brand-orange mb-6 border-b pb-4">Next Session Details</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 text-gray-800 font-medium">
-                  <Calendar className="text-gray-400" size={24} /> <span>Sunday 6 September 2026</span>
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-8">
+              <img src="/images/zoom_meeting.jpg" alt="Zoom Meeting" className="w-full h-48 object-cover border-b border-gray-100" />
+              <div className="p-8">
+                <h3 className="text-xl font-heading font-bold text-brand-orange mb-6 border-b pb-4">Next Session Details</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 text-gray-800 font-medium">
+                    <Calendar className="text-gray-400" size={24} /> <span>Sunday 6 September 2026</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-gray-800 font-medium">
+                    <Clock className="text-gray-400" size={24} /> <span>8:30pm (NZST)</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-gray-800 font-medium">
+                    <Video className="text-gray-400" size={24} /> <span>Online via Zoom</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-4 text-gray-800 font-medium">
-                  <Clock className="text-gray-400" size={24} /> <span>8:30pm (NZST)</span>
-                </div>
-                <div className="flex items-center gap-4 text-gray-800 font-medium">
-                  <Video className="text-gray-400" size={24} /> <span>Online via Zoom</span>
-                </div>
+                <button className="mt-8 w-full bg-brand-orange text-white py-4 rounded-full font-bold hover:bg-orange-800 transition shadow-md">
+                  GET ZOOM LINK
+                </button>
               </div>
-              <button className="mt-8 w-full bg-brand-orange text-white py-4 rounded-full font-bold hover:bg-orange-800 transition shadow-md">
-                GET ZOOM LINK
-              </button>
             </div>
           </div>
           

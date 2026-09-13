@@ -15,8 +15,8 @@ export default function About() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-8 py-20 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-        <div>
+      <div className="max-w-7xl mx-auto px-8 py-20 flex flex-col lg:flex-row gap-16 items-start">
+        <div className="flex-1">
           <h2 className="text-4xl font-heading font-semibold text-brand-dark uppercase tracking-wide mb-6">Rooted in Lived Experience</h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-6">
             We understand the challenges of caring for aiga through dementia, disability, chronic illness, and ageing because we walk this journey ourselves. 
@@ -26,22 +26,37 @@ export default function About() {
           </p>
           <ul className="space-y-4 mt-8">
             <li className="flex items-start gap-4">
-              <Heart className="text-brand-orange mt-1" />
+              <Heart className="text-brand-orange mt-1 flex-shrink-0" />
               <p className="text-gray-800 font-medium">Empathetic support from people who truly understand.</p>
             </li>
             <li className="flex items-start gap-4">
-              <Shield className="text-brand-orange mt-1" />
+              <Shield className="text-brand-orange mt-1 flex-shrink-0" />
               <p className="text-gray-800 font-medium">A safe, confidential space for carers to breathe and share.</p>
             </li>
             <li className="flex items-start gap-4">
-              <Users className="text-brand-orange mt-1" />
+              <Users className="text-brand-orange mt-1 flex-shrink-0" />
               <p className="text-gray-800 font-medium">Pasifika values and faith at the core of everything we do.</p>
             </li>
           </ul>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <img src="/images/story1.jpg" alt="Community" className="rounded-2xl w-full h-64 object-cover object-top shadow-lg" />
-          <img src="/images/story2.jpg" alt="Support" className="rounded-2xl w-full h-64 object-cover object-top shadow-lg mt-8" />
+        
+        {/* Beautiful Custom Image Collage */}
+        <div className="flex-1 w-full grid grid-cols-12 gap-4">
+          {/* Top Row: photo2 (Landscape) and caring (Tall Portrait) */}
+          <div className="col-span-8">
+            <img src="/images/photo2.jpg" alt="Community gathering" className="w-full h-64 object-cover rounded-2xl shadow-lg border-4 border-white hover:scale-105 transition duration-500" />
+          </div>
+          <div className="col-span-4 row-span-2">
+            <img src="/images/caring.jpg" alt="Caring" className="w-full h-full object-cover rounded-2xl shadow-lg border-4 border-white hover:scale-105 transition duration-500" />
+          </div>
+          
+          {/* Bottom Row: photo1 (Portrait) and le_malaga (Wide Landscape) */}
+          <div className="col-span-4">
+            <img src="/images/photo1.jpg" alt="Pasifika women" className="w-full h-48 object-cover rounded-2xl shadow-lg border-4 border-white hover:scale-105 transition duration-500" />
+          </div>
+          <div className="col-span-4">
+            <img src="/images/le_malaga.jpg" alt="Le Malaga" className="w-full h-48 object-cover rounded-2xl shadow-lg border-4 border-white hover:scale-105 transition duration-500" />
+          </div>
         </div>
       </div>
     </div>
