@@ -33,7 +33,7 @@ export default function Layout() {
   {navLinks.map((link) => (
     <Link
       key={link.name}
-      to={link.href}
+      to={link.path}
       className="text-gray-700 hover:text-brand-orange"
     >
       {link.name}
