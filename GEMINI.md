@@ -20,3 +20,8 @@
 - **Realistic Layouts:** The user HATES generic developer "Placeholder" or "Simulated Page" screens. If you add a route, you MUST build out a beautiful, realistic layout using Tailwind CSS. 
 - **Brand Colors:** Our exact Tailwind theme colors are Orange (`#d95a2b`), Dark Green (`#3e4a28`), and Beige Background (`#f3eedf` and `#faf9f4`).
 - **Typography:** We use the `Oswald` Google Font for all headings (styled heavily with uppercase and bold/extrabold weights) to match the original Figma design language.
+
+## Deployment & CI/CD Workflow
+- **Local Testing:** ALWAYS run local builds (`npm run build`) and perform testing before pushing any code. Never push blindly.
+- **Pipeline Verification:** After pushing to GitHub, you MUST monitor the GitHub Actions deployment pipeline to ensure it builds successfully.
+- **Proactive Debugging:** If the pipeline fails, you are expected to proactively read the logs, debug the failure, commit a fix, and verify the pipeline again until it succeeds.
