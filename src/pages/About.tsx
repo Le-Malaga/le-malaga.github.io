@@ -1,5 +1,3 @@
-import { Heart, Shield, Users } from 'lucide-react'
-
 export default function About() {
   return (
     <div className="w-full">
@@ -14,49 +12,55 @@ export default function About() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-8 py-20 flex flex-col lg:flex-row gap-16 items-start">
-        <div className="flex-1">
-          <h2 className="text-4xl font-heading font-semibold text-brand-dark uppercase tracking-wide mb-6">Rooted in Lived Experience</h2>
-          <p className="text-lg text-gray-700 leading-relaxed mb-6">
-            We understand the challenges of caring for aiga through dementia, disability, chronic illness, and ageing because we walk this journey ourselves. 
+      {/* Mission Statement */}
+      <div className="max-w-4xl mx-auto px-8 py-20 text-center">
+        <h2 className="text-4xl font-heading font-bold text-brand-dark uppercase tracking-wide mb-8">Mission Statement</h2>
+        <div className="text-xl text-gray-700 leading-relaxed space-y-6">
+          <p>
+            Le Malaga exists to Uplift, Empower and walk alongside Carers on their journey. We are Dementia specific but not exclusive. We are understanding that the feelings, emotions and exhaustion of caring often overlap, no matter the situation. Our space is for anyone carrying the weight of caring for someone that they love.
           </p>
-          <p className="text-lg text-gray-700 leading-relaxed mb-6">
-            Often, carers feel isolated and overwhelmed. Le Malaga was created to ensure that no one has to walk this path alone. By coming together, we share resources, provide emotional support, and navigate the complex health systems as a collective.
+          <p>
+            We are built on Lived Experience. Real stories, real struggles, real resilience. Our group includes Carers at every stage – those just beginning, those in the middle, those nearing the end and those who have already served their time. We know the journey doesn't end when the Caring role does; the impact continues emotionally and spiritually.
           </p>
-          <ul className="space-y-4 mt-8">
-            <li className="flex items-start gap-4">
-              <Heart className="text-brand-orange mt-1 flex-shrink-0" />
-              <p className="text-gray-800 font-medium">Empathetic support from people who truly understand.</p>
-            </li>
-            <li className="flex items-start gap-4">
-              <Shield className="text-brand-orange mt-1 flex-shrink-0" />
-              <p className="text-gray-800 font-medium">A safe, confidential space for carers to breathe and share.</p>
-            </li>
-            <li className="flex items-start gap-4">
-              <Users className="text-brand-orange mt-1 flex-shrink-0" />
-              <p className="text-gray-800 font-medium">Pasifika values and faith at the core of everything we do.</p>
-            </li>
-          </ul>
+          <p className="font-semibold text-brand-orange">
+            Through Cultural connection, Honesty, Empathy and Togetherness, Le Malaga is here to raise awareness, break the silence and ensure every Carer feels supported, celebrated and guided with love.
+          </p>
         </div>
-        
-        {/* Beautiful Custom Image Collage */}
-        <div className="flex-1 w-full grid grid-cols-12 gap-4">
-          {/* Top Row: photo2 (Landscape) and caring (Tall Portrait) */}
-          <div className="col-span-8">
-            <img src="/images/photo2.jpg" alt="Community gathering" className="w-full h-64 object-cover rounded-2xl shadow-lg border-4 border-white hover:scale-105 transition duration-500" />
-          </div>
-          <div className="col-span-4 row-span-2">
-            <img src="/images/caring.jpg" alt="Caring" className="w-full h-full object-cover rounded-2xl shadow-lg border-4 border-white hover:scale-105 transition duration-500" />
-          </div>
+      </div>
+
+      {/* Meet the Team / Lived Experience */}
+      <div className="bg-[#fcfaf4] py-20">
+        <div className="max-w-7xl mx-auto px-8">
+          <h2 className="text-4xl font-heading font-bold text-brand-dark uppercase tracking-wide mb-16 text-center">Meet the Aiga</h2>
           
-          {/* Bottom Row: photo1 (Portrait) and le_malaga (Wide Landscape) */}
-          <div className="col-span-4">
-            <img src="/images/photo1.jpg" alt="Pasifika women" className="w-full h-48 object-cover rounded-2xl shadow-lg border-4 border-white hover:scale-105 transition duration-500" />
+          {/* Flory */}
+          <div className="flex flex-col lg:flex-row gap-12 items-center mb-24">
+            <div className="flex-1 space-y-6">
+              <h3 className="text-3xl font-heading font-bold text-brand-orange uppercase">Flory Fesaua'i Sio Levy</h3>
+              <p className="text-lg text-gray-700 leading-relaxed italic">
+                "Talofa lava my name is Flory Fesaua'i Sio Levy, I'm caring for my mother. While on this journey with mum has become challenging at times but also taught me a lot about myself. The love, resilience, kindness, empathy and exhaustion."
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                "But also showing up, being patient and being her rock solid star for her I wouldn't change. I can make money any time any where, but I only have one mother in this lifetime. I owe so much to my mother and late father. So being a carer is my choice to serve and honour my first love."
+              </p>
+            </div>
+            <div className="flex-1 grid grid-cols-2 gap-4">
+              <img src="/images/flory1.jpg" alt="Flory" className="w-full h-80 object-cover rounded-2xl shadow-lg border-4 border-white" />
+              <img src="/images/flory2.jpg" alt="Flory and Family" className="w-full h-80 object-cover rounded-2xl shadow-lg border-4 border-white" />
+            </div>
           </div>
-          <div className="col-span-4">
-            <img src="/images/le_malaga.jpg" alt="Le Malaga" className="w-full h-48 object-cover rounded-2xl shadow-lg border-4 border-white hover:scale-105 transition duration-500" />
+
+          {/* Tasi & Juita */}
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <div className="flex-1 grid grid-cols-2 gap-4">
+              <img src="/images/tasi1.jpg" alt="Tasi" className="w-full h-64 object-cover rounded-2xl shadow-lg border-4 border-white" />
+              <img src="/images/tasi2.jpg" alt="Tasi" className="w-full h-64 object-cover rounded-2xl shadow-lg border-4 border-white" />
+            </div>
+            <div className="flex-1">
+              <img src="/images/juita.jpg" alt="Juita" className="w-full h-[33rem] object-cover rounded-2xl shadow-lg border-4 border-white" />
+            </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -20,11 +20,11 @@ def download_images():
     
     # The IDs of the nodes with images that we found
     nodes = {
-        '8:474': 'photo2',
-        '8:475': 'photo1',
-        '8:476': 'caring',
-        '17:225': 'le_malaga',
-        '19:223': 'zoom_meeting'
+        '50:69': 'flory1',
+        '50:70': 'flory2',
+        '50:77': 'tasi1',
+        '50:81': 'tasi2',
+        '52:68': 'juita'
     }
     
     ids_str = ','.join(nodes.keys())

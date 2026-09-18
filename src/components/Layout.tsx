@@ -62,7 +62,15 @@ export default function Layout() {
                 {link.name}
               </Link>
             ))}
-            <Link to="/donate" onClick={() => setIsMobileMenuOpen(false)} className="bg-brand-orange text-white px-6 py-2 rounded-md font-bold mt-2 w-full text-center shadow-sm">DONATE</Link>
+            <a 
+              href="https://givealittle.co.nz/cause/help-us-be-there-for-carers-today-not-tomorrow" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              onClick={() => setIsMobileMenuOpen(false)} 
+              className="bg-brand-orange text-white px-6 py-2 rounded-md font-bold mt-2 w-full text-center shadow-sm"
+            >
+              DONATE
+            </a>
           </nav>
         )}
       </header>

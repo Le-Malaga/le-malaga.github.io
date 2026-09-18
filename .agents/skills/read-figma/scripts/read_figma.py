@@ -42,10 +42,10 @@ def read_figma():
                 node_type = node.get('type')
                 node_name = node.get('name', '')
                 
-                if node_type == 'TEXT':
+                if node_type in ['TEXT', 'STICKY', 'SHAPE']:
                     text = node.get('characters', '').strip()
                     if text:
-                        print("  " * depth + f"- TEXT ({node_name}): {text}")
+                        print("  " * depth + f"- {node_type} ({node_name}): {text}")
                 else:
                     # Check for images in fills
                     has_image = False
