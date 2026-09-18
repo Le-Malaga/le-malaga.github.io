@@ -6,11 +6,10 @@
 - Any time a new token or key is needed (like the Figma Personal Access Token), it must be placed exclusively in a `.env` file, and that file MUST be listed in `.gitignore`.
 - If you run any git commands (`git add`, `git commit`), ALWAYS double check `git status` or the diff to ensure no `.env` files or hardcoded credentials are included.
 
-## Figma Integration Context
-- We have a custom skill located in `.agents/skills/read-figma/` which provides Python scripts to interact with the LeMalaga Figma board.
-- The `FIGMA_TOKEN` is securely stored in `.env`.
-- We use these scripts to pull text, structures, and download high-quality asset nodes from Figma directly into `public/images/`.
-- **Learning:** Do NOT try to manually crop screenshots of Figma mockups. It results in capturing unwanted UI elements or drop shadows. Always use the Figma API (`download_images.py`) to download the exact, clean image nodes.
+## Content Management (Notion & Figma)
+- **Notion CMS (Primary):** Due to strict rate limits on the free Figma API, we use a Notion Database as our Headless CMS. We have a custom skill in `.agents/skills/read-notion/` to automatically extract the latest text and images from the team's Notion board. The `NOTION_TOKEN` is securely stored in `.env`.
+- **Figma Assets (Secondary):** We still maintain the `.agents/skills/read-figma/` skill to download high-quality asset nodes from Figma directly into `public/images/`. The `FIGMA_TOKEN` is also in `.env`.
+- **Learning:** Do NOT try to manually crop screenshots of Figma mockups. Always use the Figma API (`download_images.py`) to download the exact, clean image nodes.
 
 ## React & GitHub Pages Architecture
 - **Routing:** The user strongly dislikes `HashRouter` (`/#/` URLs). We use standard `BrowserRouter`. 
