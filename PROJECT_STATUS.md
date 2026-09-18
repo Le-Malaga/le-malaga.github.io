@@ -8,9 +8,10 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
 - **Figma Integration:** Built a custom agent skill (`.agents/skills/read-figma/`) with Python scripts to securely read the Figma board, download exact image nodes directly into `/public/images`, and post "Integrated" comments back to the Figma canvas.
 - **UI & Branding:** Configured Tailwind with exact brand colors (Orange: `#d95a2b`, Dark Green: `#3e4a28`, Beige: `#f3eedf` / `#faf9f4`) and the `Oswald` / `Dancing Script` typography.
 - **Homepage (`/`):** Fully responsive, no-placeholder layout matching the original design.
-- **About Us (`/about`):** Implemented a custom masonry grid layout utilizing four raw images directly fetched from Figma (`photo1`, `photo2`, `caring`, `le_malaga`).
+- **About Us (`/about`):** Implemented the core Mission Statement and built a beautiful "Meet the Aiga" section showcasing Flory's lived-experience story alongside her two images (`flory1`, `flory2`), and layouts for Tasi and Juita.
 - **Sunday Sessions (`/sunday-sessions`):** Implemented session details layout featuring the `zoom_meeting` image from Figma.
 - **Agent Rules:** Created `GEMINI.md` to strictly enforce security (no committing `.env`), strict CI/CD local testing, and proactive pipeline debugging.
+- **Donation Integration:** Placed the Givealittle donation link (`https://givealittle.co.nz/...`) in the main header navigation, the mobile menu, and the `GetInvolved.tsx` action button.
 
 ## 🚧 In Progress
 - Migrating remaining text/sections from the Figma board into the React application as they are updated.
