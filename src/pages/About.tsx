@@ -50,14 +50,36 @@ export default function About() {
             </div>
           </div>
 
-          {/* Tasi & Juita */}
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
+          {/* Tasi */}
+          <div className="flex flex-col lg:flex-row-reverse gap-12 items-center mb-24">
+            <div className="flex-1 space-y-6">
+              <h3 className="text-3xl font-heading font-bold text-brand-orange uppercase">Tasi's Story</h3>
+              <p className="text-lg text-gray-700 leading-relaxed italic">
+                (Tasi's blurb will be synced from Figma once the API rate limit resets.)
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Le Malaga exists to uplift and empower carers on their journey, sharing our lived experiences.
+              </p>
+            </div>
             <div className="flex-1 grid grid-cols-2 gap-4">
-              <img src="/images/tasi1.jpg" alt="Tasi" className="w-full h-64 object-cover rounded-2xl shadow-lg border-4 border-white" />
-              <img src="/images/tasi2.jpg" alt="Tasi" className="w-full h-64 object-cover rounded-2xl shadow-lg border-4 border-white" />
+              <img src="/images/tasi1.jpg" alt="Tasi" className="w-full h-80 object-cover rounded-2xl shadow-lg border-4 border-white" />
+              <img src="/images/tasi2.jpg" alt="Tasi" className="w-full h-80 object-cover rounded-2xl shadow-lg border-4 border-white" />
+            </div>
+          </div>
+
+          {/* Juita */}
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <div className="flex-1 space-y-6">
+              <h3 className="text-3xl font-heading font-bold text-brand-orange uppercase">Juita's Story</h3>
+              <p className="text-lg text-gray-700 leading-relaxed italic">
+                (Juita's blurb will be synced from Figma once the API rate limit resets.)
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Our space is for anyone carrying the weight of caring for someone they love.
+              </p>
             </div>
             <div className="flex-1">
-              <img src="/images/juita.jpg" alt="Juita" className="w-full h-[33rem] object-cover rounded-2xl shadow-lg border-4 border-white" />
+              <img src="/images/juita.jpg" alt="Juita" className="w-full h-[33rem] object-cover object-top rounded-2xl shadow-lg border-4 border-white" />
             </div>
           </div>
 
