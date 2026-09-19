@@ -55,7 +55,7 @@ export default function About() {
             <div className="flex-1 space-y-6">
               <h3 className="text-3xl font-heading font-bold text-brand-orange uppercase">Aitasi Lemanu (Tasi)</h3>
               <p className="text-lg text-gray-700 leading-relaxed italic">
-                "Talofa, My name is Aitasi Lemanu (aka tasi). Being a carer for my mother Apoaniva taught me more than anything else in my life. As the youngest of 7 from Afega and Vailele, it was an honour I didn't take lightly."
+                "Talofa, My name is Aitasi Lemanu (aka Tasi). Being a carer for my mother Apoaniva taught me more than anything else in my life. As the youngest of 7 from Afega and Vailele, it was an honour I didn't take lightly."
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 "It taught me patience — to slow down and be present. It taught me strength — to keep going even when it was hard and tiring. And it taught me alofa — real, unconditional love that gives without counting."
