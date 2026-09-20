@@ -44,9 +44,9 @@ export default function About() {
                 "But also showing up, being patient and being her rock solid star for her I wouldn't change. I can make money any time any where, but I only have one mother in this lifetime. I owe so much to my mother and late father. So being a carer is my choice to serve and honour my first love."
               </p>
             </div>
-            <div className="flex-1 grid grid-cols-2 gap-4">
-              <img src="/images/flory1.jpg" alt="Flory" className="w-full h-80 object-cover rounded-2xl shadow-lg border-4 border-white" />
-              <img src="/images/flory2.jpg" alt="Flory and Family" className="w-full h-80 object-cover rounded-2xl shadow-lg border-4 border-white" />
+            <div className="flex-1 grid grid-cols-2 gap-4 items-start">
+              <img src="/images/flory1.jpg" alt="Flory" className="w-full h-auto rounded-2xl shadow-lg border-4 border-white" />
+              <img src="/images/flory2.jpg" alt="Flory and Family" className="w-full h-auto rounded-2xl shadow-lg border-4 border-white" />
             </div>
           </div>
 
@@ -64,9 +64,9 @@ export default function About() {
                 "Like our Samoan saying, ‘O le ala i le pule o le tautua’ — the path to leadership is through service. Caring for my mum shaped who I am as a man, as a son, and as a Samoan."
               </p>
             </div>
-            <div className="flex-1 grid grid-cols-2 gap-4">
-              <img src="/images/tasi1.jpg" alt="Tasi" className="w-full h-80 object-cover rounded-2xl shadow-lg border-4 border-white" />
-              <img src="/images/tasi2.jpg" alt="Tasi" className="w-full h-80 object-cover rounded-2xl shadow-lg border-4 border-white" />
+            <div className="flex-1 grid grid-cols-2 gap-4 items-start">
+              <img src="/images/tasi1.jpg" alt="Tasi" className="w-full h-auto rounded-2xl shadow-lg border-4 border-white" />
+              <img src="/images/tasi2.jpg" alt="Tasi" className="w-full h-auto rounded-2xl shadow-lg border-4 border-white" />
             </div>
           </div>
 
@@ -104,7 +104,7 @@ export default function About() {
               </div>
             </div>
             <div className="flex-1 sticky top-24">
-              <img src="/images/juita.jpg" alt="Juita" className="w-full h-[45rem] object-cover object-top rounded-2xl shadow-lg border-4 border-white" />
+              <img src="/images/juita.jpg" alt="Juita" className="w-full h-auto rounded-2xl shadow-lg border-4 border-white" />
             </div>
           </div>
 
