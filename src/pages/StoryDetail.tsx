@@ -113,13 +113,15 @@ export default function StoryDetail() {
                   </p>
                   
                   {step.image ? (
-                    <div className={`inline-block bg-white p-3 shadow-lg rounded-sm border border-gray-200 transform transition duration-500 hover:scale-105 ${i % 2 === 0 ? 'rotate-2' : '-rotate-2'}`}>
-                      <img src={step.image} alt={step.title} className="w-48 sm:w-64 h-32 sm:h-48 object-cover rounded-sm" />
-                      <p className="text-center mt-3 font-script text-xl text-gray-700">Memories...</p>
+                    <div className={`inline-block bg-white p-4 pb-16 shadow-xl rounded-sm border border-gray-200 transform transition duration-500 hover:scale-110 hover:z-20 ${i % 2 === 0 ? 'rotate-3' : '-rotate-3'} relative`}>
+                      <img src={step.image} alt={step.title} className="w-48 sm:w-64 h-48 sm:h-64 object-cover rounded-sm bg-gray-100" />
+                      <p className="absolute bottom-4 left-0 right-0 text-center font-script text-3xl text-gray-700 transform -rotate-1">Memories...</p>
                     </div>
                   ) : (
-                    <div className={`inline-block bg-[#f5f1e6] p-3 shadow-sm rounded-sm border border-dashed border-gray-300 w-48 sm:w-64 h-40 flex items-center justify-center transform ${i % 2 === 0 ? 'rotate-1' : '-rotate-1'}`}>
-                      <p className="text-center font-script text-xl text-gray-400">Add photo here</p>
+                    <div className={`inline-block bg-white p-4 pb-12 shadow-md rounded-sm border border-gray-200 w-56 sm:w-72 h-60 sm:h-80 flex flex-col items-center justify-center transform transition duration-500 hover:scale-110 hover:z-20 ${i % 2 === 0 ? 'rotate-2' : '-rotate-3'}`}>
+                      <div className="w-full h-full border-2 border-dashed border-gray-300 flex items-center justify-center mb-4 bg-gray-50/50">
+                         <p className="text-center font-bold text-gray-400 text-xs tracking-widest uppercase px-4">Upload Photo in Notion</p>
+                      </div>
                     </div>
                   )}
                 </div>
