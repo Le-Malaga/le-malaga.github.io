@@ -71,17 +71,17 @@ export default function About() {
           </div>
 
           {/* Juita */}
-          <div className="flex flex-col lg:flex-row gap-12 items-start">
+          <div className="flex flex-col lg:flex-row gap-12 items-start mb-24">
             <div className="flex-1 space-y-6">
               <h3 className="text-3xl font-heading font-bold text-brand-orange uppercase">Juita Mariner</h3>
               <p className="text-lg text-gray-700 leading-relaxed italic">
-                "My name is Juita Mariner, and at 43 years old, my life is dedicated to a purpose deeply rooted in devotion: serving as the full-time caregiver for both of my aging parents. My mother, who is 84, lives with the dual challenges of Alzheimer’s disease and vascular dementia. My father, who is 91, is currently receiving palliative care."
+                "My name is Juita Mariner, and at 43 years old, my life is dedicated to a purpose deeply rooted in devotion: serving as the full-time caregiver for both of my aging parents. My mother, who is 84, lives with the dual challenges of Alzheimer's disease and vascular dementia. My father, who is 91, is currently receiving palliative care."
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                "When we first learned of my mother’s dementia diagnosis, it felt as though my entire world had instantly shattered. Since then, I have come to understand the quiet pain of anticipatory grief—the heartache of missing the mother I knew, even while she is still sitting right beside me. Managing both of their intensive care needs means navigating a delicate balance of continuous love and profound loss."
+                "When we first learned of my mother's dementia diagnosis, it felt as though my entire world had instantly shattered. Since then, I have come to understand the quiet pain of anticipatory grief-the heartache of missing the mother I knew, even while she is still sitting right beside me. Managing both of their intensive care needs means navigating a delicate balance of continuous love and profound loss."
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                "To provide them with the stability they require, I maintain a highly structured, routine-based environment. I meticulously document every detail of their health—from tracking medication schedules and diabetes blood sugar levels to monitoring bowel movements and keeping daily communication logs. Yet, alongside this strict clinical discipline, our days are grounded in joy. We fill our home with tailored activities, uplifting music, and quiet moments of connection."
+                "To provide them with the stability they require, I maintain a highly structured, routine-based environment. I meticulously document every detail of their health-from tracking medication schedules and diabetes blood sugar levels to monitoring bowel movements and keeping daily communication logs. Yet, alongside this strict clinical discipline, our days are grounded in joy. We fill our home with tailored activities, uplifting music, and quiet moments of connection."
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 "While the days can be physically demanding and emotionally heavy, I hold no regrets. Caring for my parents in their final chapter is the greatest privilege of my life. I know that when the time eventually comes for me to step back into my own journey, I will carry peace in my heart, knowing I gave everything possible to ensure their last days were filled with dignity, comfort, and unconditional love."
@@ -93,7 +93,7 @@ export default function About() {
                   Caregiving often transforms a world once filled with plans and dreams into a quiet, solitary routine. As daily responsibilities multiply, the outside world tends to pull back. Invitations fade, phone calls grow infrequent, and a heavy sense of isolation settles in.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4 text-sm">
-                  For many carers, the most powerful lifeline isn't a grand gesture—it is simply knowing they haven’t been forgotten. A quick text message saying "I'm thinking of you," or a friend popping in for ten minutes just to say hello, can cut through the loneliness of an entire week.
+                  For many carers, the most powerful lifeline isn't a grand gesture-it is simply knowing they haven't been forgotten. A quick text message saying "I'm thinking of you," or a friend popping in for ten minutes just to say hello, can cut through the loneliness of an entire week.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4 text-sm">
                   Even when asked directly, "Do you need anything?", a carer will almost always answer "No." They are used to carrying the weight alone and default to putting others first. But the offer itself matters deeply. Reaching out in anyway reminds them that their dedication is seen, their struggles are recognized, and their presence is missed.
@@ -105,6 +105,53 @@ export default function About() {
             </div>
             <div className="flex-1 sticky top-24">
               <img src="/images/juita.jpg" alt="Juita" className="w-full h-auto rounded-2xl shadow-lg border-4 border-white" />
+            </div>
+          </div>
+
+          {/* Jennifer */}
+          <div className="flex flex-col lg:flex-row-reverse gap-12 items-start mb-24">
+            <div className="flex-1 space-y-6">
+              <h3 className="text-3xl font-heading font-bold text-brand-orange uppercase">Jennifer's Story</h3>
+              <p className="text-lg text-gray-700 leading-relaxed italic">
+                "Mum's dementia journey started about five years ago. At first, it was little things. She would forget things and tell us the same story over and over again. We knew something was changing, and after losing my brother a couple of years earlier, we knew that Mum was beginning her own dementia journey."
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                "Over the years, Mum steadily declined. She began having falls, and because she had Arnold-Chiari malformation, her balance had never been great to begin with. Dad cared for Mum for as long as he could, but as she became more dependent, he told us a few times that he needed help. Eventually, Mum and Dad moved in with me and my family."
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                "Mum became frustrated with the things she could no longer remember or do. But despite everything dementia took from her, there were things it could never take away. Mum had the quickest wit and the best sense of humour. She could make us laugh with her bluntness and her cheeky comments."
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                "There were hard days. There were frustrating days. But there were also so many beautiful moments. Then, on the morning of Monday, 3 August, everything changed. Mum suffered a massive stroke. Five days later, she passed away. And now we are learning how to live without her. We miss her incredibly, every single day."
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed font-semibold text-brand-orange">
+                "Dementia may have slowly taken pieces of her from us over the years, but it never took the essence of who she was. We will carry you with us, always. - Jennifer"
+              </p>
+            </div>
+            <div className="flex-1 sticky top-24">
+              <img src="/images/Jennifer_1.png" alt="Jennifer" className="w-full h-auto rounded-2xl shadow-lg border-4 border-white bg-white" />
+            </div>
+          </div>
+
+          {/* Ruby */}
+          <div className="flex flex-col lg:flex-row gap-12 items-start">
+            <div className="flex-1 space-y-6">
+              <h3 className="text-3xl font-heading font-bold text-brand-orange uppercase">Ruby's Story</h3>
+              <p className="text-lg text-gray-700 leading-relaxed italic">
+                "Built for this season - 2019 my husband and I decided to move in to my parents as my Dad's health started to decline and Mum was no longer fit to care for him."
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                "During the months of Dad's health deteriorating is when Mum was also mentally declining. When dad's hospital stays became longer, Mum started to hallucinate, became paranoid and started to wander off to find her husband, and then become lost."
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                "In 2022, after Dad had passed and Mum had soon forgotten her love, all the aggression, the wandering and the paranoia disappeared and Mum had become solely reliant on me for hygiene care, meal preparations, etc."
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed font-semibold text-brand-orange">
+                "Six years has been an absolute learning experience. I wouldn't be able to care for mum if it wasn't for my husband and our 6 babies - my little Co-Care team - My Village. Being a Carer has its downs, but I'm grateful that the positives have shaped me to be the Mother I am to my kids and the Daughter I am to my Mama."
+              </p>
+            </div>
+            <div className="flex-1 sticky top-24">
+              <img src="/images/Ruby_1.png" alt="Ruby" className="w-full h-auto rounded-2xl shadow-lg border-4 border-white bg-white" />
             </div>
           </div>
 
