@@ -2,7 +2,13 @@
 
 This file tracks the progress of the Le Malaga project so that any new agent joining the repository has immediate context on what has been built, what is currently in progress, and what remains to be done.
 
-## ✅ Completed (Done)
+## 🚧 Current Status
+- **Phase:** MAINTENANCE & MIGRATION
+- **Recent Milestones:** 
+  - Overhauled "Who We Are" page with custom CSS grid profiles for Flory, Tasi, and Juita. 
+  - Fixed image aspect ratios and clipping issues on the About page.
+  - Due to a 4-day Figma API rate limit ban, successfully migrated the entire CMS infrastructure to Notion. 
+  - Ran a single-shot backup extraction on Figma after the ban lifted: Downloaded 22 raw image nodes to `public/images/` and automatically migrated all text/story sticky notes into the new Notion `Tasks` database as individual task cards.
 - **Project Setup:** Initialized a Vite + React + TypeScript + Tailwind CSS project.
 - **CI/CD Pipeline:** Configured GitHub Actions (`.github/workflows/deploy.yml`) to build and deploy to GitHub Pages, including a custom `404.html` hack to support `BrowserRouter` SPA routing.
 - **Figma Integration:** Built a custom agent skill (`.agents/skills/read-figma/`) with Python scripts to securely read the Figma board, download exact image nodes directly into `/public/images`, and post "Integrated" comments back to the Figma canvas.
