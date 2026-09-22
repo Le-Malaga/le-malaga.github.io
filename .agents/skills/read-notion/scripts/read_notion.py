@@ -57,18 +57,38 @@ if __name__ == '__main__':
         print(f"=== TASK: {title} ===")
         
         blocks = read_page_blocks(page_id)
+        
+        # Check properties for files or URLs
+        print("  [PROPERTIES]:")
+        for key, prop in props.items():
+            if prop['type'] == 'files':
+                files = prop.get('files', [])
+                for f in files:
+                    fname = f.get('name', 'Unknown')
+                    furl = f.get('file', {}).get('url') or f.get('external', {}).get('url')
+                    print(f"    - FILE ({key}): {fname} -> {furl}")
+            elif prop['type'] == 'url':
+                url = prop.get('url')
+                if url:
+                    print(f"    - URL ({key}): {url}")
+                    
+        print("  [PAGE CONTENT]:")
         if blocks:
             for block in blocks.get('results', []):
                 btype = block.get('type')
                 if btype == 'paragraph':
                     text_arr = block.get('paragraph', {}).get('rich_text', [])
                     text = "".join([t.get('plain_text', '') for t in text_arr])
-                    print(f"  [TEXT]: {text}")
+                    if text.strip() and text != "Provide an overview of the task and related details.":
+                        print(f"    [TEXT]: {text}")
                 elif btype == 'image':
                     img_url = block.get('image', {}).get('file', {}).get('url')
                     if not img_url:
                         img_url = block.get('image', {}).get('external', {}).get('url')
-                    print(f"  [IMAGE]: {img_url}")
-                else:
-                    print(f"  [{btype.upper()} block]")
+                    print(f"    [IMAGE]: {img_url}")
+                elif btype in ['pdf', 'file', 'video']:
+                    file_info = block.get(btype, {})
+                    furl = file_info.get('file', {}).get('url') or file_info.get('external', {}).get('url')
+                    if furl:
+                        print(f"    [{btype.upper()}]: {furl}")
         print("\n")

@@ -1,0 +1,62 @@
+Reading Database 3dfa5ee4-78c3-805b-85a2-f574f46eda83...
+
+=== TASK: fix sizes of the photos on the About Us page so it does not get cut off ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: create a Haze’s Mantra page =) ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: links to carer’s tiktok ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: links page for Funders (ie. AHDB, Alzheimers….) ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: update the dates for next Fortnightly catch up ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: update the Carer’s Resource page from the Google Drive documents ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: allow Pini and Haze to administer for future (add articles, photos, etc….) ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: Add the Walk for Le Malaga Fundraiser Givealittle page and video ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: update the Events Page ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: Decide whether we want login for members or open up ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: Carer Stories with carousel ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+
+=== TASK: About Us Page with Who We Are Committee blurbs and photos ===
+  [PROPERTIES]:
+  [PAGE CONTENT]:
+
+

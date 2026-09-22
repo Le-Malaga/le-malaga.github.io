@@ -45,7 +45,9 @@ def read_figma():
                 if node_type in ['TEXT', 'STICKY', 'SHAPE']:
                     text = node.get('characters', '').strip()
                     if text:
-                        print("  " * depth + f"- {node_type} ({node_name}): {text}")
+                        safe_text = text.encode('ascii', 'ignore').decode('ascii')
+                        safe_name = node_name.encode('ascii', 'ignore').decode('ascii')
+                        print("  " * depth + f"- {node_type} ({safe_name}): {safe_text}")
                 else:
                     # Check for images in fills
                     has_image = False

@@ -7,6 +7,8 @@ import Resources from './pages/Resources'
 import SundaySessions from './pages/SundaySessions'
 import Events from './pages/Events'
 import GetInvolved from './pages/GetInvolved'
+import Stories from './pages/Stories'
+import StoryDetail from './pages/StoryDetail'
 import GenericPage from './pages/GenericPage'
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
           <Route path="resources" element={<Resources />} />
           <Route path="sunday-sessions" element={<SundaySessions />} />
           <Route path="events" element={<Events />} />
+          <Route path="stories" element={<Stories />} />
+          <Route path="stories/:id" element={<StoryDetail />} />
           <Route path="get-involved" element={<GetInvolved />} />
           
           {/* Default fallback for other routes for now */}

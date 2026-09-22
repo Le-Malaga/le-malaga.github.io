@@ -1,0 +1,45 @@
+[Figma] Add the West Auckland gathering to the Events page and also add the Le Malaga walk fundraiser givealittle page link and video
+[Figma] Just a few of our 21 West & Central Auckland carers Le Malaga has now grown to 60 members altogether with our carers spread across Auckland, around Aotearoa, the South Island, Samoa and Austra
+[Figma] From Flory: Just the carers that are on the website with comments can we have some of the OGs on there please? A mixture like carers who have lost loved ones etc.
+[Figma] https://givealittle.co.nz/cause/moving-for-le-malaga (this is another give a little page in support of the Le Malaga Carers group
+[Figma] https://drive.google.com/drive/folders/1rXDa-lBK8VBAhqHadXJsOdrwtE7-tzqt?usp=drive_link
+[Figma] Caregiving is a heavy path to walk. You dont need to fix their reality to make a difference; you just need to show up so they dont have to walk it completely alone. - Juita
+[Figma] My name is Juita Mariner, and at 43 years old, my life is dedicated to a purpose deeply rooted in devotion: serving as the full-time caregiver for both of my aging parents. My mother, who is 8
+[Figma] Being a Carer has its downs, but grateful that positives have shaped me to be the Mother I am to my kids and the Daughter I am to my Mama. - Ruby
+[Figma] Built for this season- 2019 my husband and I decided to move in to my parents as my Dads health started to decline and Mum was no longer fit to care for him.During the months of Dads health de
+[Figma] Mums dementia journey started about five years ago. At first, it was little things. She would forget things and tell us the same story over and over again. We knew something was changing, and 
+[Figma] My passion for caring for residents living with dementia is deeply personal. - Mel, Australia
+[Figma] My Why My passion for caring for residents living with dementia is deeply personal and comes from a part of my familys story that has stayed with me throughout my life.Before my grandmother pa
+[Figma] My name is Barry Lauaki and Take care of my mum she has dementia she is 94 years old xMy mum is samoan/Chinese My late Father was Samoan/Tongan I have 3 Sisters and 3 Brother s I have been loo
+[Figma] Before dementia, my grandma was always getting things done. - Fiapai
+[Figma] My name is Fiapai Sauni and I take care of my grandparents, Lapaili Tupai Sauni who is 77 years old and Faamausili Sauni who is 80 years old together with my mom and her 2 younger sisters. Whi
+[Figma] Dementia has taken many things, but it has never taken away Mums worth. - Lisa, South Auckland
+[Figma] Talofa Lava, My name is Lisa, and I am the sole carer of Mum Timuia Lauano. Life changed for both of us in 2015 when Mum was diagnosed with Dementia at the age of 68. She loves her gardening, 
+[Figma] Our little wanderer, if you see her out in the wild, say hi... she loves making new friends. - Sina & Vera, Swanson
+[Figma] Our mum Loreta, known to many as Aunty Leka or Nana, was diagnosed in 2023 with dementia.We had noticed things when we were on a cruise back in 2018 and shed keep misplacing things, putting th
+[Figma] Mums long term memory keeps her family love alive. - Flory, Christchurch
+[Figma] This is my mother Aliilelei Fofoa Sio Levy, mum has always been the back bone to our family and continues to be. In 2023 I noticed coming home and something was burnt either a pot or over cook
+[Figma] It was a true blessing for me to connect with Le Malaga- Tania, Hawkes Bay
+[Figma] Days like this feels extra - when love cuts through the fog and we remember who we are to each other. - Chichi, Mangere
+[Figma] This is my Sleeping Beauty, Apoaniva Lemanu. Tasi, Manurewa
+[Figma] Ki Ora,My name is Tania, I am from Hawkes Bay and I have been my Mum Roseannes (Rosie Girl) caregiver since 2017. My Mum was diagnosed with Early Onset dementia in her late 50s and it has been
+[Figma] Mum was diagnosed with dementia in the early 2000s. At first, we didnt know what dementia was. It was not something we knew of as a Samoan sickness; to us, it felt like a new sickness. To be h
+[Figma] 1st of June 2025 marked Pablito (Dad) and Carmencita (Mum) 60th wedding anniversary. This was likely the last day all of us around this table would be together. My brother and his family came 
+[Figma] I am passionate about supporting and strengthening our community, with a particular focus on families, older people and those living with dementia. With 19 years of experience in the aged care
+[Figma] My name is Juita Mariner, and at 43 years old, my life is dedicated to a purpose deeply rooted in devotion: serving as the full-time caregiver for both of my aging parents. My mother, who is 8
+[Figma] Talofa, My name is Aityasi Lemanu (aka tasi) Being a carer for my mother Apoaniva taught me more than anything else in my life. As the youngest of 7 from Afega and Vailele, it was an honour I 
+[Figma] Talofa lava my name is Flory Fesauai Sio Levy, Im caring for my mother. While on this journey with mum has become challenging at times but also taught me a lot about myself. The love, resilien
+[Figma] Im Sapini Unoi a proud Samoan son, full-time carer and advocate whose journey into the dementia space began at home, caring for my beautiful mum. Mum spent much of her life in service to other
+[Figma] MISSION STATEMENT Le Malaga exists to Uplift, Empower and walk alongside Carers on their journey. We are Dementia specific but not exclusive. We are understanding that the feelings, emotions a
+[Figma] About Us Page - Needs a Write Up (any suggestions on what Material and Photos to use to introduce the team) - Can include a Video from the Netball Indoor Tournament too
+fix sizes of the photos on the About Us page so it does not get cut off
+create a Haze’s Mantra page =)
+links to carer’s tiktok
+links page for Funders (ie. AHDB, Alzheimers….)
+update the dates for next Fortnightly catch up
+update the Carer’s Resource page from the Google Drive documents
+allow Pini and Haze to administer for future (add articles, photos, etc….)
+update the Events Page, Add the Walk for Le Malaga Fundraiser Givealittle page and video
+Decide whether we want login for members or open up
+Carer Stories with carousel
+About Us Page with Who We Are Committee blurbs and photos, Order: Pini, Juita, Mel, Flory, Tasi

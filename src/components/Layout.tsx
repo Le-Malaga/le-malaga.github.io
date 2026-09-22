@@ -11,10 +11,11 @@ export default function Layout() {
   const navLinks = [
     { name: 'HOME', path: '/' },
     { name: 'ABOUT US', path: '/about' },
-    { name: 'CARER SUPPORT', path: '/support' },
+    { name: 'CARER SUPPORT', path: '/carer-support' },
     { name: 'RESOURCES', path: '/resources' },
     { name: 'SUNDAY SESSIONS', path: '/sunday-sessions' },
     { name: 'EVENTS', path: '/events' },
+    { name: 'OUR STORIES', path: '/stories' },
     { name: 'GET INVOLVED', path: '/get-involved' }
   ]
 
