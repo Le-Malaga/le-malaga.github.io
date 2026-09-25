@@ -1,11 +1,49 @@
 import { Link } from 'react-router-dom'
 import { stories } from '../data/stories'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { useRef, useState } from 'react'
 
 export default function Stories() {
   const categories = [
     "ALL STORIES", "CARER JOURNEYS", "DEMENTIA", "AIGA & FAMILY", "THE UNSEEN WARRIORS", "AFTER CARING", "HOPE & HEALING"
   ]
+  
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeDot, setActiveDot] = useState(0);
+  const totalDots = 5;
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -350, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 350, behavior: 'smooth' });
+    }
+  };
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      const scrollPercentage = scrollLeft / (scrollWidth - clientWidth);
+      const dotIndex = Math.min(
+        totalDots - 1,
+        Math.max(0, Math.round(scrollPercentage * (totalDots - 1)))
+      );
+      setActiveDot(dotIndex);
+    }
+  };
+
+  const scrollToDot = (index: number) => {
+    if (scrollRef.current) {
+      const { scrollWidth, clientWidth } = scrollRef.current;
+      const targetScroll = (index / (totalDots - 1)) * (scrollWidth - clientWidth);
+      scrollRef.current.scrollTo({ left: targetScroll, behavior: 'smooth' });
+      setActiveDot(index);
+    }
+  };
 
   return (
     <div className="w-full min-h-screen bg-[#fcfaf4] font-sans overflow-x-hidden">
@@ -59,16 +97,16 @@ export default function Stories() {
         {/* Carousel Container */}
         <div className="relative group">
           {/* Navigation Arrows */}
-          <button className="absolute -left-2 sm:-left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#1e2a24] text-white rounded-full flex items-center justify-center hover:bg-brand-orange transition z-20 shadow-xl opacity-0 group-hover:opacity-100 hidden sm:flex">
+          <button onClick={scrollLeft} className="absolute -left-2 sm:-left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#1e2a24] text-white rounded-full flex items-center justify-center hover:bg-brand-orange transition z-20 shadow-xl opacity-0 group-hover:opacity-100 hidden sm:flex cursor-pointer">
             <ArrowLeft size={24} />
           </button>
           
-          <button className="absolute -right-2 sm:-right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#1e2a24] text-white rounded-full flex items-center justify-center hover:bg-brand-orange transition z-20 shadow-xl opacity-0 group-hover:opacity-100 hidden sm:flex">
+          <button onClick={scrollRight} className="absolute -right-2 sm:-right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#1e2a24] text-white rounded-full flex items-center justify-center hover:bg-brand-orange transition z-20 shadow-xl opacity-0 group-hover:opacity-100 hidden sm:flex cursor-pointer">
             <ArrowRight size={24} />
           </button>
 
           {/* Cards Flex Container (Horizontal Scroll) */}
-          <div className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory hide-scrollbar pt-4">
+          <div ref={scrollRef} onScroll={handleScroll} className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory hide-scrollbar pt-4 scroll-smooth">
             {stories.map((story) => (
               <div key={story.id} className="min-w-[280px] w-[280px] sm:min-w-[320px] sm:w-[320px] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col snap-center shrink-0 relative group/card border border-[#e8e3d5] hover:-translate-y-2 transition duration-300">
                 <div className="h-48 sm:h-56 w-full relative">
@@ -100,11 +138,13 @@ export default function Stories() {
 
           {/* Pagination Dots */}
           <div className="flex justify-center gap-3 mt-4">
-            <div className="w-2.5 h-2.5 rounded-full bg-brand-orange"></div>
-            <div className="w-2.5 h-2.5 rounded-full bg-[#d4cdb3]"></div>
-            <div className="w-2.5 h-2.5 rounded-full bg-[#d4cdb3]"></div>
-            <div className="w-2.5 h-2.5 rounded-full bg-[#d4cdb3]"></div>
-            <div className="w-2.5 h-2.5 rounded-full bg-[#d4cdb3]"></div>
+            {Array.from({ length: totalDots }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => scrollToDot(i)}
+                className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${activeDot === i ? 'bg-brand-orange' : 'bg-[#d4cdb3] hover:bg-gray-400'}`}
+              />
+            ))}
           </div>
         </div>
       </div>
