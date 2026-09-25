@@ -128,54 +128,6 @@ export const stories = [
     ]
   },
   {
-    id: 'flory',
-    name: 'Flory Fesaua\'i Sio Levy',
-    location: 'Auckland',
-    shortTitle: 'My First Love',
-    quote: '"I can make money any time any where, but I only have one mother in this lifetime."',
-    subquote: 'Being a carer is my choice to serve and honour my first love.',
-    image: '/images/flory1.jpg',
-    timeline: [
-      { step: 1, title: 'BEFORE CARING', text: 'Talofa lava my name is Flory Fesaua\'i Sio Levy, I\'m caring for my mother. While on this journey with mum has become challenging at times but also taught me a lot about myself. The love, resilience, kindness, empathy and exhaustion.', image: '/images/flory1.jpg' },
-      { step: 2, title: 'WHEN THINGS CHANGED', text: '[Please update this section in Notion to describe when things first started to change for your family.]', image: null },
-      { step: 3, title: 'THE UNSEEN DAYS', text: '[Please update this section in Notion to describe the unseen struggles or exhaustion that people may not realize.]', image: null },
-      { step: 4, title: 'THE TURNING POINT', text: '[Please update this section in Notion to describe when you reached out for help or had a breakthrough moment.]', image: null },
-      { step: 5, title: 'TODAY', text: 'But also showing up, being patient and being her rock solid star for her I wouldn\'t change.', image: null }
-    ]
-  },
-  {
-    id: 'tasi',
-    name: 'Aitasi Lemanu (Tasi)',
-    location: 'Auckland',
-    shortTitle: 'Through Service',
-    quote: '"The path to leadership is through service. Caring for my mum shaped who I am."',
-    subquote: 'It taught me alofa — real, unconditional love that gives without counting.',
-    image: '/images/tasi1.jpg',
-    timeline: [
-      { step: 1, title: 'BEFORE CARING', text: 'Talofa, My name is Aitasi Lemanu (aka Tasi). Being a carer for my mother Apoaniva taught me more than anything else in my life. As the youngest of 7 from Afega and Vailele, it was an honour I didn\'t take lightly.', image: '/images/tasi1.jpg' },
-      { step: 2, title: 'WHEN THINGS CHANGED', text: '[Please update this section in Notion to describe when things first started to change for your family.]', image: null },
-      { step: 3, title: 'THE UNSEEN DAYS', text: 'It taught me patience — to slow down and be present. It taught me strength — to keep going even when it was hard and tiring.', image: null },
-      { step: 4, title: 'THE TURNING POINT', text: '[Please update this section in Notion to describe when you reached out for help or had a breakthrough moment.]', image: null },
-      { step: 5, title: 'TODAY', text: 'Like our Samoan saying, ‘O le ala i le pule o le tautua’ — the path to leadership is through service. Caring for my mum shaped who I am as a man, as a son, and as a Samoan.', image: null }
-    ]
-  },
-  {
-    id: 'juita',
-    name: 'Juita Mariner',
-    location: 'Auckland',
-    shortTitle: 'Greatest Privilege',
-    quote: '"Caring for my parents in their final chapter is the greatest privilege of my life."',
-    subquote: 'I hold no regrets.',
-    image: '/images/juita.jpg',
-    timeline: [
-      { step: 1, title: 'BEFORE CARING', text: 'My name is Juita Mariner, and at 43 years old, my life is dedicated to a purpose deeply rooted in devotion: serving as the full-time caregiver for both of my aging parents. My mother, who is 84, lives with the dual challenges of Alzheimer\'s disease and vascular dementia. My father, who is 91, is currently receiving palliative care.', image: '/images/juita.jpg' },
-      { step: 2, title: 'WHEN THINGS CHANGED', text: 'When we first learned of my mother\'s dementia diagnosis, it felt as though my entire world had instantly shattered. Since then, I have come to understand the quiet pain of anticipatory grief.', image: null },
-      { step: 3, title: 'THE UNSEEN DAYS', text: 'Caregiving often transforms a world once filled with plans and dreams into a quiet, solitary routine. As daily responsibilities multiply, the outside world tends to pull back.', image: null },
-      { step: 4, title: 'THE TURNING POINT', text: 'To provide them with the stability they require, I maintain a highly structured, routine-based environment. Yet, alongside this strict clinical discipline, our days are grounded in joy.', image: null },
-      { step: 5, title: 'TODAY', text: 'While the days can be physically demanding and emotionally heavy, I hold no regrets. Caring for my parents in their final chapter is the greatest privilege of my life.', image: null }
-    ]
-  },
-  {
     id: 'jennifer',
     name: 'Jennifer',
     location: 'Auckland',
