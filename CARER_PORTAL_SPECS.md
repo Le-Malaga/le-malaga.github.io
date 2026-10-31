@@ -21,10 +21,10 @@ Instead of forcing your team to juggle three separate portals, the platform is s
 
 | Capability / Module | Public Visitor | Carer / Member (`carer`) | Moderator (`moderator`) | Content Editor (`content_editor`) | Super Admin (`super_admin`) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| Read Public Website, Published Stories & Public Carer Profiles | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Read Public Website & Selected Approved Stories (`/stories`) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Read Public **Guides / Permalinks (`/resources/:slug`)** & **FAQ** | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Edit Own **LinkedIn-Style Carer Profile & Caring Experience** | ❌ | ✅ (Own) | ✅ | ✅ | ✅ |
-| Submit **My Story** (5-Step Polaroid Timeline) | ❌ | ✅ (Own) | ✅ | ✅ | ✅ |
+| View & Edit **LinkedIn-Style Carer Profiles** *(Members Only)* | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Submit **My Story** (For selected public sharing after approval) | ❌ | ✅ (Own) | ✅ | ✅ | ✅ |
 | Read & Submit **Rest Home Reviews** *(Members Only)* | ❌ | ✅ | ✅ | ✅ | ✅ |
 | Post, Comment & React in **The Village Feed (`/portal/feed`)** | ❌ | ✅ | ✅ | ✅ | ✅ |
 | Propose **New Guides / Version Edits** & Leave **Guide Feedback** | ❌ | ✅ | ✅ | ✅ | ✅ |
@@ -43,7 +43,8 @@ Instead of forcing your team to juggle three separate portals, the platform is s
 
 ## 3. Core Portal Modules
 
-### Module A: LinkedIn-Style Carer Profile (`/portal/profile` & Public `/carers/:username`)
+### Module A: Members-Only LinkedIn-Style Carer Profile (`/portal/profile` & `/portal/carers/:username`)
+- **Strictly Private to Logged-In Members:** Carer profiles are **never** public on the open internet. Only registered, authenticated Le Malaga members inside the portal can view carer profiles. (On the public site, only selected, moderator-approved stories appear on `/stories`).
 - **Google Sign-In Only (Supabase OAuth):** Carers and admins sign up and log in with a single click using **"Continue with Google"** (`supabase.auth.signInWithOAuth({ provider: 'google' })`).
 - **Visual Header & Bio:** Custom Cover Banner image, Profile Photo, Display Name, Headline/Mantra (e.g., *"Full-time Carer for Mum & Dementia Advocate"*), and "About My Malaga" bio.
 - **"Caring Experience & Who I've Cared For" (LinkedIn-Style Experience Section):**
@@ -52,11 +53,11 @@ Instead of forcing your team to juggle three separate portals, the platform is s
     - **Role & Timeframe:** e.g., *Primary Full-Time Carer (2019 – Present)* or *Family Co-Carer (2018 – 2023)*
     - **Condition / Care Type:** e.g., *Alzheimer's & Vascular Dementia*, *Palliative Care*, *Stroke Recovery*
     - **Lived Experience & Skills Gained:** e.g., *Managing Sundowning*, *Navigating NASC & Carer Support*, *EPOA Setup*, *Hoist & Mobility Care*, *Samoan Cultural Care*.
-- **Opt-In Location & Contact Info (Granular Privacy Toggles):**
-  - **Profile Visibility:** `Public` (shareable link `/carers/:username`), `Members Only`, or `Private`.
-  - **Location Toggle:** Choose whether to reveal Suburb/City (e.g., *Mangere, Auckland*) so nearby carers can connect.
-  - **Contact Info Toggle:** Choose whether to display Email, Phone/WhatsApp, or social links (TikTok, Facebook, Instagram, LinkedIn) and a badge for *"Open to Mentoring / Coffee Catch-ups"*.
-- **Featured 5-Step Story & Wall Activity:** Automatically showcases their published "Our Stories" timeline and their recent posts on their profile page.
+- **Opt-In Location & Contact Info (Among Members Only):**
+  - **Profile Visibility (Within Portal):** `Members Only` (visible to other logged-in carers in `/portal`) or `Private` (hidden even from other members).
+  - **Location Toggle:** Choose whether to reveal Suburb/City (e.g., *Mangere, Auckland*) to other members so nearby carers can connect.
+  - **Contact Info Toggle:** Choose whether to display Email, Phone/WhatsApp, or social links (TikTok, Facebook, Instagram, LinkedIn) to other members and a badge for *"Open to Mentoring / Coffee Catch-ups"*.
+- **Wall Activity & Selected Story Link:** Shows their recent Village Feed posts to fellow members, and links to their 5-step story if it has been selected for `/stories`.
 
 ### Module B: "Share Your Malaga" — Story Builder (`/portal/my-story`)
 - Guided 5-step timeline editor (`BEFORE CARING`, `WHEN THINGS CHANGED`, `THE UNSEEN DAYS`, `THE TURNING POINT`, `TODAY`) with slanted Polaroid photo uploads.
@@ -252,7 +253,7 @@ erDiagram
 
     PROFILES {
         uuid id PK "auth.users"
-        text username UK "For /carers/:username"
+        text username UK "For /portal/carers/:username (Members Only)"
         text full_name
         text headline_mantra
         text bio
@@ -263,7 +264,7 @@ erDiagram
         text public_contact_info
         boolean show_contact_info
         boolean open_to_mentoring
-        text visibility "public | members_only | private"
+        text visibility "members_only | private (Never public)"
         text role "carer | moderator | content_editor | super_admin"
         boolean is_trusted_contributor
         jsonb email_preferences "event_reminders | feed_replies | geofence_alerts"
@@ -433,10 +434,10 @@ erDiagram
 
 ## 5. Phased Implementation Roadmap
 
-### Phase 1: Google Auth, 4-Tier Roles & LinkedIn-Style Carer Profiles
+### Phase 1: Google Auth, 5-Tier Roles & Members-Only Carer Profiles
 - Set up Supabase client configuration (`src/lib/supabase.ts`) + SQL migration script for all tables, triggers, and RLS policies.
-- Build `/portal/login` with **"Continue with Google"** and role-aware navigation (`/portal` for Carers, `/admin` for Moderators & Super Admins).
-- Build `/portal/profile` and public/shareable `/carers/:username` with Caring Experience cards and opt-in Location/Contact toggles.
+- Build `/portal/login` with **"Continue with Google"** and role-aware navigation (`/portal` for Carers, `/admin` for Moderators, Content Editors & Super Admins).
+- Build `/portal/profile` and members-only `/portal/carers/:username` with Caring Experience cards and opt-in Location/Contact toggles.
 
 ### Phase 2: Facebook-Style Village Feed + Collaborative, Versioned Guides
 - Build `/portal/feed` with posts, nested comments/replies, custom reactions (`Alofa`, `Strength`, `With You`, `Helpful`), and the Pinned Essential Links sidebar.
