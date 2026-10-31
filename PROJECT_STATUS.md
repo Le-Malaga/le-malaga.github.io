@@ -5,6 +5,7 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
 ## 🚧 Current Status
 - **Phase:** MAINTENANCE & MIGRATION
 - **Recent Milestones:** 
+  - Authored and committed `CARER_PORTAL_SPECS.md` detailing the full Supabase architecture, 4-tier RBAC, LinkedIn-style Carer Profiles, Facebook-style Village Feed, Versioned/Collaborative Resource Permalinks, Members-Only Rest Home Reviews, and Carer-Managed Patient Geofence Tracking with Consent Accountability.
   - Configured custom domain (`www.lemalaga.org`) via `public/CNAME` and set GitHub Pages build source to GitHub Actions workflow.
   - Overhauled "Who We Are" page with custom CSS grid profiles for Flory, Tasi, and Juita. 
   - Fixed image aspect ratios and clipping issues on the About page.
