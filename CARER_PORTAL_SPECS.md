@@ -7,6 +7,7 @@
 | **Frontend** | **React + Vite + Tailwind** (Hosted on GitHub Pages / Cloudflare Pages) | Zero hosting cost, preserves all existing Le Malaga layouts. |
 | **Database & Auth** | **Supabase PostgreSQL + Auth + RLS** | Enforces strict Row-Level Security (RLS) so **Rest Home Reviews** and **Patient Data** are locked down at the database level. |
 | **Geofence & Alerts** | **Supabase Edge Functions + PostGIS + Supabase Realtime** | PostgreSQL includes **PostGIS** (built-in geospatial math to detect when a device's GPS coordinates cross a virtual border) and **Realtime WebSockets** to push instant wandering alerts to the carer's portal/phone. |
+| **Email Notifications** | **Resend (`notifications@lemalaga.org`) + Supabase Edge Functions + `pg_cron`** | Sends calendar invites (`.ics`), automated meeting reminders, moderation approvals, and urgent geofence alerts using your custom `lemalaga.org` domain (3,000 free emails/mo). |
 | **File Storage** | **Supabase Storage** | Public bucket for approved story Polaroids/PDF guides; **Private encrypted bucket** for patient photos & consent documents. |
 
 ---
@@ -92,7 +93,24 @@ We will use a 4-tier role hierarchy enforced by Supabase Row-Level Security (RLS
 - **Pinned "Essential Links" Sidebar & Personal Bookmarks:**
   - Always-visible quick-access rail alongside the social feed for core guides (Carer Support Subsidy, EPOA, NASC Directory, Pasifika Dementia Framework, 24/7 Helplines), plus 1-click **"Save to My Toolkit"** bookmarking.
 
-### Module F: Patient Registration, Consent Accountability & Virtual Border Alerts (`/portal/loved-ones`)
+### Module F: Calendar Schedules, Events, Meetings & Resend Email Notifications (`/portal/calendar` & Public `/events`)
+- **Interactive Community Calendar & Schedule View:**
+  - Monthly, Weekly, and Upcoming Agenda views showing:
+    - **Sunday Sessions:** Recurring online support group sessions with countdown timer and 1-click Zoom launch for logged-in carers.
+    - **Community Workshops & Fono:** In-person gatherings, clinical psychologist webinars, and respite info days.
+    - **Peer & Volunteer Meetings:** Small-group check-ins or scheduled volunteer support sessions.
+- **1-Click RSVP & External Calendar Sync (`event_rsvps`):**
+  - Carers can RSVP (*Going*, *Maybe*, *Can't Make It*) and click **"Add to Google Calendar / Download `.ics`"** so meetings appear right on their phone calendar.
+  - Public visitors see public event summaries on `/events`, while private Zoom links and meeting notes are visible only to registered members inside `/portal/calendar`.
+- **Automated Email Notifications via Resend (`Supabase Edge Functions`):**
+  - Powered by **Resend** (`alofa@lemalaga.org` / `notifications@lemalaga.org`) triggered via Supabase Database Webhooks and scheduled `pg_cron` jobs:
+    1. **Calendar & Meeting Emails:** Instant RSVP confirmation (with `.ics` calendar attachment) + automated **24-hour** and **1-hour reminder emails** with the Zoom/location link before an event starts.
+    2. **Urgent Geofence Boundary Alerts:** Immediate high-priority email alert to the accountable carer (and designated backup contacts) if a patient's tracking device crosses a safe zone boundary.
+    3. **Moderation & Contribution Updates:** Email notification when a carer's submitted Story, Rest Home Review, or Guide Version is approved.
+    4. **Village Feed Replies:** Optional email notification when another carer replies to their post or comment.
+  - **Carer Notification Settings:** Granular toggles in `/portal/profile` so carers can choose which email notifications they want to receive.
+
+### Module G: Patient Registration, Consent Accountability & Virtual Border Alerts (`/portal/loved-ones`)
 
 ```mermaid
 sequenceDiagram
@@ -124,7 +142,7 @@ sequenceDiagram
    - **Virtual Borders (Safe Zones):** Carer sets a center point (e.g., Home address) and a safe radius (e.g., `150m` or `500m`) and active schedule (e.g., *24/7* or *Nighttime only 8pm–7am*).
    - **Alert History & Live Status:** Shows device battery, last ping time, and triggers an immediate alert banner/notification when a `boundary_exit` event occurs.
 
-### Module G: Admin & Moderator Portal (`/admin`)
+### Module H: Admin & Moderator Portal (`/admin`)
 - **User & Role Management Tab (`super_admin` only):**
   - Searchable directory of all registered users (Name, Google Email, Avatar, Region, Joined Date, Current Role).
   - **One-Click Role Selector:** Super Admins can change any user's role between `carer`, `moderator`, and `super_admin` (or toggle *Trusted Resource Contributor* status).
@@ -135,6 +153,8 @@ sequenceDiagram
   - Pending **Rest Home Reviews** (verify and Approve/Reject).
   - Pending **Resource Contributions & New Guide Versions** (diff/preview proposed changes and Approve/Rollback).
   - **Village Feed & FAQ Manager** (pin posts, remove posts, or promote helpful posts to the Official FAQ).
+- **Calendar, Events & Email Broadcast Manager (`moderator` & `super_admin`):**
+  - Create single or recurring events (e.g., weekly Sunday Sessions), view the attendee RSVP list, and trigger a **Resend Email Announcement** to registered carers.
 
 ---
 
@@ -150,7 +170,9 @@ erDiagram
     PROFILES ||--o{ POST_REACTIONS : reacts
     PROFILES ||--o{ RESOURCE_VERSIONS : contributes
     PROFILES ||--o{ RESOURCE_COMMENTS : reviews
+    PROFILES ||--o{ EVENT_RSVPS : attends
     PROFILES ||--o{ PATIENTS : manages
+    EVENTS ||--o{ EVENT_RSVPS : tracks
     FEED_POSTS ||--o{ POST_COMMENTS : has
     FEED_POSTS ||--o{ POST_REACTIONS : receives
     RESOURCES ||--|{ RESOURCE_VERSIONS : tracks
@@ -176,6 +198,32 @@ erDiagram
         text visibility "public | members_only | private"
         text role "carer | moderator | super_admin"
         boolean is_trusted_contributor
+        jsonb email_preferences "event_reminders | feed_replies | geofence_alerts"
+        timestamptz created_at
+    }
+
+    EVENTS {
+        uuid id PK
+        uuid created_by FK
+        text title
+        text description
+        text event_type "sunday_session | workshop | peer_meetup"
+        timestamptz start_time
+        timestamptz end_time
+        text recurrence_rule "Optional RRULE for weekly sessions"
+        text location_or_zoom_url
+        boolean is_members_only_link
+        boolean reminder_24h_sent
+        boolean reminder_1h_sent
+        timestamptz created_at
+    }
+
+    EVENT_RSVPS {
+        uuid id PK
+        uuid event_id FK
+        uuid user_id FK
+        text status "going | maybe | declined"
+        boolean calendar_invite_emailed
         timestamptz created_at
     }
 
