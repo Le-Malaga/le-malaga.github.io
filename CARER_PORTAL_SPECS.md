@@ -29,11 +29,15 @@ Instead of forcing your team to juggle three separate portals, the platform is s
 | Post, Comment & React in **The Village Feed (`/portal/feed`)** | ❌ | ✅ | ✅ | ✅ | ✅ |
 | Propose **New Guides / Version Edits** & Leave **Guide Feedback** | ❌ | ✅ | ✅ | ✅ | ✅ |
 | Register **Patients, Consents & Tracking Devices** | ❌ | ✅ (Own Patients) | ❌ *(No access)* | ❌ *(No access)* | 🔍 *(Audit/Compliance only)* |
-| **Approve / Reject** Stories, Rest Home Reviews & Guide Edits | ❌ | ❌ | ✅ | ❌ | ✅ |
-| **Moderate Village Feed** (Pin, Lock, Save to FAQ) | ❌ | ❌ | ✅ | ❌ | ✅ |
-| **Public Website CMS** (Edit *About Us*, *Meet the Aiga*, *Home*, *Support*, *Events*, *Policies*) | ❌ | ❌ | ❌ | ✅ | ✅ |
-| **Manage Calendar Events & Send Resend Email Broadcasts** | ❌ | ❌ | ✅ | ✅ | ✅ |
+| **Approve / Moderate Internal Carer Portal Content** (Approve Stories for *Carer Portal Only*, Rest Home Reviews, Village Feed) | ❌ | ❌ | ✅ | ❌ | ✅ |
+| **Publish Anything to Public Website** (Select/Publish Stories to Public `/stories`, Public Guides, Public Events, *About Us*, *Home*, *Policies*) | ❌ | ❌ | ❌ *(Cannot publish to public)* | ✅ | ✅ |
+| **Manage Calendar Events & Send Resend Email Broadcasts** | ❌ | ❌ | ✅ (Internal) | ✅ (Public & Internal) | ✅ |
 | **Manage User Roles** (Assign Moderators, Content Editors & Super Admins) | ❌ | ❌ | ❌ | ❌ | ✅ |
+
+> [!IMPORTANT]
+> **Strict Separation Between Internal Moderation & Public Publishing:**
+> - **Moderators (`moderator`)** only govern content *inside* the logged-in Carer Portal (approving stories for `portal_only`, moderating the Village Feed, and approving members-only Rest Home Reviews).
+> - **Content Editors (`content_editor`)** (and `super_admin`) have exclusive control over **everything that appears on the Public Website**—including deciding which Carer Stories (`public_portal`), Guides, Events, and Pages are published publicly, regardless of whether a story was already approved for the internal Carer Portal.
 
 > [!IMPORTANT]
 > **Strict Patient Privacy Separation:**
@@ -62,11 +66,10 @@ Instead of forcing your team to juggle three separate portals, the platform is s
 ### Module B: "Share Your Malaga" — Story Builder & Dual Publish Modes (`/portal/my-story`)
 - Guided 5-step timeline editor (`BEFORE CARING`, `WHEN THINGS CHANGED`, `THE UNSEEN DAYS`, `THE TURNING POINT`, `TODAY`) with slanted Polaroid photo uploads.
 - **Two Publish Visibility Modes (`visibility_scope`):**
-  1. **`portal_only` (Carer Portal Only):** Displayed strictly inside the logged-in Carer Portal (`/portal/stories` and on the carer's member profile `/portal/carers/:username`) for fellow carers to read—never visible on the public website.
+  1. **`portal_only` (Carer Portal Only):** Displayed strictly inside the logged-in Carer Portal (`/portal/stories` and on the carer's member profile `/portal/carers/:username`) for fellow carers to read—never visible on the public website. Can be approved by a **Moderator** or **Content Editor**.
   2. **`public_portal` (Public Website + Carer Portal):** Displayed on the public website (`/stories` carousel & `/stories/:id`) as well as inside the Carer Portal.
-- **Carer Consent + Moderator Selection Workflow:**
-  - When submitting a story (`draft` $\rightarrow$ `pending_review`), the carer chooses whether they allow public sharing (`allow_public_sharing: boolean`) or want it kept strictly `portal_only`.
-  - **Moderators / Super Admins** can then approve the story as **Published to Carer Portal (`published_portal`)** or—if the carer consented—select it for **Published to Public Website (`published_public`)**.
+- **Exclusive Content Editor Control Over Public Stories:**
+  - Even if a story is approved by a Moderator for the internal Carer Portal (`portal_only`), **only a `content_editor` (or `super_admin`)** can promote/publish a story to the Public Website (`public_portal`), or create/publish public stories directly regardless of prior moderator review.
 
 ### Module C: Members-Only Rest Home Reviews (`/portal/rest-homes`)
 - **Strictly Private to Logged-In Members:** Locked behind authentication and database RLS so carers can share honest experiences safely.
@@ -154,8 +157,11 @@ sequenceDiagram
 
 ### Module H: Unified Admin, Moderation & Website CMS Portal (`/admin`)
 
-#### 1. Public Website CMS (`/admin/cms`) — *Accessible to `content_editor` & `super_admin`*
-Every existing public page in the repository has been audited so its content can be edited dynamically while strictly preserving the Tailwind layouts:
+#### 1. Public Website CMS & Public Publishing (`/admin/cms`) — *Accessible ONLY to `content_editor` & `super_admin`*
+**Rule:** Anything that goes out to the Public Website is strictly controlled by the **Content Editor** (and Super Admin).
+- **Public Stories Selection & Publishing:** Content Editors control which stories appear on the public `/stories` carousel (`public_portal`), and can publish, edit, or unpublish any story on the public site regardless of internal moderator approval status.
+- **Public Guides & Public Events:** Content Editors decide which Guides (`/resources/:slug`), FAQ items, and Events are visible on the public website vs. kept `members_only`.
+- **Public Pages Inventory:** Every existing public page in the repository has been audited so its content can be edited dynamically while strictly preserving the Tailwind layouts:
 
 | Public Route | Current File | What Can Be Managed in `/admin/cms` |
 | :--- | :--- | :--- |
@@ -173,11 +179,11 @@ Every existing public page in the repository has been audited so its content can
   - **Visual Media Manipulation:** Editors and carers can drag-and-drop images and videos into the editor, grab the **`⋮⋮` drag handle** to move images/videos anywhere on the page, drag corner handles to resize media, and set left/center/right alignment.
   - **Dual Storage Format (`content_markdown` + `content_blocks`):** Every save stores clean, portable **Markdown** (`content_markdown` for version diffs, full-text search, and lightweight rendering) alongside the lossless **BlockNote JSON** (`content_blocks` to preserve exact image widths, alignments, and video embeds).
 
-#### 2. Community Moderation Queue (`/admin/moderation`) — *Accessible to `moderator` & `super_admin`*
-- Pending **Carer Stories** (preview the 5-step Polaroid layout, Request Edits, or Approve with Publish Mode: **Carer Portal Only (`portal_only`)** vs. **Public Website + Portal (`public_portal`)**).
-- Pending **Rest Home Reviews** (verify and Approve/Reject).
-- Pending **Resource Contributions & New Guide Versions** (diff/preview proposed changes and Approve/Rollback).
-- **Village Feed & FAQ Manager** (pin posts, remove posts, or promote helpful posts to the Official FAQ).
+#### 2. Internal Community Moderation Queue (`/admin/moderation`) — *Accessible to `moderator` & `super_admin`*
+- Pending **Carer Stories (Internal Portal Only):** Moderators can preview the 5-step Polaroid layout, Request Edits, or Approve a story **only for the internal Carer Portal (`portal_only`)**. *(Publishing to the Public Website is reserved for Content Editors).*
+- Pending **Rest Home Reviews:** Verify and Approve/Reject for the members-only directory.
+- Pending **Internal Resource Contributions:** Review member-submitted guides for the internal portal.
+- **Village Feed Moderation:** Pin posts, remove inappropriate posts, or flag helpful threads for Content Editors to publish to the public FAQ.
 
 #### 3. Calendar, Events & Email Broadcast Manager (`/admin/events`) — *Accessible to `moderator`, `content_editor` & `super_admin`*
 - Create single or recurring events (e.g., weekly Sunday Sessions), view the attendee RSVP list, and trigger a **Resend Email Announcement** to registered carers.
