@@ -28,7 +28,7 @@ Instead of forcing your team to juggle three separate portals, the platform is s
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | Read Public Website & Selected Approved Stories (`/stories`) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Read Public **Guides / Permalinks (`/resources/:slug`)** & **FAQ** | ✅ | ✅ | ✅ | ✅ | ✅ |
-| View & Edit **LinkedIn-Style Carer Profiles** *(Members Only)* | ❌ | ✅ | ✅ | ✅ | ✅ |
+| View & Edit **Carer Village Profiles ("Who I Care For")** *(Members Only)* | ❌ | ✅ | ✅ | ✅ | ✅ |
 | Submit **My Story** (For selected public sharing after approval) | ❌ | ✅ (Own) | ✅ | ✅ | ✅ |
 | Read & Submit **Rest Home Reviews** *(Members Only)* | ❌ | ✅ | ✅ | ✅ | ✅ |
 | Post, Comment & React in **The Village Feed (`/portal/feed`)** | ❌ | ✅ | ✅ | ✅ | ✅ |
@@ -52,21 +52,25 @@ Instead of forcing your team to juggle three separate portals, the platform is s
 
 ## 3. Core Portal Modules
 
-### Module A: Members-Only LinkedIn-Style Carer Profile (`/portal/profile` & `/portal/carers/:username`)
-- **Strictly Private to Logged-In Members:** Carer profiles are **never** public on the open internet. Only registered, authenticated Le Malaga members inside the portal can view carer profiles. (On the public site, only selected, moderator-approved stories appear on `/stories`).
+### Module A: Members-Only Carer Village Profile (`/portal/profile` & `/portal/carers/:username`)
+- **Built Around Alofa & Tautua (Not Corporate "Resumes"):** Most Le Malaga carers are family members and volunteers who stepped away from their jobs and daily lives to care for their parents, grandparents, or loved ones. The profile is designed for human connection, empathy, and peer support—never as a corporate/professional resume.
+- **Strictly Private to Logged-In Members:** Carer profiles are **never** public on the open internet. Only registered, authenticated Le Malaga members inside the portal can view carer profiles.
 - **Google Sign-In Only (Supabase OAuth):** Carers and admins sign up and log in with a single click using **"Continue with Google"** (`supabase.auth.signInWithOAuth({ provider: 'google' })`).
-- **Visual Header & Bio:** Custom Cover Banner image, Profile Photo, Display Name, Headline/Mantra (e.g., *"Full-time Carer for Mum & Dementia Advocate"*), and "About My Malaga" bio.
-- **"Caring Experience & Who I've Cared For" (LinkedIn-Style Experience Section):**
-  - Carers can list structured entries honoring who they have cared for and what they learned:
-    - **Who I Cared For:** e.g., *My Mother (84)*, *My Father (91)*, *Nana*
-    - **Role & Timeframe:** e.g., *Primary Full-Time Carer (2019 – Present)* or *Family Co-Carer (2018 – 2023)*
-    - **Condition / Care Type:** e.g., *Alzheimer's & Vascular Dementia*, *Palliative Care*, *Stroke Recovery*
-    - **Lived Experience & Skills Gained:** e.g., *Managing Sundowning*, *Navigating NASC & Carer Support*, *EPOA Setup*, *Hoist & Mobility Care*, *Samoan Cultural Care*.
+- **Visual Header, Roots & Personal Mantra:**
+  - Cover Photo, Profile Photo, Name, Village/Roots (e.g., *Afega & Vailele*), and the personal mantra or scripture that keeps them going (e.g., *"I can make money any time any where, but I only have one mother in this lifetime"*).
+- **"Who I Walk Alongside (Who I Care For)" (`caring_journeys`):**
+  - Heartfelt cards honoring the loved one(s) they care for or have cared for:
+    - **Who I'm Caring For:** e.g., *My Mum, Apoaniva*, *Both of my aging parents*, or *In loving memory of my Dad*
+    - **Our Season on the Malaga:** e.g., *Left full-time work in 2021 to care for Mum at home*, *Co-caring with my siblings and kids*, or *Walking alongside other carers after Mum's passing*
+    - **Their Journey:** e.g., *Living with Alzheimer's & Vascular Dementia*, *Palliative care at home*
+    - **What Brings Us Joy:** e.g., *Old Samoan choir hymns at 4pm, sitting in the garden, family toonai*.
+- **"Walked This Path (Happy to Talanoa About)":**
+  - Instead of "professional skills", carers can tag lived experiences they've walked through so newer carers know who they can talk to:
+    - *Stepping away from work to care full-time* • *First dementia diagnosis shock* • *Sleepless nights & sundowning* • *Juggling kids & caring for parents* • *Anticipatory grief & loneliness* • *Life after caring* • *Sorting out EPOA & Carer Support forms*.
 - **Opt-In Location & Contact Info (Among Members Only):**
-  - **Profile Visibility (Within Portal):** `Members Only` (visible to other logged-in carers in `/portal`) or `Private` (hidden even from other members).
-  - **Location Toggle:** Choose whether to reveal Suburb/City (e.g., *Mangere, Auckland*) to other members so nearby carers can connect.
-  - **Contact Info Toggle:** Choose whether to display Email, Phone/WhatsApp, or social links (TikTok, Facebook, Instagram, LinkedIn) to other members and a badge for *"Open to Mentoring / Coffee Catch-ups"*.
-- **Wall Activity & Selected Story Link:** Shows their recent Village Feed posts to fellow members, and links to their 5-step story if it has been selected for `/stories`.
+  - **Location Toggle:** Choose whether to reveal Suburb/City (e.g., *Mangere, Auckland*) to other members so nearby carers can meet for a cuppa.
+  - **Contact Info Toggle:** Choose whether to share Phone/WhatsApp, Email, or social links (TikTok, Facebook, Instagram) with fellow members, plus an *"Always open for a cuppa & talanoa"* badge.
+- **Wall Activity & Selected Story Link:** Shows their recent Village Feed check-ins to fellow members, and links to their 5-step story.
 
 ### Module B: "Share Your Malaga" — Story Builder & Dual Publish Modes (`/portal/my-story`)
 - Guided 5-step timeline editor (`BEFORE CARING`, `WHEN THINGS CHANGED`, `THE UNSEEN DAYS`, `THE TURNING POINT`, `TODAY`) with slanted Polaroid photo uploads.
@@ -205,7 +209,7 @@ sequenceDiagram
 
 ```mermaid
 erDiagram
-    PROFILES ||--o{ CARING_EXPERIENCES : lists
+    PROFILES ||--o{ CARING_JOURNEYS : honours
     PROFILES ||--o{ STORIES : writes
     PROFILES ||--o{ REST_HOME_REVIEWS : submits
     PROFILES ||--o{ FEED_POSTS : creates
@@ -312,15 +316,14 @@ erDiagram
         timestamptz created_at
     }
 
-    CARING_EXPERIENCES {
+    CARING_JOURNEYS {
         uuid id PK
         uuid carer_id FK
-        text cared_for_person "e.g. My Mother"
-        text relationship "Mother | Father | Nana | Spouse"
-        text timeframe "e.g. 2019 - Present"
-        text conditions "e.g. Alzheimer's & Vascular Dementia"
-        text[] skills_gained
-        text reflections
+        text loved_one_name "e.g. My Mum, Apoaniva"
+        text relationship "Mother | Father | Nana | Spouse | Aiga"
+        text caring_season "e.g. Stepped away from work in 2021 to care full-time"
+        text journey_notes "How we walk through each day & what brings them joy"
+        text[] walked_through_tags "e.g. Leaving work to care, Sundowning, Anticipatory grief"
     }
 
     STORIES {

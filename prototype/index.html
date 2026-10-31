@@ -123,7 +123,7 @@
         💬 Village Feed & FAQ
       </button>
       <button onclick="showPortalTab('profile')" id="ptab-profile" class="portal-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
-        🪪 My Carer Profile (LinkedIn-Style)
+        🧡 My Village Profile (Who I Care For)
       </button>
       <button onclick="showPortalTab('story')" id="ptab-story" class="portal-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
         📸 My 5-Step Story Builder
@@ -326,19 +326,19 @@
       </div>
     </section>
 
-    <!-- TAB 2: MEMBERS-ONLY LINKEDIN-STYLE CARER PROFILE -->
+    <!-- TAB 2: MEMBERS-ONLY CARER VILLAGE PROFILE (HEART & ALOFA, NOT CORPORATE RESUME) -->
     <section id="pview-profile" class="portal-view hidden space-y-6">
       <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-xs text-amber-900">
         <div>
-          <strong>🔒 Members-Only Profile Visibility:</strong> Carer profiles are <strong>never</strong> shown on the public website. Only logged-in Le Malaga carers can view your profile and experience.
+          <strong>🔒 Members-Only Village Profile:</strong> This is a safe space for carers who stepped away from work or daily life to care for their loved ones. Only logged-in Le Malaga members can view your profile.
         </div>
-        <span class="font-bold bg-white px-2.5 py-1 rounded border border-amber-300">URL: /portal/carers/siaosi-lemanu</span>
+        <span class="font-bold bg-white px-2.5 py-1 rounded border border-amber-300">Members-Only: /portal/carers/siaosi-lemanu</span>
       </div>
 
       <!-- Profile Header Card -->
       <div class="bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden">
         <div class="h-40 bg-gradient-to-r from-brand-dark via-[#526334] to-brand-orange relative">
-          <span class="absolute bottom-3 right-4 bg-black/40 text-white text-xs px-3 py-1 rounded-full">📷 Edit Cover Banner</span>
+          <span class="absolute bottom-3 right-4 bg-black/40 text-white text-xs px-3 py-1 rounded-full">📷 Change Family Cover Photo</span>
         </div>
         <div class="px-8 pb-8 relative">
           <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 -mt-14 mb-6">
@@ -347,65 +347,68 @@
               <div class="pt-14 sm:pt-0">
                 <div class="flex flex-wrap items-center gap-2">
                   <h2 class="text-2xl font-heading font-bold uppercase text-brand-dark">Siaosi Lemanu</h2>
-                  <span class="bg-brand-orange/15 text-brand-orange text-xs font-bold px-3 py-0.5 rounded-full">🤝 Open to Mentoring New Carers</span>
+                  <span class="bg-brand-orange/15 text-brand-orange text-xs font-bold px-3 py-0.5 rounded-full">☕ Always Open for a Cuppa & Talanoa</span>
                 </div>
-                <p class="text-sm font-medium text-gray-700 mt-1">Full-Time Family Carer for Mum • Dementia & Sundowning Support Advocate</p>
-                <p class="text-xs text-gray-500 mt-1" id="profileLocationDisplay">📍 Mangere, Auckland • 📞 021 555 0192 • @siaosi_malaga (TikTok)</p>
+                <p class="text-sm font-medium text-gray-700 mt-1">Proud Samoan Son (Afega & Vailele) • Stepped away from work in 2021 to care for Mum full-time</p>
+                <p class="text-xs italic text-brand-orange font-semibold mt-1">"I can make money any time any where, but I only have one mother in this lifetime."</p>
+                <p class="text-xs text-gray-500 mt-1" id="profileLocationDisplay">📍 Mangere, South Auckland • 📞 021 555 0192 (WhatsApp) • @siaosi_malaga (TikTok)</p>
               </div>
             </div>
-            <button onclick="showToast('Profile changes saved!')" class="bg-brand-dark text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#202d15] transition self-start sm:self-end">
-              Save Profile Settings
+            <button onclick="showToast('Village profile saved!')" class="bg-brand-dark text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#202d15] transition self-start sm:self-end">
+              Save My Profile
             </button>
           </div>
 
           <!-- Privacy Toggles -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#fcfaf4] p-4 rounded-2xl border border-[#e8e2d2] mb-6 text-xs">
             <label class="flex items-center justify-between cursor-pointer">
-              <span class="font-semibold text-gray-800">Reveal Suburb/City to Members</span>
+              <span class="font-semibold text-gray-800">Share My Suburb/Area with Fellow Carers</span>
               <input type="checkbox" checked onchange="showToast('Location visibility updated')" class="accent-brand-orange w-4 h-4" />
             </label>
             <label class="flex items-center justify-between cursor-pointer">
-              <span class="font-semibold text-gray-800">Reveal Contact Info to Members</span>
+              <span class="font-semibold text-gray-800">Share Phone / WhatsApp with Members</span>
               <input type="checkbox" checked onchange="showToast('Contact visibility updated')" class="accent-brand-orange w-4 h-4" />
             </label>
             <label class="flex items-center justify-between cursor-pointer">
-              <span class="font-semibold text-gray-800">Available for Coffee / Peer Check-ins</span>
-              <input type="checkbox" checked onchange="showToast('Mentoring badge updated')" class="accent-brand-orange w-4 h-4" />
+              <span class="font-semibold text-gray-800">Show "Open for a Cuppa / Talanoa" Badge</span>
+              <input type="checkbox" checked onchange="showToast('Talanoa badge updated')" class="accent-brand-orange w-4 h-4" />
             </label>
           </div>
 
-          <!-- LinkedIn-Style Caring Experience Section -->
+          <!-- Who I Walk Alongside (Loved Ones Cared For) -->
           <div class="space-y-4">
             <div class="flex items-center justify-between">
-              <h3 class="text-lg font-heading font-bold uppercase text-brand-dark tracking-wide">Caring Experience & Who I've Cared For</h3>
-              <button onclick="showToast('Add Caring Experience modal opened')" class="text-xs font-bold text-brand-orange hover:underline">+ Add Caring Experience</button>
+              <h3 class="text-lg font-heading font-bold uppercase text-brand-dark tracking-wide">🧡 Who I Walk Alongside (Who I Care For)</h3>
+              <button onclick="showToast('Add Loved One to Profile opened')" class="text-xs font-bold text-brand-orange hover:underline">+ Add Loved One I've Cared For</button>
             </div>
 
-            <div class="p-5 rounded-2xl border border-gray-200 bg-gray-50/60 space-y-2">
+            <div class="p-5 rounded-2xl border border-[#e8e2d2] bg-[#fcfaf4] space-y-2.5">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <h4 class="font-bold text-brand-dark text-base">Primary Full-Time Carer — Caring for My Mother (82)</h4>
-                <span class="text-xs font-bold text-brand-orange bg-brand-orange/10 px-3 py-1 rounded-full">2021 – Present (5 yrs)</span>
+                <h4 class="font-bold text-brand-dark text-base">Caring for My Mum, Apoaniva (82)</h4>
+                <span class="text-xs font-bold text-brand-orange bg-brand-orange/10 px-3 py-1 rounded-full">Paused my career in 2021 to be home with Mum</span>
               </div>
-              <p class="text-xs font-semibold text-gray-600">Conditions: Vascular Dementia, Type 2 Diabetes & Mobility Support</p>
+              <p class="text-xs font-semibold text-gray-600">Her Journey: Living with Vascular Dementia & Alzheimer's</p>
               <p class="text-sm text-gray-700 leading-relaxed">
-                Managing daily medication logs, NASC carer support allocations, evening sundowning routines, and culturally grounded Samoan care at home with our aiga.
+                Mum spent her whole life serving our family and church. When her memory started fading and she began having falls, leaving my job to care for her at home was an honour I didn't take lightly. Our days are grounded in patience, routine, and old Samoan choir hymns in the afternoon.
               </p>
-              <div class="flex flex-wrap gap-1.5 pt-2">
-                <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-md font-medium">NASC & Subsidies</span>
-                <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-md font-medium">EPOA Welfare Guardian</span>
-                <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-md font-medium">Sundowning & Music Therapy</span>
-                <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-md font-medium">Samoan Speaker</span>
+              <div class="pt-2">
+                <span class="text-[11px] font-bold uppercase text-gray-400 block mb-1.5">Things I've Walked Through (Message me anytime if you're going through this too):</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-full font-medium text-brand-dark">🧡 Leaving work to care full-time</span>
+                  <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-full font-medium text-brand-dark">🌙 Late-afternoon sundowning & wandering</span>
+                  <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-full font-medium text-brand-dark">💔 Anticipatory grief & feeling isolated</span>
+                  <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-full font-medium text-brand-dark">📋 Figuring out NASC & EPOA forms</span>
+                </div>
               </div>
             </div>
 
-            <div class="p-5 rounded-2xl border border-gray-200 bg-gray-50/60 space-y-2">
+            <div class="p-5 rounded-2xl border border-gray-200 bg-gray-50/70 space-y-2">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <h4 class="font-bold text-brand-dark text-base">Family Co-Carer — Caring for My Late Father (88)</h4>
-                <span class="text-xs font-bold text-gray-600 bg-gray-200 px-3 py-1 rounded-full">2018 – 2021 (3 yrs)</span>
+                <h4 class="font-bold text-brand-dark text-base">In Loving Memory of My Late Dad, Toleafoa (88)</h4>
+                <span class="text-xs font-bold text-gray-600 bg-gray-200 px-3 py-1 rounded-full">Cared for Dad at home with my siblings (2018 – 2021)</span>
               </div>
-              <p class="text-xs font-semibold text-gray-600">Conditions: Post-Stroke Care & Home Palliative Care</p>
               <p class="text-sm text-gray-700 leading-relaxed">
-                Shared night-shift care with my siblings, hospital discharge advocacy, and navigating home hoist equipment.
+                Cared for Dad through his stroke recovery and final chapter at home surrounded by our aiga. Always here for any brother or sister walking through palliative care or grief after losing a parent.
               </p>
             </div>
           </div>
