@@ -2,8 +2,8 @@
 
 > [!TIP]
 > **🚀 Interactive Clickable Prototype Preview (External HTML Viewer):**
-> Click here to open the standalone interactive prototype (hosted via `htmlpreview.github.io`, completely separate from the live `lemalaga.org` website):
-> 👉 **[Launch Interactive Prototype Preview](https://htmlpreview.github.io/?https://github.com/Le-Malaga/le-malaga.github.io/blob/main/prototype/index.html)**
+> Click here to open the standalone interactive prototype (served with full Tailwind styling via `raw.githack.com`, completely separate from the live `lemalaga.org` website):
+> 👉 **[Launch Interactive Prototype Preview](https://raw.githack.com/Le-Malaga/le-malaga.github.io/main/prototype/index.html)**
 
 ## 1. Hosting & Real-Time Architecture
 
