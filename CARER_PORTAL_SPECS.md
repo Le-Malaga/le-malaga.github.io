@@ -12,24 +12,27 @@
 
 ---
 
-## 2. Role-Based Access Control (RBAC) Matrix
+## 2. Two-Portal Architecture & 5-Tier Role Matrix
 
-We will use a 4-tier role hierarchy enforced by Supabase Row-Level Security (RLS):
+Instead of forcing your team to juggle three separate portals, the platform is split into **two clean portals** after Google Sign-In:
+1. **Carer Portal (`/portal`)** — The community & care hub for Carers and Volunteers.
+2. **Admin & CMS Portal (`/admin`)** — A unified back-office dashboard where sidebar tabs automatically appear based on the staff member's role (**Moderator**, **Content Editor / CMS**, or **Super Admin**).
 
-| Capability / Module | Public Visitor | Carer / Member (`carer`) | Moderator (`moderator`) | Super Admin (`super_admin`) |
-| :--- | :---: | :---: | :---: | :---: |
-| Read Public Pages, Published Stories & Public Carer Profiles | ✅ | ✅ | ✅ | ✅ |
-| Read Public **Guides / Permalinks (`/resources/:slug`)** & **FAQ** | ✅ | ✅ | ✅ | ✅ |
-| Edit Own **LinkedIn-Style Carer Profile & Caring Experience** | ❌ | ✅ (Own) | ✅ | ✅ |
-| Submit **My Story** (5-Step Polaroid Timeline) | ❌ | ✅ (Own) | ✅ | ✅ |
-| Read & Submit **Rest Home Reviews** *(Members Only)* | ❌ | ✅ | ✅ | ✅ |
-| Post, Comment & React in **The Village Feed (`/portal/feed`)** | ❌ | ✅ | ✅ | ✅ |
-| Propose **New Guides / Version Edits** & Leave **Guide Feedback** | ❌ | ✅ | ✅ | ✅ |
-| Register **Patients, Consents & Tracking Devices** | ❌ | ✅ (Own Patients) | ❌ *(No access to private patient data)* | 🔍 *(Audit/Compliance only)* |
-| **Approve / Reject** Stories, Reviews & Guide Versions | ❌ | ❌ | ✅ | ✅ |
-| **Moderate Village Feed** (Pin, Lock, Save to FAQ) | ❌ | ❌ | ✅ | ✅ |
-| Edit Global Website Pages, Events & Rollback Guide Versions | ❌ | ❌ | ❌ | ✅ |
-| **Manage User Roles** (Assign Moderators & Super Admins) | ❌ | ❌ | ❌ | ✅ |
+| Capability / Module | Public Visitor | Carer / Member (`carer`) | Moderator (`moderator`) | Content Editor (`content_editor`) | Super Admin (`super_admin`) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Read Public Website, Published Stories & Public Carer Profiles | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Read Public **Guides / Permalinks (`/resources/:slug`)** & **FAQ** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Edit Own **LinkedIn-Style Carer Profile & Caring Experience** | ❌ | ✅ (Own) | ✅ | ✅ | ✅ |
+| Submit **My Story** (5-Step Polaroid Timeline) | ❌ | ✅ (Own) | ✅ | ✅ | ✅ |
+| Read & Submit **Rest Home Reviews** *(Members Only)* | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Post, Comment & React in **The Village Feed (`/portal/feed`)** | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Propose **New Guides / Version Edits** & Leave **Guide Feedback** | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Register **Patients, Consents & Tracking Devices** | ❌ | ✅ (Own Patients) | ❌ *(No access)* | ❌ *(No access)* | 🔍 *(Audit/Compliance only)* |
+| **Approve / Reject** Stories, Rest Home Reviews & Guide Edits | ❌ | ❌ | ✅ | ❌ | ✅ |
+| **Moderate Village Feed** (Pin, Lock, Save to FAQ) | ❌ | ❌ | ✅ | ❌ | ✅ |
+| **Public Website CMS** (Edit *About Us*, *Meet the Aiga*, *Home*, *Support*, *Events*, *Policies*) | ❌ | ❌ | ❌ | ✅ | ✅ |
+| **Manage Calendar Events & Send Resend Email Broadcasts** | ❌ | ❌ | ✅ | ✅ | ✅ |
+| **Manage User Roles** (Assign Moderators, Content Editors & Super Admins) | ❌ | ❌ | ❌ | ❌ | ✅ |
 
 > [!IMPORTANT]
 > **Strict Patient Privacy Separation:**
@@ -142,19 +145,36 @@ sequenceDiagram
    - **Virtual Borders (Safe Zones):** Carer sets a center point (e.g., Home address) and a safe radius (e.g., `150m` or `500m`) and active schedule (e.g., *24/7* or *Nighttime only 8pm–7am*).
    - **Alert History & Live Status:** Shows device battery, last ping time, and triggers an immediate alert banner/notification when a `boundary_exit` event occurs.
 
-### Module H: Admin & Moderator Portal (`/admin`)
-- **User & Role Management Tab (`super_admin` only):**
-  - Searchable directory of all registered users (Name, Google Email, Avatar, Region, Joined Date, Current Role).
-  - **One-Click Role Selector:** Super Admins can change any user's role between `carer`, `moderator`, and `super_admin` (or toggle *Trusted Resource Contributor* status).
-  - **Database-Level Security:** A PostgreSQL security trigger (`set_user_role` RPC / RLS check) ensures that **only** a `super_admin` can modify the `role` column—users and moderators cannot escalate their own role via the browser console.
-  - **Initial Super Admin Bootstrap:** The database trigger will automatically grant `super_admin` to your designated Google email address the moment you sign in for the first time.
-- **Moderation Queue (`moderator` & `super_admin`):**
-  - Pending **Carer Stories** (preview the 5-step Polaroid layout, Approve, or Request Edits).
-  - Pending **Rest Home Reviews** (verify and Approve/Reject).
-  - Pending **Resource Contributions & New Guide Versions** (diff/preview proposed changes and Approve/Rollback).
-  - **Village Feed & FAQ Manager** (pin posts, remove posts, or promote helpful posts to the Official FAQ).
-- **Calendar, Events & Email Broadcast Manager (`moderator` & `super_admin`):**
-  - Create single or recurring events (e.g., weekly Sunday Sessions), view the attendee RSVP list, and trigger a **Resend Email Announcement** to registered carers.
+### Module H: Unified Admin, Moderation & Website CMS Portal (`/admin`)
+
+#### 1. Public Website CMS (`/admin/cms`) — *Accessible to `content_editor` & `super_admin`*
+Every existing public page in the repository has been audited so its content can be edited dynamically while strictly preserving the Tailwind layouts:
+
+| Public Route | Current File | What Can Be Managed in `/admin/cms` |
+| :--- | :--- | :--- |
+| **Global Header & Footer** | `src/components/Layout.tsx` | Contact email (`lemalagajourney@gmail.com`), phone number, location, Givealittle Donate button URL, cultural acknowledgement text, and sponsor/funder logos (`site_settings`). |
+| **Home Page (`/`)** | `src/pages/Home.tsx` | Hero title, subtitle, hero image, the 4 Value Pillars, and the 4 Action Cards. *(Next Sunday Session, Upcoming Events, and Featured Stories auto-populate from the database!)* |
+| **About Us (`/about`)** | `src/pages/About.tsx` | Hero banner, **Mission Statement** paragraphs, and the **"Meet the Aiga" Team Section** (`team_members` table: add/edit/reorder profiles like Flory, Tasi, and Juita, their multiple photos, bios, and callout boxes like *"The Quiet Solitude of Caregiving"*). |
+| **Carer Support (`/carer-support`)** | `src/pages/Support.tsx` | Hero banner, *"How We Can Help"* intro text, and the 3 service cards (*1-on-1 Talanoa*, *Support Groups*, *Sunday Sessions*) + call-request button links. |
+| **Sunday Sessions (`/sunday-sessions`)** | `src/pages/SundaySessions.tsx` | Hero banner, session description, photo (`zoom_meeting.jpg`), highlight cards (*Open Talanoa*, *Cameras Optional*), and recurring session details. |
+| **Events & Meetups (`/events`)** | `src/pages/Events.tsx` | **Fundraiser Highlight Banner** (e.g., *Moving For Le Malaga - Walk Fundraiser* + Givealittle URL), Upcoming Events (`events` table), and **Recent Gatherings / Community Highlights** (`community_highlights` table: e.g., *West & Central Auckland Catch-Up* photo + story). |
+| **Get Involved (`/get-involved`)** | `src/pages/GetInvolved.tsx` | Hero banner, *"Join the Movement"* intro, and the 3 CTA cards (*Become a Member*, *Volunteer*, *Donate or Sponsor*). |
+| **Policy & Info Pages (`/privacy`, `/terms`, `/safeguarding`, `/complaints`, `/start`)** | `src/pages/GenericPage.tsx` | Rich-text / Markdown page editor in `site_pages` so legal policies and the *"I'm New to Caring (`/start`)"* guide can be written and updated anytime. |
+
+#### 2. Community Moderation Queue (`/admin/moderation`) — *Accessible to `moderator` & `super_admin`*
+- Pending **Carer Stories** (preview the 5-step Polaroid layout, Approve, or Request Edits).
+- Pending **Rest Home Reviews** (verify and Approve/Reject).
+- Pending **Resource Contributions & New Guide Versions** (diff/preview proposed changes and Approve/Rollback).
+- **Village Feed & FAQ Manager** (pin posts, remove posts, or promote helpful posts to the Official FAQ).
+
+#### 3. Calendar, Events & Email Broadcast Manager (`/admin/events`) — *Accessible to `moderator`, `content_editor` & `super_admin`*
+- Create single or recurring events (e.g., weekly Sunday Sessions), view the attendee RSVP list, and trigger a **Resend Email Announcement** to registered carers.
+
+#### 4. User Role & Compliance Manager (`/admin/users`) — *Accessible to `super_admin` only*
+- Searchable directory of all registered users (Name, Google Email, Avatar, Region, Joined Date, Current Role).
+- **One-Click Role Selector:** Super Admins can change any user's role between `carer`, `moderator`, `content_editor`, and `super_admin` (or toggle *Trusted Resource Contributor* status).
+- **Database-Level Security:** A PostgreSQL security trigger (`set_user_role` RPC / RLS check) ensures that **only** a `super_admin` can modify the `role` column—users, editors, and moderators cannot escalate their own role.
+- **Initial Super Admin Bootstrap:** Automatically grants `super_admin` to your designated Google email address upon first sign-in.
 
 ---
 
@@ -181,6 +201,46 @@ erDiagram
     PATIENTS ||--o{ TRACKING_DEVICES : wears
     PATIENTS ||--o{ GEOFENCE_ZONES : protected_by
     TRACKING_DEVICES ||--o{ GEOFENCE_ALERTS : triggers
+    PROFILES ||--o{ SITE_PAGES : edits
+    PROFILES ||--o{ TEAM_MEMBERS : manages
+
+    SITE_SETTINGS {
+        text key PK "contact_info | donate_urls | footer_text | fundraiser_banner"
+        jsonb value
+        uuid updated_by FK
+        timestamptz updated_at
+    }
+
+    SITE_PAGES {
+        text slug PK "home | about | carer-support | sunday-sessions | events | get-involved | privacy | terms | start"
+        text hero_title
+        text hero_subtitle
+        text hero_image_url
+        jsonb structured_sections "Cards, pillars, mission paragraphs, or policy markdown"
+        uuid updated_by FK
+        timestamptz updated_at
+    }
+
+    TEAM_MEMBERS {
+        uuid id PK "Meet the Aiga on About Us"
+        text name "e.g. Flory, Tasi, Juita"
+        text role_title
+        int display_order
+        text[] bio_paragraphs
+        text[] photo_urls
+        jsonb callout_box "Optional highlight card e.g. The Quiet Solitude of Caregiving"
+        boolean is_active
+    }
+
+    COMMUNITY_HIGHLIGHTS {
+        uuid id PK "Recent Gatherings on Events page"
+        text badge_text "e.g. Community Highlight"
+        text title "e.g. West & Central Auckland Catch-Up"
+        text[] body_paragraphs
+        text quote
+        text image_url
+        int display_order
+    }
 
     PROFILES {
         uuid id PK "auth.users"
@@ -196,7 +256,7 @@ erDiagram
         boolean show_contact_info
         boolean open_to_mentoring
         text visibility "public | members_only | private"
-        text role "carer | moderator | super_admin"
+        text role "carer | moderator | content_editor | super_admin"
         boolean is_trusted_contributor
         jsonb email_preferences "event_reminders | feed_replies | geofence_alerts"
         timestamptz created_at
