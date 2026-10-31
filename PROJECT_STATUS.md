@@ -5,6 +5,7 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
 ## 🚧 Current Status
 - **Phase:** MAINTENANCE & MIGRATION
 - **Recent Milestones:** 
+  - Configured custom domain (`www.lemalaga.org`) via `public/CNAME` and set GitHub Pages build source to GitHub Actions workflow.
   - Overhauled "Who We Are" page with custom CSS grid profiles for Flory, Tasi, and Juita. 
   - Fixed image aspect ratios and clipping issues on the About page.
   - Due to a 4-day Figma API rate limit ban, successfully migrated the entire CMS infrastructure to Notion. 
