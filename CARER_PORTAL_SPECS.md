@@ -5,6 +5,7 @@
 | Layer | Technology | Why It Fits These Requirements |
 | :--- | :--- | :--- |
 | **Frontend** | **React + Vite + Tailwind** (Hosted on GitHub Pages / Cloudflare Pages) | Zero hosting cost, preserves all existing Le Malaga layouts. |
+| **WYSIWYG Editor** | **BlockNote (`@blocknote/react`) + `react-markdown`** | Notion-style drag-and-drop block editor (`⋮⋮` handles) supporting visual image/video resizing, alignment, direct Supabase Storage uploads, and dual `content_markdown` + `content_blocks` (`jsonb`) storage. |
 | **Database & Auth** | **Supabase PostgreSQL + Auth + RLS** | Enforces strict Row-Level Security (RLS) so **Rest Home Reviews** and **Patient Data** are locked down at the database level. |
 | **Geofence & Alerts** | **Supabase Edge Functions + PostGIS + Supabase Realtime** | PostgreSQL includes **PostGIS** (built-in geospatial math to detect when a device's GPS coordinates cross a virtual border) and **Realtime WebSockets** to push instant wandering alerts to the carer's portal/phone. |
 | **Email Notifications** | **Resend (`notifications@lemalaga.org`) + Supabase Edge Functions + `pg_cron`** | Sends calendar invites (`.ics`), automated meeting reminders, moderation approvals, and urgent geofence alerts using your custom `lemalaga.org` domain (3,000 free emails/mo). |
@@ -161,6 +162,11 @@ Every existing public page in the repository has been audited so its content can
 | **Get Involved (`/get-involved`)** | `src/pages/GetInvolved.tsx` | Hero banner, *"Join the Movement"* intro, and the 3 CTA cards (*Become a Member*, *Volunteer*, *Donate or Sponsor*). |
 | **Policy & Info Pages (`/privacy`, `/terms`, `/safeguarding`, `/complaints`, `/start`)** | `src/pages/GenericPage.tsx` | Rich-text / Markdown page editor in `site_pages` so legal policies and the *"I'm New to Caring (`/start`)"* guide can be written and updated anytime. |
 
+- **WYSIWYG Drag-and-Drop Editor (`@blocknote/react`):**
+  - Used across `/admin/cms` page editors, Collaborative Guides (`/resources/:slug`), and rich stories.
+  - **Visual Media Manipulation:** Editors and carers can drag-and-drop images and videos into the editor, grab the **`⋮⋮` drag handle** to move images/videos anywhere on the page, drag corner handles to resize media, and set left/center/right alignment.
+  - **Dual Storage Format (`content_markdown` + `content_blocks`):** Every save stores clean, portable **Markdown** (`content_markdown` for version diffs, full-text search, and lightweight rendering) alongside the lossless **BlockNote JSON** (`content_blocks` to preserve exact image widths, alignments, and video embeds).
+
 #### 2. Community Moderation Queue (`/admin/moderation`) — *Accessible to `moderator` & `super_admin`*
 - Pending **Carer Stories** (preview the 5-step Polaroid layout, Approve, or Request Edits).
 - Pending **Rest Home Reviews** (verify and Approve/Reject).
@@ -216,7 +222,9 @@ erDiagram
         text hero_title
         text hero_subtitle
         text hero_image_url
-        jsonb structured_sections "Cards, pillars, mission paragraphs, or policy markdown"
+        text content_markdown "Portable Markdown output"
+        jsonb content_blocks "Lossless BlockNote JSON with image/video sizes & positions"
+        jsonb structured_sections "Cards, pillars, mission paragraphs"
         uuid updated_by FK
         timestamptz updated_at
     }
@@ -343,7 +351,8 @@ erDiagram
         uuid contributor_id FK
         text version_label "e.g. v1.2"
         text change_summary
-        text content_markdown
+        text content_markdown "Rendered Markdown content"
+        jsonb content_blocks "BlockNote WYSIWYG layout blocks"
         text file_or_external_url
         text status "pending_review | approved | archived"
         uuid approved_by FK
