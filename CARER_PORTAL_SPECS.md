@@ -59,9 +59,14 @@ Instead of forcing your team to juggle three separate portals, the platform is s
   - **Contact Info Toggle:** Choose whether to display Email, Phone/WhatsApp, or social links (TikTok, Facebook, Instagram, LinkedIn) to other members and a badge for *"Open to Mentoring / Coffee Catch-ups"*.
 - **Wall Activity & Selected Story Link:** Shows their recent Village Feed posts to fellow members, and links to their 5-step story if it has been selected for `/stories`.
 
-### Module B: "Share Your Malaga" — Story Builder (`/portal/my-story`)
+### Module B: "Share Your Malaga" — Story Builder & Dual Publish Modes (`/portal/my-story`)
 - Guided 5-step timeline editor (`BEFORE CARING`, `WHEN THINGS CHANGED`, `THE UNSEEN DAYS`, `THE TURNING POINT`, `TODAY`) with slanted Polaroid photo uploads.
-- Status workflow: `draft` $\rightarrow$ `pending_review` $\rightarrow$ reviewed by a **Moderator** or **Super Admin** $\rightarrow$ `published` (or `changes_requested`).
+- **Two Publish Visibility Modes (`visibility_scope`):**
+  1. **`portal_only` (Carer Portal Only):** Displayed strictly inside the logged-in Carer Portal (`/portal/stories` and on the carer's member profile `/portal/carers/:username`) for fellow carers to read—never visible on the public website.
+  2. **`public_portal` (Public Website + Carer Portal):** Displayed on the public website (`/stories` carousel & `/stories/:id`) as well as inside the Carer Portal.
+- **Carer Consent + Moderator Selection Workflow:**
+  - When submitting a story (`draft` $\rightarrow$ `pending_review`), the carer chooses whether they allow public sharing (`allow_public_sharing: boolean`) or want it kept strictly `portal_only`.
+  - **Moderators / Super Admins** can then approve the story as **Published to Carer Portal (`published_portal`)** or—if the carer consented—select it for **Published to Public Website (`published_public`)**.
 
 ### Module C: Members-Only Rest Home Reviews (`/portal/rest-homes`)
 - **Strictly Private to Logged-In Members:** Locked behind authentication and database RLS so carers can share honest experiences safely.
@@ -169,7 +174,7 @@ Every existing public page in the repository has been audited so its content can
   - **Dual Storage Format (`content_markdown` + `content_blocks`):** Every save stores clean, portable **Markdown** (`content_markdown` for version diffs, full-text search, and lightweight rendering) alongside the lossless **BlockNote JSON** (`content_blocks` to preserve exact image widths, alignments, and video embeds).
 
 #### 2. Community Moderation Queue (`/admin/moderation`) — *Accessible to `moderator` & `super_admin`*
-- Pending **Carer Stories** (preview the 5-step Polaroid layout, Approve, or Request Edits).
+- Pending **Carer Stories** (preview the 5-step Polaroid layout, Request Edits, or Approve with Publish Mode: **Carer Portal Only (`portal_only`)** vs. **Public Website + Portal (`public_portal`)**).
 - Pending **Rest Home Reviews** (verify and Approve/Reject).
 - Pending **Resource Contributions & New Guide Versions** (diff/preview proposed changes and Approve/Rollback).
 - **Village Feed & FAQ Manager** (pin posts, remove posts, or promote helpful posts to the Official FAQ).
@@ -305,6 +310,21 @@ erDiagram
         text conditions "e.g. Alzheimer's & Vascular Dementia"
         text[] skills_gained
         text reflections
+    }
+
+    STORIES {
+        uuid id PK
+        uuid author_id FK
+        text slug UK
+        text short_title
+        text quote
+        text subquote
+        text hero_image_url
+        boolean allow_public_sharing "Carer consent toggle"
+        text visibility_scope "portal_only | public_portal"
+        text status "draft | pending_review | published_portal | published_public | changes_requested"
+        uuid approved_by FK
+        timestamptz created_at
     }
 
     FEED_POSTS {
