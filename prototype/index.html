@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Malaga — Interactive Portal & CMS Prototype</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#d95a2b',
+              dark: '#3e4a28',
+              bg: '#f3eedf',
+              light: '#faf9f4',
+              footer: '#232a16'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Oswald', 'sans-serif'],
+            script: ['Dancing Script', 'cursive']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #f3eedf; color: #1f2937; }
+    .polaroid-frame {
+      background: #fff;
+      padding: 12px 12px 42px 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+      border: 1px solid #e5e7eb;
+    }
+    .pulse-ring {
+      animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.85); opacity: 0.8; }
+      70% { transform: scale(1.35); opacity: 0; }
+      100% { transform: scale(1.35); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+
+  <!-- TOP PROTOTYPE CONTROL BAR -->
+  <div class="bg-slate-900 text-white px-4 py-2.5 border-b border-slate-700 sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+      <div class="flex items-center gap-2.5">
+        <span class="bg-amber-400 text-slate-950 font-bold px-2.5 py-0.5 rounded-full text-xs uppercase tracking-wider">Interactive Prototype</span>
+        <span class="text-slate-300 hidden md:inline">Standalone UX Preview • Switch roles & portals to test permissions</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Role Switcher -->
+        <div class="flex items-center gap-1.5 bg-slate-800 px-3 py-1 rounded-lg border border-slate-700">
+          <span class="text-slate-400 text-xs font-semibold uppercase">Role:</span>
+          <select id="roleSelect" onchange="changeRole(this.value)" class="bg-transparent text-amber-300 font-bold focus:outline-none cursor-pointer text-xs sm:text-sm">
+            <option value="carer" class="bg-slate-900 text-white">👤 Carer / Member (carer)</option>
+            <option value="moderator" class="bg-slate-900 text-white">🛡️ Moderator (moderator)</option>
+            <option value="content_editor" class="bg-slate-900 text-white">✍️ Content Editor (content_editor)</option>
+            <option value="super_admin" selected class="bg-slate-900 text-white">👑 Super Admin (super_admin)</option>
+          </select>
+        </div>
+
+        <!-- Portal Mode Switcher -->
+        <div class="flex rounded-lg overflow-hidden border border-slate-700 bg-slate-800 p-0.5">
+          <button id="btnPortalMode" onclick="switchWorkspace('portal')" class="px-3 py-1 rounded-md font-bold text-xs transition bg-brand-orange text-white">
+            🏡 Carer Portal (/portal)
+          </button>
+          <button id="btnAdminMode" onclick="switchWorkspace('admin')" class="px-3 py-1 rounded-md font-bold text-xs transition text-slate-300 hover:text-white">
+            ⚙️ Admin & CMS (/admin)
+          </button>
+        </div>
+
+        <!-- Google Login Modal Trigger -->
+        <button onclick="toggleLoginModal(true)" class="bg-white/10 hover:bg-white/20 text-white px-2.5 py-1 rounded-md text-xs font-medium transition">
+          Preview Google Login
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN PORTAL HEADER -->
+  <header class="bg-[#fbf8f3] border-b border-[#e5dec9] px-6 py-3.5 sticky top-[49px] z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/logo.png" alt="Le Malaga" class="h-12 object-contain" onerror="this.style.display='none'" />
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-heading font-bold text-xl uppercase tracking-wide text-brand-dark" id="headerPortalTitle">Le Malaga Carer Village</span>
+            <span class="text-[11px] bg-brand-dark/10 text-brand-dark font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider" id="headerPrivacyBadge">🔒 Members-Only Space</span>
+          </div>
+          <p class="text-xs text-gray-500" id="headerPortalSub">Walking together — No one walks alone</p>
+        </div>
+      </div>
+
+      <!-- Signed-in Google User Pill -->
+      <div class="flex items-center gap-3">
+        <div id="roleBadgePill" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
+          👑 Super Admin
+        </div>
+        <div class="flex items-center gap-2.5 bg-white px-3 py-1.5 rounded-full border border-gray-200 shadow-sm">
+          <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/flory1.jpg" alt="Avatar" class="w-7 h-7 rounded-full object-cover" />
+          <div class="text-left leading-tight hidden sm:block">
+            <div class="text-xs font-bold text-gray-800">Siaosi Lemanu</div>
+            <div class="text-[10px] text-gray-500">siaosi@gmail.com (Google)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARER PORTAL NAV TABS -->
+    <div id="portalNavTabs" class="max-w-7xl mx-auto mt-3 pt-2 border-t border-gray-200/70 flex items-center gap-1.5 overflow-x-auto text-xs sm:text-sm">
+      <button onclick="showPortalTab('feed')" id="ptab-feed" class="portal-tab px-4 py-2 rounded-lg font-bold bg-brand-dark text-white whitespace-nowrap transition">
+        💬 Village Feed & FAQ
+      </button>
+      <button onclick="showPortalTab('profile')" id="ptab-profile" class="portal-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
+        🪪 My Carer Profile (LinkedIn-Style)
+      </button>
+      <button onclick="showPortalTab('story')" id="ptab-story" class="portal-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
+        📸 My 5-Step Story Builder
+      </button>
+      <button onclick="showPortalTab('resthomes')" id="ptab-resthomes" class="portal-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
+        🏥 Rest Home Reviews
+      </button>
+      <button onclick="showPortalTab('guides')" id="ptab-guides" class="portal-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
+        📘 Guides & Versioned Docs
+      </button>
+      <button onclick="showPortalTab('calendar')" id="ptab-calendar" class="portal-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
+        📅 Calendar & Resend Alerts
+      </button>
+      <button onclick="showPortalTab('lovedones')" id="ptab-lovedones" class="portal-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
+        📍 Loved Ones & Virtual Border
+      </button>
+    </div>
+
+    <!-- ADMIN & CMS PORTAL NAV TABS -->
+    <div id="adminNavTabs" class="hidden max-w-7xl mx-auto mt-3 pt-2 border-t border-gray-200/70 flex items-center gap-2 overflow-x-auto text-xs sm:text-sm">
+      <button onclick="showAdminTab('cms')" id="atab-cms" class="admin-tab px-4 py-2 rounded-lg font-bold bg-brand-orange text-white whitespace-nowrap transition">
+        🌐 Public Website CMS & Public Stories (Content Editor)
+      </button>
+      <button onclick="showAdminTab('moderation')" id="atab-moderation" class="admin-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
+        🛡️ Internal Portal Moderation (Moderator)
+      </button>
+      <button onclick="showAdminTab('users')" id="atab-users" class="admin-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition">
+        👑 User Role Manager (Super Admin)
+      </button>
+    </div>
+  </header>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-brand-dark text-white px-5 py-3 rounded-xl shadow-2xl border border-white/15 text-sm font-medium flex items-center gap-3">
+    <span id="toastText">Saved!</span>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- WORKSPACE 1: CARER PORTAL (/portal)                       -->
+  <!-- ========================================================= -->
+  <main id="workspace-portal" class="max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 flex-1">
+
+    <!-- TAB 1: FACEBOOK-STYLE VILLAGE FEED & PINNED LINKS -->
+    <section id="pview-feed" class="portal-view grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Left Rail: Member Mini Profile & Topics -->
+      <div class="lg:col-span-3 space-y-6">
+        <div class="bg-[#fcfaf4] rounded-2xl p-5 shadow-md border border-[#e8e2d2]">
+          <div class="flex items-center gap-3 mb-4">
+            <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/flory1.jpg" class="w-12 h-12 rounded-full object-cover border-2 border-brand-orange" />
+            <div>
+              <h3 class="font-bold text-brand-dark text-sm">Siaosi Lemanu</h3>
+              <p class="text-xs text-gray-500">Primary Carer for Mum • Mangere</p>
+            </div>
+          </div>
+          <p class="text-xs italic text-gray-600 mb-4">"O le ala i le pule o le tautua — the path to leadership is through service."</p>
+          <button onclick="showPortalTab('profile')" class="w-full text-xs font-bold bg-brand-dark/10 text-brand-dark py-2 rounded-lg hover:bg-brand-dark hover:text-white transition">
+            View My Carer Profile →
+          </button>
+        </div>
+
+        <div class="bg-[#fcfaf4] rounded-2xl p-5 shadow-md border border-[#e8e2d2]">
+          <h4 class="font-heading font-bold uppercase text-brand-dark text-sm tracking-wider mb-3">Filter Kōrero Topics</h4>
+          <div class="space-y-1.5 text-xs font-medium">
+            <button class="w-full text-left px-3 py-2 rounded-lg bg-brand-orange text-white font-bold">All Village Posts</button>
+            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-200/60 text-gray-700">☀️ Daily Dementia Care</button>
+            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-200/60 text-gray-700">📋 NASC, EPOA & Subsidies</button>
+            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-200/60 text-gray-700">💛 Wellbeing & Anticipatory Grief</button>
+            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-200/60 text-gray-700">❓ Official Curated FAQ (14)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Social Feed -->
+      <div class="lg:col-span-6 space-y-6">
+        <!-- Post Composer -->
+        <div class="bg-white rounded-2xl p-5 shadow-md border border-gray-200">
+          <div class="flex gap-3">
+            <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/flory1.jpg" class="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+            <div class="flex-1">
+              <textarea id="newPostInput" rows="3" placeholder="Talofa Siaosi, share a check-in, a small win, or ask the village a question..." class="w-full bg-[#fcfaf4] border border-[#e8e2d2] rounded-xl p-3 text-sm focus:outline-none focus:border-brand-orange"></textarea>
+              <div class="flex flex-wrap items-center justify-between gap-2 mt-3">
+                <div class="flex items-center gap-2">
+                  <select id="newPostTopic" class="text-xs bg-gray-100 border border-gray-200 rounded-lg px-2.5 py-1.5 font-medium text-gray-700">
+                    <option value="Daily Dementia Care">☀️ Daily Dementia Care</option>
+                    <option value="NASC & Subsidies">📋 NASC & Subsidies</option>
+                    <option value="Wellbeing & Support">💛 Wellbeing & Support</option>
+                  </select>
+                  <button onclick="showToast('Photo attachment ready')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-lg font-medium text-gray-700">📷 Photo</button>
+                </div>
+                <button onclick="createNewFeedPost()" class="bg-brand-orange text-white px-5 py-1.5 rounded-full text-xs font-bold hover:bg-orange-800 transition shadow">
+                  POST TO VILLAGE
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feed Posts Container -->
+        <div id="feedPostsList" class="space-y-5">
+          <!-- Post 1 -->
+          <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-200">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-3 cursor-pointer" onclick="showPortalTab('profile')">
+                <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/juita.jpg" class="w-11 h-11 rounded-full object-cover border border-brand-orange" />
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-brand-dark text-sm hover:underline">Juita Mariner</span>
+                    <span class="text-[11px] bg-brand-bg text-brand-orange px-2 py-0.5 rounded-full font-bold">Primary Carer • 6 yrs exp</span>
+                  </div>
+                  <div class="text-xs text-gray-500">2 hours ago • ☀️ Daily Dementia Care • 📍 Auckland</div>
+                </div>
+              </div>
+              <span class="text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">📌 Pinned FAQ</span>
+            </div>
+
+            <p class="text-sm text-gray-800 leading-relaxed mb-4">
+              For anyone dealing with <strong>late-afternoon sundowning</strong> with their Mum or Dad: we started playing old Samoan choir hymns softly around 4:00pm before the light drops, dimming the harsh ceiling lights, and giving Mum a warm cup of milo. The difference in her anxiety this week has been huge. Sending alofa to everyone on the night shift tonight! 🧡
+            </p>
+
+            <!-- Reaction Bar -->
+            <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-gray-100 text-xs">
+              <button onclick="bumpReaction(this)" class="px-3 py-1.5 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold transition">
+                ❤️ Alofa <span>24</span>
+              </button>
+              <button onclick="bumpReaction(this)" class="px-3 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold transition">
+                🙏 Strength <span>15</span>
+              </button>
+              <button onclick="bumpReaction(this)" class="px-3 py-1.5 rounded-full bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold transition">
+                🤗 With You <span>9</span>
+              </button>
+              <button onclick="bumpReaction(this)" class="px-3 py-1.5 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold transition">
+                💡 Helpful <span>19</span>
+              </button>
+            </div>
+
+            <!-- Threaded Comments -->
+            <div class="mt-4 pt-3 border-t border-gray-100 space-y-3 bg-[#fcfaf4] p-3.5 rounded-xl">
+              <div class="flex gap-2.5">
+                <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/tasi1.jpg" class="w-7 h-7 rounded-full object-cover mt-0.5" />
+                <div class="flex-1 text-xs">
+                  <div class="bg-white p-2.5 rounded-xl border border-gray-200/80">
+                    <span class="font-bold text-brand-dark cursor-pointer hover:underline" onclick="showPortalTab('profile')">Aitasi Lemanu (Tasi)</span>
+                    <span class="text-gray-400 ml-1">• Caring for Mum (Afega/Vailele)</span>
+                    <p class="text-gray-700 mt-1">Thank you Juita! Evening routine and familiar hymns worked wonders for my mother Apoaniva too. Music reaches the heart even when words fade.</p>
+                  </div>
+                </div>
+              </div>
+              <!-- Nested Reply -->
+              <div class="flex gap-2.5 pl-8">
+                <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/Ruby_1.png" class="w-6 h-6 rounded-full object-cover mt-0.5" />
+                <div class="flex-1 text-xs">
+                  <div class="bg-white p-2.5 rounded-xl border border-gray-200/80">
+                    <span class="font-bold text-brand-dark">Ruby</span>
+                    <span class="text-gray-400 ml-1">• Co-Care Village (6 yrs exp)</span>
+                    <p class="text-gray-700 mt-1">Trying this tonight at 4pm with Mama! Fa'afetai tele lava both of you 🙏</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Rail: Pinned Essential Permalinks -->
+      <div class="lg:col-span-3 space-y-6">
+        <div class="bg-brand-dark text-white rounded-2xl p-5 shadow-md">
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="font-heading font-bold uppercase tracking-wider text-sm text-brand-bg">📌 Pinned Essential Guides</h4>
+            <span class="text-[10px] bg-white/15 px-2 py-0.5 rounded">Permalinks</span>
+          </div>
+          <p class="text-xs text-gray-300 mb-4">Permanent links to core guides & forms. Click any guide to view versions & community tips:</p>
+          <div class="space-y-2.5 text-xs">
+            <button onclick="showPortalTab('guides')" class="w-full text-left p-3 rounded-xl bg-white/10 hover:bg-white/20 transition flex items-center justify-between">
+              <span>📄 Carer Support Subsidy Guide (v2.1)</span>
+              <span>→</span>
+            </button>
+            <button onclick="showPortalTab('guides')" class="w-full text-left p-3 rounded-xl bg-white/10 hover:bg-white/20 transition flex items-center justify-between">
+              <span>⚖️ Enduring Power of Attorney (v1.4)</span>
+              <span>→</span>
+            </button>
+            <button onclick="showPortalTab('guides')" class="w-full text-left p-3 rounded-xl bg-white/10 hover:bg-white/20 transition flex items-center justify-between">
+              <span>🏥 NASC Assessment Checklist (v1.2)</span>
+              <span>→</span>
+            </button>
+            <button onclick="showPortalTab('guides')" class="w-full text-left p-3 rounded-xl bg-white/10 hover:bg-white/20 transition flex items-center justify-between">
+              <span>📘 Pasifika Dementia Framework (v1.0)</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-[#fcfaf4] rounded-2xl p-5 shadow-md border border-[#e8e2d2]">
+          <h4 class="font-heading font-bold uppercase text-brand-orange text-sm tracking-wider mb-2">🎥 Next Sunday Session</h4>
+          <p class="text-xs font-bold text-gray-800">This Sunday • 8:30pm NZST</p>
+          <p class="text-xs text-gray-600 mt-1 mb-4">Open Talanoa & Wellbeing Check-In on Zoom (Cameras optional).</p>
+          <button onclick="showPortalTab('calendar')" class="w-full bg-brand-orange text-white py-2 rounded-full text-xs font-bold hover:bg-orange-800 transition">
+            RSVP & Get Zoom Link
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: MEMBERS-ONLY LINKEDIN-STYLE CARER PROFILE -->
+    <section id="pview-profile" class="portal-view hidden space-y-6">
+      <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-xs text-amber-900">
+        <div>
+          <strong>🔒 Members-Only Profile Visibility:</strong> Carer profiles are <strong>never</strong> shown on the public website. Only logged-in Le Malaga carers can view your profile and experience.
+        </div>
+        <span class="font-bold bg-white px-2.5 py-1 rounded border border-amber-300">URL: /portal/carers/siaosi-lemanu</span>
+      </div>
+
+      <!-- Profile Header Card -->
+      <div class="bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden">
+        <div class="h-40 bg-gradient-to-r from-brand-dark via-[#526334] to-brand-orange relative">
+          <span class="absolute bottom-3 right-4 bg-black/40 text-white text-xs px-3 py-1 rounded-full">📷 Edit Cover Banner</span>
+        </div>
+        <div class="px-8 pb-8 relative">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 -mt-14 mb-6">
+            <div class="flex items-end gap-5">
+              <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/tasi1.jpg" class="w-28 h-28 rounded-2xl object-cover border-4 border-white shadow-lg bg-white" />
+              <div class="pt-14 sm:pt-0">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h2 class="text-2xl font-heading font-bold uppercase text-brand-dark">Siaosi Lemanu</h2>
+                  <span class="bg-brand-orange/15 text-brand-orange text-xs font-bold px-3 py-0.5 rounded-full">🤝 Open to Mentoring New Carers</span>
+                </div>
+                <p class="text-sm font-medium text-gray-700 mt-1">Full-Time Family Carer for Mum • Dementia & Sundowning Support Advocate</p>
+                <p class="text-xs text-gray-500 mt-1" id="profileLocationDisplay">📍 Mangere, Auckland • 📞 021 555 0192 • @siaosi_malaga (TikTok)</p>
+              </div>
+            </div>
+            <button onclick="showToast('Profile changes saved!')" class="bg-brand-dark text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#202d15] transition self-start sm:self-end">
+              Save Profile Settings
+            </button>
+          </div>
+
+          <!-- Privacy Toggles -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#fcfaf4] p-4 rounded-2xl border border-[#e8e2d2] mb-6 text-xs">
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="font-semibold text-gray-800">Reveal Suburb/City to Members</span>
+              <input type="checkbox" checked onchange="showToast('Location visibility updated')" class="accent-brand-orange w-4 h-4" />
+            </label>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="font-semibold text-gray-800">Reveal Contact Info to Members</span>
+              <input type="checkbox" checked onchange="showToast('Contact visibility updated')" class="accent-brand-orange w-4 h-4" />
+            </label>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="font-semibold text-gray-800">Available for Coffee / Peer Check-ins</span>
+              <input type="checkbox" checked onchange="showToast('Mentoring badge updated')" class="accent-brand-orange w-4 h-4" />
+            </label>
+          </div>
+
+          <!-- LinkedIn-Style Caring Experience Section -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-heading font-bold uppercase text-brand-dark tracking-wide">Caring Experience & Who I've Cared For</h3>
+              <button onclick="showToast('Add Caring Experience modal opened')" class="text-xs font-bold text-brand-orange hover:underline">+ Add Caring Experience</button>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-gray-200 bg-gray-50/60 space-y-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h4 class="font-bold text-brand-dark text-base">Primary Full-Time Carer — Caring for My Mother (82)</h4>
+                <span class="text-xs font-bold text-brand-orange bg-brand-orange/10 px-3 py-1 rounded-full">2021 – Present (5 yrs)</span>
+              </div>
+              <p class="text-xs font-semibold text-gray-600">Conditions: Vascular Dementia, Type 2 Diabetes & Mobility Support</p>
+              <p class="text-sm text-gray-700 leading-relaxed">
+                Managing daily medication logs, NASC carer support allocations, evening sundowning routines, and culturally grounded Samoan care at home with our aiga.
+              </p>
+              <div class="flex flex-wrap gap-1.5 pt-2">
+                <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-md font-medium">NASC & Subsidies</span>
+                <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-md font-medium">EPOA Welfare Guardian</span>
+                <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-md font-medium">Sundowning & Music Therapy</span>
+                <span class="text-[11px] bg-white border border-gray-200 px-2.5 py-1 rounded-md font-medium">Samoan Speaker</span>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-gray-200 bg-gray-50/60 space-y-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h4 class="font-bold text-brand-dark text-base">Family Co-Carer — Caring for My Late Father (88)</h4>
+                <span class="text-xs font-bold text-gray-600 bg-gray-200 px-3 py-1 rounded-full">2018 – 2021 (3 yrs)</span>
+              </div>
+              <p class="text-xs font-semibold text-gray-600">Conditions: Post-Stroke Care & Home Palliative Care</p>
+              <p class="text-sm text-gray-700 leading-relaxed">
+                Shared night-shift care with my siblings, hospital discharge advocacy, and navigating home hoist equipment.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: 5-STEP STORY BUILDER & PUBLISH SCOPE -->
+    <section id="pview-story" class="portal-view hidden space-y-6">
+      <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-200 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-7 space-y-5">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-brand-orange">Share Your Malaga</span>
+            <h2 class="text-3xl font-heading font-bold uppercase text-brand-dark mt-1">5-Step Carer Story Builder</h2>
+            <p class="text-xs text-gray-600 mt-1">Your story follows our 5-step timeline with slanted Polaroid photos.</p>
+          </div>
+
+          <!-- Dual Publish Mode Consent -->
+          <div class="p-4 rounded-2xl bg-[#fcfaf4] border border-[#e8e2d2] space-y-2">
+            <label class="text-xs font-bold uppercase text-brand-dark block">Where can your story be shared?</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <label class="flex items-start gap-2.5 p-3 rounded-xl bg-white border-2 border-brand-dark cursor-pointer">
+                <input type="radio" name="storyScope" checked class="mt-0.5 accent-brand-dark" />
+                <div>
+                  <div class="font-bold text-brand-dark">🔒 Carer Portal Only (portal_only)</div>
+                  <div class="text-gray-500 text-[11px]">Visible only to logged-in fellow carers after Moderator approval.</div>
+                </div>
+              </label>
+              <label class="flex items-start gap-2.5 p-3 rounded-xl bg-white border border-gray-200 cursor-pointer">
+                <input type="radio" name="storyScope" class="mt-0.5 accent-brand-orange" />
+                <div>
+                  <div class="font-bold text-brand-orange">🌍 Allow Public Website Selection</div>
+                  <div class="text-gray-500 text-[11px]">Allows our <strong>Content Editor</strong> to showcase your story on public <code>/stories</code>.</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Step Selector -->
+          <div class="flex flex-wrap gap-1.5">
+            <button onclick="selectStoryStep(1, 'BEFORE CARING')" class="story-step-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-orange text-white">1. Before Caring</button>
+            <button onclick="selectStoryStep(2, 'WHEN THINGS CHANGED')" class="story-step-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">2. When Things Changed</button>
+            <button onclick="selectStoryStep(3, 'THE UNSEEN DAYS')" class="story-step-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">3. The Unseen Days</button>
+            <button onclick="selectStoryStep(4, 'THE TURNING POINT')" class="story-step-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">4. The Turning Point</button>
+            <button onclick="selectStoryStep(5, 'TODAY')" class="story-step-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">5. Today</button>
+          </div>
+
+          <div class="space-y-3">
+            <label id="storyStepLabel" class="block text-sm font-heading font-bold uppercase text-brand-dark">Step 1: BEFORE CARING</label>
+            <textarea id="storyStepText" oninput="document.getElementById('polaroidPreviewText').innerText = this.value" rows="4" class="w-full border border-gray-300 rounded-xl p-3 text-sm">Before the diagnosis, Mum was the heartbeat of every Sunday toonai—always the first in the kitchen and the loudest laugh in the room.</textarea>
+            <div class="flex items-center justify-between pt-2">
+              <button onclick="showToast('Polaroid photo uploaded to Supabase Storage')" class="text-xs font-bold bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg">📷 Upload Step Polaroid Photo</button>
+              <button onclick="showToast('Story submitted to Review Queue!')" class="bg-brand-dark text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-[#202d15] transition shadow">
+                Submit Story for Review
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Slanted Polaroid Preview -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center bg-[#fcfaf4] rounded-2xl p-8 border border-[#e8e2d2]">
+          <span class="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-6">Live Slanted Polaroid Timeline Preview</span>
+          <div class="polaroid-frame transform -rotate-3 w-64 transition hover:rotate-0">
+            <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/flory2.jpg" class="w-full h-52 object-cover" />
+            <p class="font-script text-center text-xl text-gray-700 -mt-2 pt-3">Mum & Aiga</p>
+          </div>
+          <p id="polaroidPreviewText" class="text-xs text-gray-700 italic text-center mt-6 max-w-xs leading-relaxed">
+            "Before the diagnosis, Mum was the heartbeat of every Sunday toonai—always the first in the kitchen and the loudest laugh in the room."
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: MEMBERS-ONLY REST HOME REVIEWS -->
+    <section id="pview-resthomes" class="portal-view hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-2xl font-heading font-bold uppercase text-brand-dark">Rest Home & Respite Reviews</h2>
+            <span class="bg-rose-100 text-rose-800 text-xs font-bold px-2.5 py-0.5 rounded-full">🔒 Members-Only</span>
+          </div>
+          <p class="text-xs text-gray-600 mt-1">Honest lived-experience reviews from fellow Pasifika dementia carers. Never indexed or visible to the public.</p>
+        </div>
+        <button onclick="showToast('Write a Rest Home Review form opened (Supports Anonymous toggle)')" class="bg-brand-orange text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-orange-800 transition shadow">
+          + Submit Facility Review
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-200 space-y-4">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-heading font-bold text-xl text-brand-dark uppercase"> Pacific Haven Care & Dementia Respite</h3>
+              <p class="text-xs text-gray-500">📍 Otahuhu, South Auckland • Dementia Level 3 & Short-Term Respite</p>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 px-3 py-1 rounded-xl text-center">
+              <div class="text-lg font-bold text-brand-orange">★ 4.6</div>
+              <div class="text-[10px] text-gray-500">11 Carer Reviews</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center bg-[#fcfaf4] p-3 rounded-xl border border-[#e8e2d2] text-xs">
+            <div>
+              <div class="font-bold text-brand-dark">4.8 / 5</div>
+              <div class="text-[10px] text-gray-500">Pasifika Culture & Food</div>
+            </div>
+            <div>
+              <div class="font-bold text-brand-dark">4.5 / 5</div>
+              <div class="text-[10px] text-gray-500">Dementia Safety</div>
+            </div>
+            <div>
+              <div class="font-bold text-brand-dark">4.7 / 5</div>
+              <div class="text-[10px] text-gray-500">Staff Alofa</div>
+            </div>
+          </div>
+
+          <div class="text-xs text-gray-700 bg-gray-50 p-3.5 rounded-xl border border-gray-100 space-y-1.5">
+            <div class="flex items-center justify-between font-bold text-brand-dark">
+              <span>🕵️ Verified Carer (Anonymous Mode)</span>
+              <span class="text-[10px] text-gray-400">Used 2-Week Carer Support Respite</span>
+            </div>
+            <p>"Several Samoan and Tongan nurses on the afternoon shift who spoke to Dad in our language and welcomed our large aiga during visiting hours without making us feel rushed."</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-200 space-y-4">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-heading font-bold text-xl text-brand-dark uppercase">Harbourview Rest Home & Hospital</h3>
+              <p class="text-xs text-gray-500">📍 West Auckland • Rest Home, Hospital & Psychogeriatric</p>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 px-3 py-1 rounded-xl text-center">
+              <div class="text-lg font-bold text-brand-orange">★ 3.9</div>
+              <div class="text-[10px] text-gray-500">7 Carer Reviews</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center bg-[#fcfaf4] p-3 rounded-xl border border-[#e8e2d2] text-xs">
+            <div>
+              <div class="font-bold text-brand-dark">3.5 / 5</div>
+              <div class="text-[10px] text-gray-500">Pasifika Culture & Food</div>
+            </div>
+            <div>
+              <div class="font-bold text-brand-dark">4.3 / 5</div>
+              <div class="text-[10px] text-gray-500">Dementia Safety</div>
+            </div>
+            <div>
+              <div class="font-bold text-brand-dark">4.0 / 5</div>
+              <div class="text-[10px] text-gray-500">Staff Alofa</div>
+            </div>
+          </div>
+
+          <div class="text-xs text-gray-700 bg-gray-50 p-3.5 rounded-xl border border-gray-100 space-y-1.5">
+            <div class="flex items-center justify-between font-bold text-brand-dark">
+              <span>👤 Mere (Auckland)</span>
+              <span class="text-[10px] text-gray-400">Permanent Dementia Wing</span>
+            </div>
+            <p>"Very secure garden courtyard for wandering, and clinical medication tracking is great. Tip: bring familiar home food on weekends as the standard menu is quite plain."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: VERSIONED GUIDES, PERMALINKS & FEEDBACK -->
+    <section id="pview-guides" class="portal-view hidden space-y-6">
+      <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-200 space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-5">
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <span class="text-xs font-mono bg-gray-100 text-gray-700 px-2.5 py-1 rounded border border-gray-200">🔗 Permalink: lemalaga.org/resources/carer-support-subsidy-guide</span>
+              <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full">Active Version: v2.1</span>
+            </div>
+            <h2 class="text-3xl font-heading font-bold uppercase text-brand-dark">Carer Support Subsidy & Respite Claim Guide</h2>
+            <p class="text-xs text-gray-500 mt-1">Contributed by <strong class="text-brand-dark underline cursor-pointer" onclick="showPortalTab('profile')">Juita Mariner</strong> & <strong class="text-brand-dark underline">Flory Levy</strong> • Last verified Oct 2026</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <select onchange="showToast('Switched guide snapshot to ' + this.value)" class="text-xs border border-gray-300 rounded-lg px-3 py-2 font-bold bg-[#fcfaf4]">
+              <option value="v2.1 (Latest)">🕒 v2.1 — Oct 2026 (Latest)</option>
+              <option value="v2.0 — May 2026">🕒 v2.0 — May 2026 (Updated claim rates)</option>
+              <option value="v1.0 — Jan 2026">🕒 v1.0 — Jan 2026 (Initial PDF)</option>
+            </select>
+            <button onclick="showToast('Saved to your personal Toolkit!')" class="text-xs font-bold bg-brand-dark text-white px-4 py-2 rounded-lg">🔖 Bookmark</button>
+            <button onclick="showToast('Propose Edit / Upload New Version editor opened')" class="text-xs font-bold bg-brand-orange text-white px-4 py-2 rounded-lg">✏️ Suggest Edit / New Version</button>
+          </div>
+        </div>
+
+        <!-- Rendered Markdown Body -->
+        <div class="prose max-w-none text-sm text-gray-800 space-y-3 leading-relaxed bg-[#fcfaf4] p-6 rounded-2xl border border-[#e8e2d2]">
+          <h3 class="font-heading font-bold text-lg uppercase text-brand-dark">1. How NASC Carer Support Days Work</h3>
+          <p>The Ministry of Health / Whaikaha Carer Support subsidy reimburses relief carers so full-time family carers can take rest breaks. Even if a link or PDF is updated in 2027, this permalink (<code>/resources/carer-support-subsidy-guide</code>) never changes.</p>
+          <p class="font-semibold text-brand-orange">💡 Changelog in v2.1: Added online claim portal instructions and updated South Auckland NASC phone extensions.</p>
+        </div>
+
+        <!-- Guide Feedback & Practical Tips -->
+        <div class="space-y-4 pt-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h4 class="font-heading font-bold uppercase text-brand-dark text-base">Community Feedback & Practical Tips (2)</h4>
+            <div class="flex gap-2 text-xs">
+              <button onclick="bumpReaction(this)" class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-full font-bold">👍 Guide was helpful <span>31</span></button>
+              <button onclick="showToast('Flagged for contributor review')" class="bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full font-bold">🚩 Flag Outdated Link</button>
+            </div>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-xs space-y-1">
+            <div class="font-bold text-brand-dark">Sapini Unoi • v2.1 Feedback</div>
+            <p class="text-gray-700">"Tip for first-time claimants: keep a photo of your signed paper form before posting, or register for the online portal—reimbursements came through in 5 working days!"</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: CALENDAR SCHEDULES, EVENTS & RESEND NOTIFICATIONS -->
+    <section id="pview-calendar" class="portal-view hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-200 space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-2xl font-heading font-bold uppercase text-brand-dark">Community Calendar & Schedules</h2>
+              <p class="text-xs text-gray-500">RSVP for Sunday Sessions, workshops, and local catch-ups.</p>
+            </div>
+            <span class="text-xs bg-brand-orange/10 text-brand-orange font-bold px-3 py-1 rounded-full">📧 Powered by Resend (notifications@lemalaga.org)</span>
+          </div>
+
+          <div class="space-y-4">
+            <div class="p-5 rounded-2xl bg-[#fcfaf4] border border-[#e8e2d2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-4">
+                <div class="bg-brand-orange text-white w-14 h-14 rounded-2xl flex flex-col items-center justify-center font-heading font-bold flex-shrink-0">
+                  <span class="text-xl leading-none">SUN</span>
+                  <span class="text-[10px] tracking-widest">WEEKLY</span>
+                </div>
+                <div>
+                  <span class="text-[10px] font-bold uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">Online Zoom • Members Link Unlocked</span>
+                  <h3 class="font-bold text-brand-dark text-base mt-1">Weekly Sunday Session — Devotion & Open Talanoa</h3>
+                  <p class="text-xs text-gray-600">Every Sunday • 8:30pm – 9:30pm NZST • Zoom Link: <code>zoom.us/j/lemalaga-sunday</code></p>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button onclick="showToast('RSVP confirmed! Resend emailed your .ics calendar invite.')" class="bg-brand-dark text-white px-4 py-2 rounded-full text-xs font-bold">✅ Going (Email .ics)</button>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-white border border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-4">
+                <div class="bg-brand-dark text-white w-14 h-14 rounded-2xl flex flex-col items-center justify-center font-heading font-bold flex-shrink-0">
+                  <span class="text-xl leading-none">20</span>
+                  <span class="text-[10px] tracking-widest">NOV</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-brand-dark text-base">West & South Auckland Carers Coffee Catch-Up</h3>
+                  <p class="text-xs text-gray-600">10:30am – 12:30pm • Mangere Arts Centre Café • Loved ones welcome</p>
+                </div>
+              </div>
+              <button onclick="showToast('RSVP confirmed! 24h & 1h Resend reminders scheduled.')" class="border-2 border-brand-dark text-brand-dark hover:bg-brand-dark hover:text-white px-4 py-2 rounded-full text-xs font-bold transition">RSVP + Add to Calendar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resend Email Preferences Card -->
+        <div class="lg:col-span-4 bg-[#fcfaf4] rounded-3xl p-6 shadow-md border border-[#e8e2d2] space-y-4">
+          <h3 class="font-heading font-bold uppercase text-brand-dark text-lg">📧 Resend Email Notifications</h3>
+          <p class="text-xs text-gray-600">Automatic emails sent via <code>notifications@lemalaga.org</code>:</p>
+          <div class="space-y-3 text-xs">
+            <label class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-200 cursor-pointer">
+              <span><strong>24h & 1h Meeting Reminders</strong><br/><span class="text-gray-400">Includes direct Zoom link & .ics</span></span>
+              <input type="checkbox" checked class="accent-brand-orange w-4 h-4" />
+            </label>
+            <label class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-200 cursor-pointer">
+              <span><strong>🚨 Urgent Virtual Border Alerts</strong><br/><span class="text-gray-400">Instant email when device exits safe zone</span></span>
+              <input type="checkbox" checked class="accent-brand-orange w-4 h-4" />
+            </label>
+            <label class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-200 cursor-pointer">
+              <span><strong>Village Feed Replies & Approvals</strong><br/><span class="text-gray-400">When carers reply to your posts</span></span>
+              <input type="checkbox" checked class="accent-brand-orange w-4 h-4" />
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 7: PATIENT REGISTRATION, CONSENT LEDGER & VIRTUAL BORDER ALERTS -->
+    <section id="pview-lovedones" class="portal-view hidden space-y-6">
+      <!-- Live Alert Banner (Hidden until simulated) -->
+      <div id="geofenceAlertBanner" class="hidden bg-red-600 text-white p-5 rounded-2xl shadow-xl flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🚨</span>
+          <div>
+            <h4 class="font-heading font-bold uppercase text-lg">Virtual Border Crossed — Mama Apoaniva (Watch #LM-884)</h4>
+            <p class="text-xs text-red-100">Exited "Home Safe Zone (200m)" at 2:14pm • Current Location: 340m North ( Bader Drive, Mangere ) • High-priority Resend email dispatched to Siaosi.</p>
+          </div>
+        </div>
+        <button onclick="document.getElementById('geofenceAlertBanner').classList.add('hidden'); showToast('Alert acknowledged by Siaosi Lemanu')" class="bg-white text-red-700 px-4 py-2 rounded-full text-xs font-bold">
+          Acknowledge Alert
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Left: Patient Profile & Privacy Consent Accountability Ledger -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white rounded-3xl p-6 shadow-md border border-gray-200 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full">✅ Consent & EPOA Verified</span>
+              <span class="text-[11px] text-gray-400">Strictly Private to Accountable Carer</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/flory2.jpg" class="w-16 h-16 rounded-2xl object-cover border-2 border-brand-dark" />
+              <div>
+                <h3 class="font-heading font-bold text-xl text-brand-dark uppercase">Mama Apoaniva (82)</h3>
+                <p class="text-xs text-gray-600">Accountable Carer: <strong>Siaosi Lemanu (Son / EPOA)</strong></p>
+                <p class="text-xs text-brand-orange font-semibold mt-0.5">Speaks Samoan • Responds calmly to hymns & gentle tone</p>
+              </div>
+            </div>
+
+            <div class="bg-[#fcfaf4] p-4 rounded-2xl border border-[#e8e2d2] text-xs space-y-2">
+              <div class="font-bold text-brand-dark uppercase">🛡️ Privacy & Consent Accountability Record</div>
+              <p class="text-gray-600">Signed by <strong>Siaosi Lemanu</strong> under <em>Enduring Power of Attorney (Personal Care & Welfare)</em> • NZ Privacy Act 2020 Compliant (Consent v1.2).</p>
+              <div class="flex gap-2 pt-1">
+                <button onclick="showToast('Viewing immutable Consent Audit Log')" class="text-brand-orange font-bold hover:underline">View Consent Ledger</button>
+                <span>•</span>
+                <button onclick="showToast('Revoke & purge tracking data confirmation opened')" class="text-red-600 font-bold hover:underline">Revoke Consent</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-6 shadow-md border border-gray-200 space-y-4">
+            <h4 class="font-heading font-bold uppercase text-brand-dark">⌚ Paired Tracking Device & Safe Zone</h4>
+            <div class="text-xs space-y-2">
+              <div class="flex justify-between py-1.5 border-b border-gray-100"><span>Device Label:</span><strong>Mum's GPS Watch (IMEI #LM-884)</strong></div>
+              <div class="flex justify-between py-1.5 border-b border-gray-100"><span>Battery & Status:</span><strong class="text-emerald-700">🔋 86% • Online (Pinged 30s ago)</strong></div>
+              <div class="flex justify-between py-1.5 border-b border-gray-100"><span>Active Virtual Border:</span><strong>Home Safe Zone (<span id="radiusLabel">200</span>m radius)</strong></div>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-gray-700 block mb-1">Adjust Safe Zone Virtual Border Radius:</label>
+              <input type="range" min="100" max="500" step="50" value="200" oninput="document.getElementById('radiusLabel').innerText = this.value" class="w-full accent-brand-orange" />
+            </div>
+            <button onclick="triggerSimulatedBoundaryExit()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-full text-xs font-bold transition shadow">
+              🚨 Test "Virtual Border Crossed" Alert + Resend Email
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Virtual Border Map -->
+        <div class="lg:col-span-7 bg-slate-900 rounded-3xl p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden min-h-[380px]">
+          <div class="flex items-center justify-between z-10">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-emerald-400 font-bold">PostGIS Live Safe-Zone Monitor</span>
+              <h3 class="font-heading font-bold text-xl uppercase">Mangere Home Virtual Border (200m)</h3>
+            </div>
+            <span id="deviceMapStatus" class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1 rounded-full font-bold">● Inside Safe Zone</span>
+          </div>
+
+          <!-- Visual Radar / Geofence Representation -->
+          <div class="my-auto flex items-center justify-center relative py-12">
+            <div class="w-64 h-64 rounded-full border-2 border-dashed border-emerald-400/70 bg-emerald-500/10 flex items-center justify-center relative">
+              <div class="w-64 h-64 rounded-full bg-emerald-400/10 pulse-ring absolute"></div>
+              <!-- Home Center Pin -->
+              <div class="text-center z-10">
+                <div class="bg-brand-dark text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/30 shadow">🏡 Home Center</div>
+              </div>
+              <!-- Patient GPS Dot -->
+              <div id="patientGpsMarker" class="absolute top-14 right-14 transition-all duration-700 z-20">
+                <div class="bg-brand-orange text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg border-2 border-white flex items-center gap-1.5">
+                  <span>📍 Mama Apoaniva</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[11px] text-slate-400 flex items-center justify-between z-10 border-t border-slate-800 pt-3">
+            <span>Coordinates: -36.9682, 174.7981 (PostGIS Geometry)</span>
+            <span> Moderators & Public have ZERO access to this view</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- WORKSPACE 2: UNIFIED ADMIN & CMS PORTAL (/admin)          -->
+  <!-- ========================================================= -->
+  <main id="workspace-admin" class="hidden max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 flex-1 space-y-6">
+
+    <!-- Role Permission Notice Banner -->
+    <div id="adminRoleNotice" class="bg-brand-dark text-white px-5 py-3.5 rounded-2xl text-xs flex flex-wrap items-center justify-between gap-2 shadow">
+      <span id="adminRoleNoticeText">👑 Viewing as <strong>Super Admin</strong>: You have access to Public Website CMS, Internal Portal Moderation, and User Role Management.</span>
+      <span class="bg-white/15 px-2.5 py-1 rounded font-mono">RLS Role Guard Active</span>
+    </div>
+
+    <!-- ADMIN TAB 1: PUBLIC WEBSITE CMS & PUBLIC STORY PUBLISHER (content_editor & super_admin ONLY) -->
+    <section id="aview-cms" class="admin-view space-y-6">
+      <!-- Exclusive Public Story Publisher Table -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-200 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="text-xs font-bold uppercase text-brand-orange tracking-wider">Exclusive Content Editor Authority</span>
+            <h2 class="text-2xl font-heading font-bold uppercase text-brand-dark">Public Website Story Publisher (/stories)</h2>
+            <p class="text-xs text-gray-600">Only a <strong>Content Editor</strong> (or Super Admin) can publish or unpublish stories to the Public Website—regardless of internal moderator status.</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 text-gray-500 uppercase">
+                <th class="py-3 px-3">Carer & Story Title</th>
+                <th class="py-3 px-3">Carer Consent</th>
+                <th class="py-3 px-3">Internal Status</th>
+                <th class="py-3 px-3">Public Website Visibility (Content Editor Choice)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="py-3 px-3 font-bold text-brand-dark">Jennifer — "The Essence of Mum"</td>
+                <td class="py-3 px-3 text-emerald-700 font-semibold">✅ Allowed Public</td>
+                <td class="py-3 px-3"><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-bold">Approved</span></td>
+                <td class="py-3 px-3">
+                  <select onchange="showToast('Updated Jennifer story visibility to: ' + this.value)" class="border border-brand-orange bg-amber-50 text-brand-dark font-bold rounded-lg px-2.5 py-1.5">
+                    <option value="public_portal" selected>🌍 Published on Public Website + Portal (public_portal)</option>
+                    <option value="portal_only">🔒 Carer Portal Only (portal_only)</option>
+                    <option value="unpublished">⏸️ Unpublished / Draft</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-3 px-3 font-bold text-brand-dark">Siaosi Lemanu — "Sunday Toonai & Hymns"</td>
+                <td class="py-3 px-3 text-emerald-700 font-semibold">✅ Allowed Public</td>
+                <td class="py-3 px-3"><span class="bg-amber-50 text-amber-800 px-2 py-0.5 rounded font-bold">Pending Moderator</span></td>
+                <td class="py-3 px-3">
+                  <select onchange="showToast('Content Editor published Siaosi story directly to Public Website!')" class="border border-gray-300 bg-white text-gray-800 font-bold rounded-lg px-2.5 py-1.5">
+                    <option value="portal_only" selected>🔒 Carer Portal Only (portal_only)</option>
+                    <option value="public_portal">🌍 Publish Directly to Public Website (Override)</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BlockNote WYSIWYG Public Page Editor -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-200 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase text-brand-orange">BlockNote (@blocknote/react) WYSIWYG CMS</span>
+            <h3 class="text-2xl font-heading font-bold uppercase text-brand-dark">Edit Public Website Pages & "Meet the Aiga"</h3>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <select onchange="showToast('Loaded page in CMS editor: ' + this.value)" class="text-xs font-bold border border-gray-300 rounded-lg px-3 py-2 bg-[#fcfaf4]">
+              <option>📄 About Us (/about) — Mission & Meet the Aiga</option>
+              <option>🏠 Home Page (/) — Hero & Action Cards</option>
+              <option>🤝 Carer Support (/carer-support)</option>
+              <option>🎥 Sunday Sessions (/sunday-sessions)</option>
+              <option>📅 Events & Walk Fundraiser Banner (/events)</option>
+              <option>⚖️ Privacy & Safeguarding Policies (/privacy)</option>
+            </select>
+            <button onclick="toggleMarkdownSource()" class="text-xs font-bold bg-slate-800 text-white px-3.5 py-2 rounded-lg">
+              { } Toggle Raw Markdown + Block JSON
+            </button>
+            <button onclick="showToast('Published live to Public Website!')" class="text-xs font-bold bg-brand-orange text-white px-5 py-2 rounded-lg shadow">
+              Publish to Public Site
+            </button>
+          </div>
+        </div>
+
+        <p class="text-xs text-gray-500">Use the <strong>↑ / ↓ drag handles (⋮⋮)</strong> on any text, image, or video block below to reorder it on the page, or resize media widths:</p>
+
+        <!-- Interactive Draggable/Reorderable BlockNote Canvas -->
+        <div id="cmsBlockContainer" class="space-y-3 bg-[#fcfaf4] p-5 rounded-2xl border border-[#e8e2d2]">
+          <!-- Block 1: Heading -->
+          <div class="cms-block bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-start gap-3">
+            <div class="flex flex-col gap-1 text-gray-400">
+              <button onclick="moveBlock(this, -1)" class="hover:text-brand-orange font-bold text-xs" title="Move Up">▲</button>
+              <span class="text-xs font-mono cursor-grab select-none">⋮⋮</span>
+              <button onclick="moveBlock(this, 1)" class="hover:text-brand-orange font-bold text-xs" title="Move Down">▼</button>
+            </div>
+            <div class="flex-1">
+              <span class="text-[10px] font-mono uppercase text-gray-400">Heading Block (H2)</span>
+              <input type="text" value="MISSION STATEMENT — WALKING ALONGSIDE OUR AIGA" class="w-full font-heading font-bold text-xl text-brand-dark uppercase focus:outline-none mt-1" />
+            </div>
+          </div>
+
+          <!-- Block 2: Movable/Resizable Image Block -->
+          <div class="cms-block bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-start gap-3">
+            <div class="flex flex-col gap-1 text-gray-400">
+              <button onclick="moveBlock(this, -1)" class="hover:text-brand-orange font-bold text-xs" title="Move Up">▲</button>
+              <span class="text-xs font-mono cursor-grab select-none">⋮⋮</span>
+              <button onclick="moveBlock(this, 1)" class="hover:text-brand-orange font-bold text-xs" title="Move Down">▼</button>
+            </div>
+            <div class="flex-1 space-y-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-[10px] font-mono uppercase text-brand-orange font-bold">📷 Movable Image / Video Block (Supabase Storage)</span>
+                <div class="flex items-center gap-1.5 text-xs">
+                  <span class="text-gray-400">Width:</span>
+                  <button onclick="resizeDemoImage('40%')" class="px-2 py-0.5 bg-gray-100 rounded hover:bg-gray-200 font-bold">Small</button>
+                  <button onclick="resizeDemoImage('65%')" class="px-2 py-0.5 bg-gray-100 rounded hover:bg-gray-200 font-bold">Medium</button>
+                  <button onclick="resizeDemoImage('100%')" class="px-2 py-0.5 bg-gray-100 rounded hover:bg-gray-200 font-bold">Full</button>
+                </div>
+              </div>
+              <img id="cmsResizableImg" src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/West_Auckland_1.png" style="width: 65%" class="rounded-xl border border-gray-200 transition-all duration-300" />
+              <input type="text" value="Caption: West & Central Auckland Carers Catch-Up — One Village." class="w-full text-xs text-gray-500 italic focus:outline-none" />
+            </div>
+          </div>
+
+          <!-- Block 3: Paragraph -->
+          <div class="cms-block bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-start gap-3">
+            <div class="flex flex-col gap-1 text-gray-400">
+              <button onclick="moveBlock(this, -1)" class="hover:text-brand-orange font-bold text-xs" title="Move Up">▲</button>
+              <span class="text-xs font-mono cursor-grab select-none">⋮⋮</span>
+              <button onclick="moveBlock(this, 1)" class="hover:text-brand-orange font-bold text-xs" title="Move Down">▼</button>
+            </div>
+            <div class="flex-1">
+              <span class="text-[10px] font-mono uppercase text-gray-400">Paragraph Block (Markdown)</span>
+              <textarea rows="2" class="w-full text-sm text-gray-700 focus:outline-none mt-1">Le Malaga exists to Uplift, Empower and walk alongside Carers on their journey. We are Dementia specific but not exclusive.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dual Saved Output Preview (Markdown + BlockNote JSON) -->
+        <div id="markdownSourceDrawer" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-900 text-slate-200 p-4 rounded-2xl text-xs font-mono">
+          <div>
+            <div class="text-amber-400 font-bold mb-1">1. Saved content_markdown (Portable Markdown):</div>
+            <pre class="whitespace-pre-wrap text-[11px] text-slate-300">## MISSION STATEMENT — WALKING ALONGSIDE OUR AIGA
+
+![West & Central Auckland Carers Catch-Up](/images/West_Auckland_1.png)
+
+Le Malaga exists to Uplift, Empower and walk alongside Carers on their journey.</pre>
+          </div>
+          <div>
+            <div class="text-emerald-400 font-bold mb-1">2. Saved content_blocks (Preserves Image Size & Position):</div>
+            <pre class="whitespace-pre-wrap text-[11px] text-slate-300">[
+  { "type": "heading", "props": { "level": 2 } },
+  { "type": "image", "props": { "url": "/images/West_Auckland_1.png", "previewWidth": "65%", "alignment": "left" } },
+  { "type": "paragraph" }
+]</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMIN TAB 2: INTERNAL PORTAL MODERATION (moderator & super_admin) -->
+    <section id="aview-moderation" class="admin-view hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-200 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="text-xs font-bold uppercase text-brand-dark">Internal Community Moderation</span>
+            <h2 class="text-2xl font-heading font-bold uppercase text-brand-dark">Pending Internal Carer Portal Queue</h2>
+            <p class="text-xs text-gray-600">Moderators can approve stories for <strong>Carer Portal Only (<code>portal_only</code>)</strong> and approve members-only Rest Home Reviews. <em>(Publishing to the public website requires a Content Editor).</em></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-5 rounded-2xl bg-[#fcfaf4] border border-[#e8e2d2] space-y-3">
+            <span class="bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-bold">Pending Story • Submitted by Siaosi Lemanu</span>
+            <h4 class="font-bold text-base text-brand-dark">"Sunday Toonai & Hymns" (5 Steps + 3 Polaroids)</h4>
+            <p class="text-gray-600">Carer consented to public sharing, or internal portal sharing.</p>
+            <div class="flex flex-wrap gap-2 pt-2">
+              <button onclick="showToast('Approved for Internal Carer Portal (portal_only)!')" class="bg-brand-dark text-white px-4 py-2 rounded-lg font-bold">✅ Approve for Carer Portal Only</button>
+              <button disabled class="bg-gray-200 text-gray-400 px-4 py-2 rounded-lg font-bold cursor-not-allowed" title="Only Content Editors can publish to the public website">🔒 Publish to Public (Content Editor Only)</button>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-[#fcfaf4] border border-[#e8e2d2] space-y-3">
+            <span class="bg-rose-100 text-rose-800 px-2.5 py-0.5 rounded-full font-bold">Pending Rest Home Review • Anonymous Toggle ON</span>
+            <h4 class="font-bold text-base text-brand-dark">Pacific Haven Care — ★ 4.6 Rating</h4>
+            <p class="text-gray-600">"Several Samoan and Tongan nurses on the afternoon shift who spoke to Dad in our language..."</p>
+            <div class="flex gap-2 pt-2">
+              <button onclick="showToast('Rest Home Review approved for Members-Only directory!')" class="bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold">✅ Approve for Members</button>
+              <button onclick="showToast('Review rejected')" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-bold">Reject</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMIN TAB 3: USER & ROLE MANAGER (super_admin ONLY) -->
+    <section id="aview-users" class="admin-view hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-200 space-y-4">
+        <div>
+          <span class="text-xs font-bold uppercase text-brand-orange">Super Admin Exclusive</span>
+          <h2 class="text-2xl font-heading font-bold uppercase text-brand-dark">User & Role Management (Google OAuth Accounts)</h2>
+          <p class="text-xs text-gray-600">Assign <code>carer</code>, <code>moderator</code>, <code>content_editor</code>, or <code>super_admin</code> roles. Protected by PostgreSQL security trigger.</p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 text-gray-500 uppercase">
+                <th class="py-3 px-3">User (Google Sign-In)</th>
+                <th class="py-3 px-3">Region</th>
+                <th class="py-3 px-3">Assigned Role</th>
+                <th class="py-3 px-3">Trusted Guide Contributor</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="py-3 px-3 font-bold">Elijah Mondero (elijahmondero@gmail.com)</td>
+                <td class="py-3 px-3">Auckland</td>
+                <td class="py-3 px-3">
+                  <select onchange="showToast('Role updated!')" class="border border-gray-300 rounded-lg px-2.5 py-1 font-bold bg-amber-50">
+                    <option>super_admin</option>
+                    <option>content_editor</option>
+                    <option>moderator</option>
+                    <option>carer</option>
+                  </select>
+                </td>
+                <td class="py-3 px-3"><input type="checkbox" checked class="accent-brand-orange" /></td>
+              </tr>
+              <tr>
+                <td class="py-3 px-3 font-bold">Flory Fesaua'i Sio Levy (flory@lemalaga.org)</td>
+                <td class="py-3 px-3">Auckland</td>
+                <td class="py-3 px-3">
+                  <select onchange="showToast('Role updated for Flory!')" class="border border-gray-300 rounded-lg px-2.5 py-1 font-bold">
+                    <option>content_editor</option>
+                    <option>super_admin</option>
+                    <option>moderator</option>
+                    <option>carer</option>
+                  </select>
+                </td>
+                <td class="py-3 px-3"><input type="checkbox" checked class="accent-brand-orange" /></td>
+              </tr>
+              <tr>
+                <td class="py-3 px-3 font-bold">Aitasi Lemanu (tasi@lemalaga.org)</td>
+                <td class="py-3 px-3">Auckland</td>
+                <td class="py-3 px-3">
+                  <select onchange="showToast('Role updated for Tasi!')" class="border border-gray-300 rounded-lg px-2.5 py-1 font-bold">
+                    <option>moderator</option>
+                    <option>content_editor</option>
+                    <option>super_admin</option>
+                    <option>carer</option>
+                  </select>
+                </td>
+                <td class="py-3 px-3"><input type="checkbox" checked class="accent-brand-orange" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GOOGLE SIGN-IN PREVIEW MODAL -->
+  <div id="loginModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#fcfaf4] max-w-md w-full rounded-3xl p-8 shadow-2xl border border-[#e8e2d2] text-center space-y-5">
+      <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/logo.png" class="h-16 mx-auto object-contain" />
+      <div>
+        <h3 class="text-2xl font-heading font-bold uppercase text-brand-dark">Welcome to the Carer Village</h3>
+        <p class="text-xs text-gray-600 mt-1">Sign in with your Google account to access the members-only Carer Portal, Rest Home Reviews, and Support Village.</p>
+      </div>
+      <button onclick="toggleLoginModal(false); showToast('Signed in with Google OAuth (Supabase Auth)')" class="w-full bg-white hover:bg-gray-50 text-gray-800 font-bold py-3.5 px-6 rounded-full shadow-md border border-gray-300 flex items-center justify-center gap-3 text-sm transition">
+        <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/><path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 20.9 7.4 24 12 24z"/></svg>
+        Continue with Google
+      </button>
+      <button onclick="toggleLoginModal(false)" class="text-xs text-gray-400 hover:text-gray-600">Close Preview</button>
+    </div>
+  </div>
+
+  <script>
+    let currentRole = 'super_admin';
+    let currentWorkspace = 'portal';
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastText').innerText = '✨ ' + msg;
+      t.classList.remove('hidden');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.classList.add('hidden'), 3200);
+    }
+
+    function switchWorkspace(mode) {
+      if (mode === 'admin' && currentRole === 'carer') {
+        showToast('Access Denied: Regular Carers cannot open /admin. Switch Role at top to Moderator, Content Editor, or Super Admin!');
+        return;
+      }
+      currentWorkspace = mode;
+      const pMain = document.getElementById('workspace-portal');
+      const aMain = document.getElementById('workspace-admin');
+      const pTabs = document.getElementById('portalNavTabs');
+      const aTabs = document.getElementById('adminNavTabs');
+      const btnP = document.getElementById('btnPortalMode');
+      const btnA = document.getElementById('btnAdminMode');
+
+      if (mode === 'portal') {
+        pMain.classList.remove('hidden');
+        aMain.classList.add('hidden');
+        pTabs.classList.remove('hidden');
+        aTabs.classList.add('hidden');
+        btnP.className = 'px-3 py-1 rounded-md font-bold text-xs transition bg-brand-orange text-white';
+        btnA.className = 'px-3 py-1 rounded-md font-bold text-xs transition text-slate-300 hover:text-white';
+        document.getElementById('headerPortalTitle').innerText = 'Le Malaga Carer Village';
+        document.getElementById('headerPrivacyBadge').innerText = '🔒 Members-Only Space';
+      } else {
+        pMain.classList.add('hidden');
+        aMain.classList.remove('hidden');
+        pTabs.classList.add('hidden');
+        aTabs.classList.remove('hidden');
+        btnA.className = 'px-3 py-1 rounded-md font-bold text-xs transition bg-brand-orange text-white';
+        btnP.className = 'px-3 py-1 rounded-md font-bold text-xs transition text-slate-300 hover:text-white';
+        document.getElementById('headerPortalTitle').innerText = 'Le Malaga Admin & Public CMS';
+        document.getElementById('headerPrivacyBadge').innerText = '⚙️ Role-Guarded Backoffice';
+        applyAdminRoleVisibility();
+      }
+    }
+
+    function changeRole(role) {
+      currentRole = role;
+      const pill = document.getElementById('roleBadgePill');
+      const labels = {
+        carer: '👤 Carer / Member',
+        moderator: '🛡️ Moderator (Internal Portal Only)',
+        content_editor: '✍️ Content Editor (Public CMS & Public Stories)',
+        super_admin: '👑 Super Admin (Full Control)'
+      };
+      pill.innerText = labels[role];
+      if (role === 'carer' && currentWorkspace === 'admin') {
+        switchWorkspace('portal');
+      } else if (currentWorkspace === 'admin') {
+        applyAdminRoleVisibility();
+      }
+      showToast('Switched active role to: ' + labels[role]);
+    }
+
+    function applyAdminRoleVisibility() {
+      const tabCms = document.getElementById('atab-cms');
+      const tabMod = document.getElementById('atab-moderation');
+      const tabUsers = document.getElementById('atab-users');
+      const notice = document.getElementById('adminRoleNoticeText');
+
+      tabCms.classList.toggle('hidden', !(currentRole === 'content_editor' || currentRole === 'super_admin'));
+      tabMod.classList.toggle('hidden', !(currentRole === 'moderator' || currentRole === 'super_admin'));
+      tabUsers.classList.toggle('hidden', currentRole !== 'super_admin');
+
+      if (currentRole === 'moderator') {
+        notice.innerHTML = '🛡️ Viewing as <strong>Moderator</strong>: You can moderate the internal Carer Portal only. Public Website CMS & Public Story Publishing are locked to Content Editors.';
+        showAdminTab('moderation');
+      } else if (currentRole === 'content_editor') {
+        notice.innerHTML = '✍️ Viewing as <strong>Content Editor</strong>: You control everything published to the Public Website (including Public Stories & Pages).';
+        showAdminTab('cms');
+      } else {
+        notice.innerHTML = '👑 Viewing as <strong>Super Admin</strong>: Full access to Public Website CMS, Internal Moderation, and User Role Management.';
+        showAdminTab('cms');
+      }
+    }
+
+    function showPortalTab(id) {
+      document.querySelectorAll('.portal-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById('pview-' + id).classList.remove('hidden');
+      document.querySelectorAll('.portal-tab').forEach(btn => {
+        btn.className = 'portal-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition';
+      });
+      document.getElementById('ptab-' + id).className = 'portal-tab px-4 py-2 rounded-lg font-bold bg-brand-dark text-white whitespace-nowrap transition';
+    }
+
+    function showAdminTab(id) {
+      document.querySelectorAll('.admin-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById('aview-' + id).classList.remove('hidden');
+      document.querySelectorAll('.admin-tab').forEach(btn => {
+        if (!btn.classList.contains('hidden')) {
+          btn.className = 'admin-tab px-4 py-2 rounded-lg font-bold text-gray-700 hover:bg-gray-200/60 whitespace-nowrap transition';
+        }
+      });
+      document.getElementById('atab-' + id).className = 'admin-tab px-4 py-2 rounded-lg font-bold bg-brand-orange text-white whitespace-nowrap transition';
+    }
+
+    function bumpReaction(btn) {
+      const span = btn.querySelector('span');
+      span.innerText = parseInt(span.innerText, 10) + 1;
+      showToast('Sent reaction to carer!');
+    }
+
+    function createNewFeedPost() {
+      const input = document.getElementById('newPostInput');
+      const topic = document.getElementById('newPostTopic').value;
+      if (!input.value.trim()) {
+        showToast('Write a message first!');
+        return;
+      }
+      const list = document.getElementById('feedPostsList');
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-2xl p-6 shadow-md border border-brand-orange/40';
+      card.innerHTML = `
+        <div class="flex items-center gap-3 mb-3">
+          <img src="https://raw.githubusercontent.com/Le-Malaga/le-malaga.github.io/main/public/images/flory1.jpg" class="w-10 h-10 rounded-full object-cover" />
+          <div>
+            <div class="font-bold text-brand-dark text-sm">Siaosi Lemanu <span class="text-xs font-normal text-gray-400">• Just now • ${topic}</span></div>
+          </div>
+        </div>
+        <p class="text-sm text-gray-800 mb-3">${input.value}</p>
+        <div class="flex gap-2 text-xs">
+          <button onclick="bumpReaction(this)" class="px-3 py-1 rounded-full bg-rose-50 text-rose-700 font-bold">❤️ Alofa <span>1</span></button>
+          <button onclick="bumpReaction(this)" class="px-3 py-1 rounded-full bg-amber-50 text-amber-800 font-bold">🙏 Strength <span>0</span></button>
+        </div>
+      `;
+      list.prepend(card);
+      input.value = '';
+      showToast('Posted to the Village Feed!');
+    }
+
+    function selectStoryStep(num, title) {
+      document.getElementById('storyStepLabel').innerText = `Step ${num}: ${title}`;
+      showToast(`Editing Step ${num}: ${title}`);
+    }
+
+    function triggerSimulatedBoundaryExit() {
+      const marker = document.getElementById('patientGpsMarker');
+      const status = document.getElementById('deviceMapStatus');
+      const banner = document.getElementById('geofenceAlertBanner');
+      marker.style.top = '-12px';
+      marker.style.right = '10px';
+      status.className = 'text-xs bg-red-500/30 text-red-200 border border-red-400 px-3 py-1 rounded-full font-bold';
+      status.innerText = '🚨 OUTSIDE SAFE ZONE (340m N)';
+      banner.classList.remove('hidden');
+      showToast('🚨 Boundary Exit detected! High-priority Resend email sent.');
+    }
+
+    function moveBlock(btn, dir) {
+      const block = btn.closest('.cms-block');
+      const container = document.getElementById('cmsBlockContainer');
+      if (dir === -1 && block.previousElementSibling) {
+        container.insertBefore(block, block.previousElementSibling);
+        showToast('Moved block up (BlockNote JSON order updated)');
+      } else if (dir === 1 && block.nextElementSibling) {
+        container.insertBefore(block.nextElementSibling, block);
+        showToast('Moved block down (BlockNote JSON order updated)');
+      }
+    }
+
+    function resizeDemoImage(width) {
+      document.getElementById('cmsResizableImg').style.width = width;
+      showToast('Image resized to ' + width + ' (Saved in content_blocks)');
+    }
+
+    function toggleMarkdownSource() {
+      document.getElementById('markdownSourceDrawer').classList.toggle('hidden');
+    }
+
+    function toggleLoginModal(show) {
+      document.getElementById('loginModal').classList.toggle('hidden', !show);
+    }
+  </script>
+</body>
+</html>
