@@ -3,27 +3,20 @@
 This file tracks the progress of the Le Malaga project so that any new agent joining the repository has immediate context on what has been built, what is currently in progress, and what remains to be done.
 
 ## 🚧 Current Status
-- **Phase:** MAINTENANCE & MIGRATION
-- **Recent Milestones:** 
-  - Authored and committed `CARER_PORTAL_SPECS.md` detailing the full Supabase architecture, 4-tier RBAC, LinkedIn-style Carer Profiles, Facebook-style Village Feed, Versioned/Collaborative Resource Permalinks, Members-Only Rest Home Reviews, and Carer-Managed Patient Geofence Tracking with Consent Accountability.
+- **Phase:** LIVE SUPABASE PUBLIC CMS & INVITE-ONLY ADMIN PORTAL DEPLOYED
+- **Recent Milestones:**
+  - **Supabase Database & Storage (`ybovhrbnbednnxppofmv`, Oceania Sydney `ap-southeast-2`):**
+    - Created and pushed SQL migrations (`20261102000001_public_cms_and_admin_auth.sql` & `20261102000002_seed_public_cms_content.sql`) establishing `admin_users` (invite-only Google OAuth allowlist seeded with `elijahmondero@gmail.com` as `super_admin`), `site_settings`, `site_pages`, `team_members`, `stories`, `events`, `community_highlights`, `resources`, and the `site-media` Storage bucket with strict Row Level Security (RLS).
+  - **Separate Admin & Public Website CMS Repository (`https://github.com/Le-Malaga/admin.lemalaga.org`):**
+    - Built and deployed the standalone Admin Portal (`admin.lemalaga.org` / `https://www.lemalaga.org/admin.lemalaga.org/`) with Invite-Only Google OAuth login, 7 management tabs (Global Header/Logo/Footer, All 12 Public Pages with movable/resizable media blocks, Meet the Aiga Team Profiles, Carer Stories with Public/Portal/Draft scope, Events & Sunday Sessions & Walk Fundraiser Banner, Carer Resources, and Super Admin Invite-Only Users Manager), and automatic client-side `<canvas>` WebP image compression/upload to `site-media`.
+    - Configured `.github/workflows/deploy.yml` in `Le-Malaga/admin.lemalaga.org` (with GitHub Actions secrets set via `gh secret set`) to automatically run `supabase db push` database migrations and deploy Supabase Edge Functions (`supabase/functions/`) on push, followed by deploying the Admin SPA to GitHub Pages.
+  - **Public Website (`Le-Malaga/le-malaga.github.io` / `www.lemalaga.org`) Connected to Supabase:**
+    - Added `src/lib/supabase.ts` and `src/context/CmsContext.tsx` so all 12 public pages (`Home`, `About`, `Support`, `Resources`, `SundaySessions`, `Events`, `Stories`, `StoryDetail`, `GetInvolved`, and `GenericPage` routes `/start`, `/privacy`, `/terms`, `/safeguarding`, `/complaints`) dynamically render live content and movable/resizable media blocks from Supabase while preserving instant static fallbacks and original Tailwind styling.
+  - Authored and committed `CARER_PORTAL_SPECS.md` and interactive prototype `prototype/index.html` detailing the full Carer Community & Patient Safety Portal architecture.
   - Configured custom domain (`www.lemalaga.org`) via `public/CNAME` and set GitHub Pages build source to GitHub Actions workflow.
-  - Overhauled "Who We Are" page with custom CSS grid profiles for Flory, Tasi, and Juita. 
-  - Fixed image aspect ratios and clipping issues on the About page.
-  - Due to a 4-day Figma API rate limit ban, successfully migrated the entire CMS infrastructure to Notion. 
-  - Ran a single-shot backup extraction on Figma after the ban lifted: Downloaded 22 raw image nodes to `public/images/` and automatically migrated all text/story sticky notes into the new Notion `Tasks` database as individual task cards.
-- **Project Setup:** Initialized a Vite + React + TypeScript + Tailwind CSS project.
-- **CI/CD Pipeline:** Configured GitHub Actions (`.github/workflows/deploy.yml`) to build and deploy to GitHub Pages, including a custom `404.html` hack to support `BrowserRouter` SPA routing.
-- **Figma Integration:** Built a custom agent skill (`.agents/skills/read-figma/`) with Python scripts to securely read the Figma board, download exact image nodes directly into `/public/images`, and post "Integrated" comments back to the Figma canvas.
-- **UI & Branding:** Configured Tailwind with exact brand colors (Orange: `#d95a2b`, Dark Green: `#3e4a28`, Beige: `#f3eedf` / `#faf9f4`) and the `Oswald` / `Dancing Script` typography.
-- **Homepage (`/`):** Fully responsive, no-placeholder layout matching the original design.
-- **About Us (`/about`):** Implemented the core Mission Statement and built a beautiful "Meet the Aiga" section showcasing Flory's lived-experience story alongside her two images (`flory1`, `flory2`), and layouts for Tasi and Juita.
-- **Sunday Sessions (`/sunday-sessions`):** Implemented session details layout featuring the `zoom_meeting` image from Figma.
-- **Agent Rules:** Created `GEMINI.md` to strictly enforce security (no committing `.env`), strict CI/CD local testing, and proactive pipeline debugging.
-- **Donation Integration:** Placed the Givealittle donation link (`https://givealittle.co.nz/...`) in the main header navigation, the mobile menu, and the `GetInvolved.tsx` action button.
 
 ## 🚧 In Progress
-- Migrating remaining text/sections from the Figma board into the React application as they are updated.
+- Configuring Google OAuth Client ID & Secret in the Supabase Dashboard (`Authentication -> Providers -> Google`) and DNS `CNAME` record for `admin.lemalaga.org` -> `le-malaga.github.io`.
 
 ## 📝 To Do
-- Connect the "Get Involved" forms and "Donate" buttons to actual backends or external services when ready.
-- Continue expanding child pages as more content is added to the Figma board.
+- Phase 2: Build the Carer Community Portal (`portal.lemalaga.org` or `/portal`) for Carer Lived-Experience Profiles, Village Feed, Collaborative Resource Wiki, Rest Home Reviews, and Patient Geofence Safety Tracker.
