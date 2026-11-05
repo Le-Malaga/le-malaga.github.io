@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ybovhrbnbednnxppofmv.supabase.co'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://api.lemalaga.org'
 const supabaseKey =
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
   import.meta.env.VITE_SUPABASE_ANON_KEY ||

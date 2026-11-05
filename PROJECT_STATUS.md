@@ -16,7 +16,9 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
   - Configured custom domain (`www.lemalaga.org`) via `public/CNAME` and set GitHub Pages build source to GitHub Actions workflow.
 
 ## 🚧 In Progress
-- Configuring Google OAuth Client ID & Secret in the Supabase Dashboard (`Authentication -> Providers -> Google`) and DNS `CNAME` record for `admin.lemalaga.org` -> `le-malaga.github.io`.
+- Configuring Google OAuth Client ID in Google Cloud Console (`VITE_GOOGLE_CLIENT_ID`) for one-click Google Identity sign-in on `admin.lemalaga.org`.
+- Verified `admin.lemalaga.org` DNS and SSL certificate (Live over HTTPS).
+- Verified `api.lemalaga.org` Cloudflare Worker proxying to Supabase (100% free custom domain with no `supabase.co` exposure).
 
 ## 📝 To Do
 - Phase 2: Build the Carer Community Portal (`portal.lemalaga.org` or `/portal`) for Carer Lived-Experience Profiles, Village Feed, Collaborative Resource Wiki, Rest Home Reviews, and Patient Geofence Safety Tracker.
