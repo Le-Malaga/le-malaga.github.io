@@ -3,8 +3,20 @@
 This file tracks the progress of the Le Malaga project so that any new agent joining the repository has immediate context on what has been built, what is currently in progress, and what remains to be done.
 
 ## 🚧 Current Status
-- **Phase:** 100% DYNAMIC CMS & FULL-WIDTH ADMIN PORTAL WITH WYSIWYG PREVIEW LIVE
+- **Phase:** 100% DYNAMIC CMS WITH AUDITABLE VERSIONING & SYNCHRONIZED CRUD ENGINE LIVE
 - **Recent Milestones:**
+  - **Complete Content Harmonization & Migration Verified:**
+    - Confirmed all public website components are 100% stored in Supabase and live editable:
+      - **Header & Footer:** Global logo, navigation items, donate CTA button/destination, contact email, phone, location, cultural acknowledgement, and legal quick links (`site_settings.header_footer`).
+      - **Meet the Aiga Team:** All 3 co-founders (Flory, Tasi, Juita) with high-res photos, bios, and callout box (`team_members`).
+      - **Carer Stories:** All 10 carer stories (Mel, Barry, Fiapai, Lisa, Sina & Vera, Tania, Chichi, Sapini, Jennifer, Ruby) with 5-step polaroid journey timelines, quotes, and photos (`stories`).
+      - **Upcoming Events:** All 4 events (Le Malaga Tag Tournament, Indoor Netball, Carers Workshop, Fiafia Night) plus Next Sunday Session spotlight (`events` and `site_settings.next_sunday_session`).
+      - **Carer Resources:** All 5 system guides and reading frameworks (`resources` and `site_settings.resources_reading`).
+      - **Community Highlights & Walk Fundraiser:** Recent gatherings and Givealittle walk banner (`community_highlights` and `site_settings.fundraiser_banner`).
+    - **Dual-Schema Database Migration Applied (`20261106000003_harmonize_schema_and_version_all_tables.sql`):**
+      - Resolved query mismatch between `sort_order` / `display_order`, `is_published` / `is_active`, and `role` / `role_title` by adding bi-directional sync triggers across `team_members`, `stories`, `events`, `community_highlights`, and `resources`.
+      - Attached automatic `content_versions` audit triggers to all remaining content tables, enabling point-in-time snapshot history and 1-click restore across the entire portal.
+      - Implemented bidirectional Markdown and timeline step parsing in `admin.lemalaga.org`, enabling the WYSIWYG editor to manage full 5-step story journeys.
   - **100% Dynamic CMS Migration Completed:**
     - Seeded all remaining hardcoded public website content into Supabase project `ybovhrbnbednnxppofmv` via remote SQL migration `20261106000001_seed_all_hardcoded_content.sql`.
     - Bound all public pages (`Home`, `About`, `Support`, `SundaySessions`, `Resources`, `GetInvolved`, and `Layout` header/footer) to live Supabase CMS data with graceful fallback defaults.
