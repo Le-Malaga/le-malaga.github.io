@@ -17,6 +17,11 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
       - Resolved query mismatch between `sort_order` / `display_order`, `is_published` / `is_active`, and `role` / `role_title` by adding bi-directional sync triggers across `team_members`, `stories`, `events`, `community_highlights`, and `resources`.
       - Attached automatic `content_versions` audit triggers to all remaining content tables, enabling point-in-time snapshot history and 1-click restore across the entire portal.
       - Implemented bidirectional Markdown and timeline step parsing in `admin.lemalaga.org`, enabling the WYSIWYG editor to manage full 5-step story journeys.
+    - **Cross-Domain Image 404 Fix & Migration (`20261106000004_convert_relative_media_to_absolute_urls.sql`):**
+      - Fixed cross-domain 404s in the Admin Portal where relative paths (`/images/...`) attempted to resolve to `admin.lemalaga.org` instead of the public assets.
+      - Synchronized all 36 public image assets to `admin.lemalaga.org/public/images/`.
+      - Built and integrated `resolveMediaUrl()` helper in `admin.lemalaga.org` with automatic fallback to public CDN URLs and graceful `onError` recovery.
+      - Migrated all database rows in Supabase to canonical absolute URLs (`https://www.lemalaga.org/images/...`).
   - **100% Dynamic CMS Migration Completed:**
     - Seeded all remaining hardcoded public website content into Supabase project `ybovhrbnbednnxppofmv` via remote SQL migration `20261106000001_seed_all_hardcoded_content.sql`.
     - Bound all public pages (`Home`, `About`, `Support`, `SundaySessions`, `Resources`, `GetInvolved`, and `Layout` header/footer) to live Supabase CMS data with graceful fallback defaults.
