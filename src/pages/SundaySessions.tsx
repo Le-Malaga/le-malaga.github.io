@@ -2,9 +2,27 @@ import { Calendar, Video, Clock, MessageCircle } from 'lucide-react'
 import { useCms, PageBlocksRenderer } from '../context/CmsContext'
 
 export default function SundaySessions() {
-  const { pages, siteSettings } = useCms()
+  const { pages, siteSettings, sundayHighlights } = useCms()
   const sessionPage = pages['sunday-sessions'] || {}
   const nextSession = siteSettings.next_sunday_session || {}
+
+  const fallbackHighlights = [
+    {
+      id: 'talanoa',
+      icon: 'MessageCircle',
+      title: 'Open Talanoa',
+      description:
+        'We leave the last 30 minutes open for anyone to speak, share a challenge, or ask for prayer. It is a completely safe and confidential space.',
+    },
+    {
+      id: 'cameras',
+      icon: 'Video',
+      title: 'Cameras Optional',
+      description:
+        'We know caring is exhausting. You are welcome to join in your pajamas, with your camera off, just to listen and be present.',
+    },
+  ]
+  const displayHighlights = sundayHighlights && sundayHighlights.length > 0 ? sundayHighlights : fallbackHighlights
 
   return (
     <div className="w-full">
@@ -69,30 +87,21 @@ export default function SundaySessions() {
           </div>
 
           <div className="flex-1 space-y-6">
-            <div className="flex gap-6 items-start">
-              <div className="w-16 h-16 bg-brand-dark rounded-full flex items-center justify-center text-white flex-shrink-0">
-                <MessageCircle size={28} />
+            {displayHighlights.map((item: any, idx: number) => (
+              <div key={item.id || idx} className="flex gap-6 items-start">
+                <div
+                  className={`w-16 h-16 ${
+                    idx % 2 === 0 ? 'bg-brand-dark' : 'bg-brand-orange'
+                  } rounded-full flex items-center justify-center text-white flex-shrink-0`}
+                >
+                  {item.icon === 'Video' ? <Video size={28} /> : <MessageCircle size={28} />}
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-brand-dark mb-2">{item.title}</h4>
+                  <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                </div>
               </div>
-              <div>
-                <h4 className="text-xl font-bold text-brand-dark mb-2">Open Talanoa</h4>
-                <p className="text-gray-600 leading-relaxed">
-                  We leave the last 30 minutes open for anyone to speak, share a challenge, or ask
-                  for prayer. It is a completely safe and confidential space.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-6 items-start">
-              <div className="w-16 h-16 bg-brand-orange rounded-full flex items-center justify-center text-white flex-shrink-0">
-                <Video size={28} />
-              </div>
-              <div>
-                <h4 className="text-xl font-bold text-brand-dark mb-2">Cameras Optional</h4>
-                <p className="text-gray-600 leading-relaxed">
-                  We know caring is exhausting. You are welcome to join in your pajamas, with your
-                  camera off, just to listen and be present.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

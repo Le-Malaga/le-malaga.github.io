@@ -3,8 +3,48 @@ import { Link } from 'react-router-dom'
 import { useCms, PageBlocksRenderer } from '../context/CmsContext'
 
 export default function Support() {
-  const { pages } = useCms()
+  const { pages, supportCards } = useCms()
   const supportPage = pages['carer-support'] || {}
+
+  const defaultCards = [
+    {
+      id: 'talanoa',
+      icon: 'Phone',
+      title: '1-ON-1 TALANOA',
+      description: 'Confidential, culturally safe conversations with experienced carers who understand your journey.',
+      buttonLabel: 'REQUEST A CALL',
+      buttonUrl: 'mailto:lemalganz@gmail.com?subject=1-on-1%20Talanoa%20Request',
+      buttonStyle: 'dark',
+    },
+    {
+      id: 'groups',
+      icon: 'Users',
+      title: 'SUPPORT GROUPS',
+      description: 'Join our regular in-person and online meetups to share stories and draw strength from the community.',
+      buttonLabel: 'VIEW SCHEDULE',
+      buttonUrl: '/events',
+      buttonStyle: 'orange',
+    },
+    {
+      id: 'sunday',
+      icon: 'Calendar',
+      title: 'SUNDAY SESSIONS',
+      description: 'Monthly Zoom check-ins featuring guest speakers, spiritual grounding, and dedicated Q&A time.',
+      buttonLabel: 'JOIN NEXT SESSION',
+      buttonUrl: '/sunday-sessions',
+      buttonStyle: 'dark',
+    },
+  ]
+
+  const displayCards = supportCards.length > 0 ? supportCards : defaultCards
+
+  const renderIcon = (name: string) => {
+    switch (name?.toLowerCase()) {
+      case 'users': return <Users size={28} />
+      case 'calendar': return <Calendar size={28} />
+      default: return <Phone size={28} />
+    }
+  }
 
   return (
     <div className="w-full">
@@ -33,59 +73,48 @@ export default function Support() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-[#f3eedf] rounded-full flex items-center justify-center mb-6 text-brand-dark">
-              <Phone size={28} />
-            </div>
-            <h3 className="text-2xl font-heading font-bold text-brand-dark mb-4 uppercase">
-              1-on-1 Talanoa
-            </h3>
-            <p className="text-gray-600 mb-8 flex-1">
-              Confidential, culturally safe conversations with experienced carers who understand
-              your journey.
-            </p>
-            <button className="w-full bg-brand-dark text-white py-3 rounded-full font-bold hover:bg-[#202d15] transition shadow-md">
-              REQUEST A CALL
-            </button>
-          </div>
-
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-[#f3eedf] rounded-full flex items-center justify-center mb-6 text-brand-dark">
-              <Users size={28} />
-            </div>
-            <h3 className="text-2xl font-heading font-bold text-brand-dark mb-4 uppercase">
-              Support Groups
-            </h3>
-            <p className="text-gray-600 mb-8 flex-1">
-              Join our regular in-person and online meetups to share stories and draw strength from
-              the community.
-            </p>
-            <Link
-              to="/events"
-              className="w-full bg-brand-orange text-white py-3 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-orange-800 transition shadow-md"
-            >
-              VIEW SCHEDULE <ArrowRight size={18} />
-            </Link>
-          </div>
-
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-[#f3eedf] rounded-full flex items-center justify-center mb-6 text-brand-dark">
-              <Calendar size={28} />
-            </div>
-            <h3 className="text-2xl font-heading font-bold text-brand-dark mb-4 uppercase">
-              Sunday Sessions
-            </h3>
-            <p className="text-gray-600 mb-8 flex-1">
-              Monthly Zoom check-ins featuring guest speakers, spiritual grounding, and dedicated
-              Q&A time.
-            </p>
-            <Link
-              to="/sunday-sessions"
-              className="w-full bg-brand-dark text-white py-3 rounded-full font-bold hover:bg-[#202d15] transition shadow-md"
-            >
-              JOIN NEXT SESSION
-            </Link>
-          </div>
+          {displayCards.map((card: any) => {
+            const isOrange = card.buttonStyle === 'orange'
+            return (
+              <div
+                key={card.id || card.title}
+                className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 flex flex-col items-center text-center"
+              >
+                <div className="w-16 h-16 bg-[#f3eedf] rounded-full flex items-center justify-center mb-6 text-brand-dark">
+                  {renderIcon(card.icon)}
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-brand-dark mb-4 uppercase">
+                  {card.title}
+                </h3>
+                <p className="text-gray-600 mb-8 flex-1 leading-relaxed">
+                  {card.description}
+                </p>
+                {card.buttonUrl?.startsWith('http') || card.buttonUrl?.startsWith('mailto') ? (
+                  <a
+                    href={card.buttonUrl}
+                    className={`w-full ${
+                      isOrange
+                        ? 'bg-brand-orange hover:bg-orange-800'
+                        : 'bg-brand-dark hover:bg-[#202d15]'
+                    } text-white py-3 rounded-full font-bold transition shadow-md block text-center`}
+                  >
+                    {card.buttonLabel}
+                  </a>
+                ) : (
+                  <Link
+                    to={card.buttonUrl}
+                    className={`w-full ${
+                      isOrange
+                        ? 'bg-brand-orange hover:bg-orange-800'
+                        : 'bg-brand-dark hover:bg-[#202d15]'
+                    } text-white py-3 rounded-full font-bold flex items-center justify-center gap-2 transition shadow-md`}
+                  >
+                    {card.buttonLabel} <ArrowRight size={18} />
+                  </Link>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

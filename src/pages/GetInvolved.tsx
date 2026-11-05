@@ -2,8 +2,45 @@ import { Heart, Users, HandHeart } from 'lucide-react'
 import { useCms, PageBlocksRenderer } from '../context/CmsContext'
 
 export default function GetInvolved() {
-  const { pages } = useCms()
+  const { pages, getInvolvedCards } = useCms()
   const involvedPage = pages['get-involved'] || {}
+
+  const fallbackCards = [
+    {
+      id: 'member',
+      icon: 'Users',
+      title: 'Become a Member',
+      description:
+        'Are you a carer? Join our community for free to access our resources, support groups, and Sunday Sessions.',
+      buttonText: 'SIGN UP',
+      buttonUrl: 'mailto:lemalganz@gmail.com?subject=Join%20Le%20Malaga',
+      theme: 'dark',
+    },
+    {
+      id: 'volunteer',
+      icon: 'HandHeart',
+      title: 'Volunteer',
+      description:
+        'We are always looking for passionate people to help run events, moderate online spaces, or provide professional services.',
+      buttonText: 'VOLUNTEER WITH US',
+      buttonUrl: 'mailto:lemalganz@gmail.com?subject=Volunteer%20Inquiry',
+      theme: 'orange',
+    },
+    {
+      id: 'donate',
+      icon: 'Heart',
+      title: 'Donate or Sponsor',
+      description:
+        'Your financial contributions allow us to run workshops, host retreats for burnt-out carers, and keep our services free.',
+      buttonText: 'MAKE A DONATION',
+      buttonUrl:
+        'https://givealittle.co.nz/cause/help-us-be-there-for-carers-today-not-tomorrow',
+      theme: 'dark',
+    },
+  ]
+
+  const displayCards =
+    getInvolvedCards && getInvolvedCards.length > 0 ? getInvolvedCards : fallbackCards
 
   return (
     <div className="w-full">
@@ -30,58 +67,56 @@ export default function GetInvolved() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-brand-dark rounded-full flex items-center justify-center mb-6 text-white">
-              <Users size={28} />
-            </div>
-            <h3 className="text-2xl font-heading font-bold text-brand-dark mb-4 uppercase">
-              Become a Member
-            </h3>
-            <p className="text-gray-600 mb-8 flex-1">
-              Are you a carer? Join our community for free to access our resources, support groups,
-              and Sunday Sessions.
-            </p>
-            <button className="w-full bg-brand-dark text-white py-3 rounded-full font-bold hover:bg-[#202d15] transition shadow-md">
-              SIGN UP
-            </button>
-          </div>
-
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 flex flex-col items-center text-center border-t-4 border-t-brand-orange">
-            <div className="w-16 h-16 bg-brand-orange rounded-full flex items-center justify-center mb-6 text-white">
-              <HandHeart size={28} />
-            </div>
-            <h3 className="text-2xl font-heading font-bold text-brand-dark mb-4 uppercase">
-              Volunteer
-            </h3>
-            <p className="text-gray-600 mb-8 flex-1">
-              We are always looking for passionate people to help run events, moderate online
-              spaces, or provide professional services.
-            </p>
-            <button className="w-full bg-brand-orange text-white py-3 rounded-full font-bold hover:bg-orange-800 transition shadow-md">
-              VOLUNTEER WITH US
-            </button>
-          </div>
-
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-brand-dark rounded-full flex items-center justify-center mb-6 text-white">
-              <Heart size={28} />
-            </div>
-            <h3 className="text-2xl font-heading font-bold text-brand-dark mb-4 uppercase">
-              Donate or Sponsor
-            </h3>
-            <p className="text-gray-600 mb-8 flex-1">
-              Your financial contributions allow us to run workshops, host retreats for burnt-out
-              carers, and keep our services free.
-            </p>
-            <a
-              href="https://givealittle.co.nz/cause/help-us-be-there-for-carers-today-not-tomorrow"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full bg-brand-dark text-white py-3 rounded-full font-bold hover:bg-[#202d15] transition shadow-md block"
-            >
-              MAKE A DONATION
-            </a>
-          </div>
+          {displayCards.map((card: any, idx: number) => {
+            const isOrange = card.theme === 'orange' || idx === 1
+            const IconComponent =
+              card.icon === 'HandHeart' ? HandHeart : card.icon === 'Heart' ? Heart : Users
+            return (
+              <div
+                key={card.id || idx}
+                className={`bg-white rounded-2xl p-8 shadow-xl border border-gray-100 flex flex-col items-center text-center ${
+                  isOrange ? 'border-t-4 border-t-brand-orange' : ''
+                }`}
+              >
+                <div
+                  className={`w-16 h-16 ${
+                    isOrange ? 'bg-brand-orange' : 'bg-brand-dark'
+                  } rounded-full flex items-center justify-center mb-6 text-white`}
+                >
+                  <IconComponent size={28} />
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-brand-dark mb-4 uppercase">
+                  {card.title}
+                </h3>
+                <p className="text-gray-600 mb-8 flex-1 leading-relaxed">{card.description}</p>
+                {card.buttonUrl?.startsWith('http') || card.buttonUrl?.startsWith('mailto') ? (
+                  <a
+                    href={card.buttonUrl}
+                    target={card.buttonUrl?.startsWith('http') ? '_blank' : undefined}
+                    rel="noopener noreferrer"
+                    className={`w-full py-3 rounded-full font-bold transition shadow-md block ${
+                      isOrange
+                        ? 'bg-brand-orange text-white hover:bg-orange-800'
+                        : 'bg-brand-dark text-white hover:bg-[#202d15]'
+                    }`}
+                  >
+                    {card.buttonText || 'LEARN MORE'}
+                  </a>
+                ) : (
+                  <a
+                    href={card.buttonUrl || '#'}
+                    className={`w-full py-3 rounded-full font-bold transition shadow-md block ${
+                      isOrange
+                        ? 'bg-brand-orange text-white hover:bg-orange-800'
+                        : 'bg-brand-dark text-white hover:bg-[#202d15]'
+                    }`}
+                  >
+                    {card.buttonText || 'LEARN MORE'}
+                  </a>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

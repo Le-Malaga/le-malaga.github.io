@@ -2,8 +2,27 @@ import { Book, FileText, Download, Link as LinkIcon, Video, ExternalLink } from 
 import { useCms, PageBlocksRenderer } from '../context/CmsContext'
 
 export default function Resources() {
-  const { pages, resources } = useCms()
+  const { pages, resources, resourcesReading } = useCms()
   const resourcesPage = pages['resources'] || {}
+
+  const fallbackReading = [
+    {
+      id: 'framework',
+      icon: 'Book',
+      title: 'The Pasifika Dementia Framework',
+      description:
+        'A culturally appropriate approach to understanding and managing dementia in our communities.',
+    },
+    {
+      id: 'webinar',
+      icon: 'Video',
+      title: 'Self-Care Webinar Series',
+      description:
+        'Recorded sessions from our clinical psychologists on managing burnout and grief.',
+    },
+  ]
+  const displayReading =
+    resourcesReading && resourcesReading.length > 0 ? resourcesReading : fallbackReading
 
   return (
     <div className="w-full">
@@ -104,25 +123,30 @@ export default function Resources() {
               Recommended Reading
             </h3>
             <div className="space-y-6">
-              <div className="flex gap-4 items-start">
-                <Book className="text-brand-orange mt-1 flex-shrink-0" size={24} />
-                <div>
-                  <h4 className="font-bold text-brand-dark">The Pasifika Dementia Framework</h4>
-                  <p className="text-sm text-gray-600 mt-1">
-                    A culturally appropriate approach to understanding and managing dementia in our
-                    communities.
-                  </p>
+              {displayReading.map((item: any, idx: number) => (
+                <div key={item.id || idx} className="flex gap-4 items-start">
+                  {item.icon === 'Video' ? (
+                    <Video className="text-brand-orange mt-1 flex-shrink-0" size={24} />
+                  ) : (
+                    <Book className="text-brand-orange mt-1 flex-shrink-0" size={24} />
+                  )}
+                  <div>
+                    {item.link ? (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-bold text-brand-dark hover:text-brand-orange transition flex items-center gap-1.5"
+                      >
+                        {item.title} <ExternalLink size={14} className="opacity-60" />
+                      </a>
+                    ) : (
+                      <h4 className="font-bold text-brand-dark">{item.title}</h4>
+                    )}
+                    <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-4 items-start">
-                <Video className="text-brand-orange mt-1 flex-shrink-0" size={24} />
-                <div>
-                  <h4 className="font-bold text-brand-dark">Self-Care Webinar Series</h4>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Recorded sessions from our clinical psychologists on managing burnout and grief.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

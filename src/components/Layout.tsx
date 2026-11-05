@@ -17,12 +17,25 @@ export default function Layout() {
     hf.donateButtonUrl ||
     'https://givealittle.co.nz/cause/help-us-be-there-for-carers-today-not-tomorrow'
   const contactEmail = hf.contactEmail || 'lemalagajourney@gmail.com'
-  const footerDesc =
+  const contactPhone = hf.contactPhone || '021 123 4567'
+  const contactLocation = hf.contactLocation || 'Auckland, New Zealand'
+  const weAcknowledge =
+    hf.weAcknowledge ||
     hf.footerDescription ||
     'We acknowledge our Pasifika ancestors and the land we walk on today.'
   const copyrightText =
     hf.copyrightText ||
     '© 2026 Le Malaga Incorporated | NZBN: 9429046818730 | Registered Incorporated Society'
+
+  const defaultQuickLinks = [
+    { label: 'Privacy Policy', path: '/privacy' },
+    { label: 'Terms of Use', path: '/terms' },
+    { label: 'Safeguarding Policy', path: '/safeguarding' },
+    { label: 'Complaints Process', path: '/complaints' },
+  ]
+
+  const quickLinks =
+    Array.isArray(hf.quickLinks) && hf.quickLinks.length > 0 ? hf.quickLinks : defaultQuickLinks
 
   const defaultNavLinks = [
     { name: 'HOME', path: '/' },
@@ -145,10 +158,10 @@ export default function Layout() {
                 <Globe size={16} className="text-brand-orange" /> {contactEmail}
               </li>
               <li className="flex items-center gap-2">
-                <User size={16} className="text-brand-orange" /> 021 123 4567
+                <User size={16} className="text-brand-orange" /> {contactPhone}
               </li>
               <li className="flex items-center gap-2">
-                <MapPin size={16} className="text-brand-orange" /> Auckland, New Zealand
+                <MapPin size={16} className="text-brand-orange" /> {contactLocation}
               </li>
             </ul>
           </div>
@@ -157,33 +170,20 @@ export default function Layout() {
               Quick Links
             </h3>
             <ul className="space-y-2 text-gray-400 font-medium">
-              <li>
-                <Link to="/privacy" className="hover:text-white">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/terms" className="hover:text-white">
-                  Terms of Use
-                </Link>
-              </li>
-              <li>
-                <Link to="/safeguarding" className="hover:text-white">
-                  Safeguarding Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/complaints" className="hover:text-white">
-                  Complaints Process
-                </Link>
-              </li>
+              {quickLinks.map((ql: any) => (
+                <li key={ql.path}>
+                  <Link to={ql.path} className="hover:text-white">
+                    {ql.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <h3 className="text-xl font-heading font-bold mb-4 uppercase tracking-wide">
               We Acknowledge
             </h3>
-            <p className="text-gray-400 mb-6 text-sm leading-relaxed">{footerDesc}</p>
+            <p className="text-gray-400 mb-6 text-sm leading-relaxed">{weAcknowledge}</p>
             <div className="bg-white/10 p-4 rounded-xl border border-white/5">
               <h4 className="font-bold mb-3 tracking-wide">STAY CONNECTED</h4>
               <div className="flex shadow-inner rounded-md overflow-hidden">

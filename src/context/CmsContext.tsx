@@ -11,6 +11,12 @@ export interface CmsContextType {
   events: any[]
   highlights: any[]
   resources: any[]
+  homeFeatures: any[]
+  homeActionCards: any[]
+  supportCards: any[]
+  sundayHighlights: any[]
+  resourcesReading: any[]
+  getInvolvedCards: any[]
 }
 
 const CmsContext = createContext<CmsContextType>({
@@ -22,6 +28,12 @@ const CmsContext = createContext<CmsContextType>({
   events: [],
   highlights: [],
   resources: [],
+  homeFeatures: [],
+  homeActionCards: [],
+  supportCards: [],
+  sundayHighlights: [],
+  resourcesReading: [],
+  getInvolvedCards: [],
 })
 
 export const useCms = () => useContext(CmsContext)
@@ -152,6 +164,12 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
         events,
         highlights,
         resources,
+        homeFeatures: siteSettings.home_features || [],
+        homeActionCards: siteSettings.home_action_cards || [],
+        supportCards: siteSettings.support_cards || [],
+        sundayHighlights: siteSettings.sunday_highlights || [],
+        resourcesReading: siteSettings.resources_reading || [],
+        getInvolvedCards: siteSettings.get_involved_cards || [],
       }}
     >
       {children}

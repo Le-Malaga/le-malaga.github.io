@@ -3,7 +3,14 @@ import { Link } from 'react-router-dom'
 import { useCms, PageBlocksRenderer } from '../context/CmsContext'
 
 export default function Home() {
-  const { pages, siteSettings, events: cmsEvents, stories: cmsStories } = useCms()
+  const {
+    pages,
+    siteSettings,
+    events: cmsEvents,
+    stories: cmsStories,
+    homeFeatures,
+    homeActionCards,
+  } = useCms()
   const homePage = pages['home'] || {}
   const nextSession = siteSettings.next_sunday_session || {}
 
@@ -11,6 +18,33 @@ export default function Home() {
   const sundayDate = nextSession.dateLabel || 'Sunday 6 September 2026'
   const sundayTime = nextSession.timeLabel || '8:30pm (NZST)'
   const sundayFormat = nextSession.formatLabel || 'Online via Zoom'
+
+  const defaultHomeFeatures = [
+    { icon: 'Heart', title: 'LIVED EXPERIENCE', description: "We understand because\nwe've walked this journey." },
+    { icon: 'Globe', title: 'PASIFIKA GROUNDED', description: 'Our values, culture and\nfaith guide us.' },
+    { icon: 'Shield', title: 'SAFE & CONFIDENTIAL', description: 'A safe space to share,\nbe heard and supported.' },
+    { icon: 'Users', title: 'COMMUNITY POWERED', description: 'Stronger together as\ncarers and aiga.' },
+  ]
+
+  const displayFeatures = homeFeatures.length > 0 ? homeFeatures : defaultHomeFeatures
+
+  const defaultHomeActionCards = [
+    { id: 'start', icon: 'Heart', title: "I'm New\nTo Caring", description: "I don't know where to begin.", buttonLabel: "START HERE", buttonUrl: "/start", colorTheme: "orange" },
+    { id: 'support', icon: 'Users', title: "I Need\nSupport", description: "I need someone who understands.", buttonLabel: "GET SUPPORT", buttonUrl: "/support", colorTheme: "dark" },
+    { id: 'involved', icon: 'Users', title: "Join Our\nCommunity", description: "Connect with other carers and aiga.", buttonLabel: "JOIN NOW", buttonUrl: "/get-involved", colorTheme: "orange" },
+    { id: 'resources', icon: 'Globe', title: "Carer\nResources", description: "Practical tools and information.", buttonLabel: "EXPLORE RESOURCES", buttonUrl: "/resources", colorTheme: "dark" },
+  ]
+
+  const displayActionCards = homeActionCards.length > 0 ? homeActionCards : defaultHomeActionCards
+
+  const renderIcon = (name: string, size = 40) => {
+    switch (name?.toLowerCase()) {
+      case 'globe': return <Globe size={size} />
+      case 'shield': return <Shield size={size} />
+      case 'users': return <Users size={size} />
+      default: return <Heart size={size} />
+    }
+  }
 
   const displayEvents =
     cmsEvents.length > 0
@@ -75,140 +109,62 @@ export default function Home() {
       {/* Features Bar */}
       <section className="bg-brand-dark text-white py-16 px-8 shadow-inner mt-8 w-full">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="flex flex-col items-center text-center gap-3">
-            <Heart className="text-brand-orange w-12 h-12 flex-shrink-0" />
-            <div>
-              <h3 className="font-heading font-semibold text-xl mb-2 uppercase tracking-widest text-brand-bg">
-                Lived Experience
-              </h3>
-              <p className="text-sm text-[#a3a89e] leading-relaxed">
-                We understand because
-                <br />
-                we've walked this journey.
-              </p>
+          {displayFeatures.map((feat: any, idx: number) => (
+            <div key={idx} className="flex flex-col items-center text-center gap-3">
+              <span className="text-brand-orange">
+                {renderIcon(feat.icon, 48)}
+              </span>
+              <div>
+                <h3 className="font-heading font-semibold text-xl mb-2 uppercase tracking-widest text-brand-bg">
+                  {feat.title}
+                </h3>
+                <p className="text-sm text-[#a3a89e] leading-relaxed whitespace-pre-line">
+                  {feat.description}
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col items-center text-center gap-3">
-            <Globe className="text-brand-orange w-12 h-12 flex-shrink-0" />
-            <div>
-              <h3 className="font-heading font-semibold text-xl mb-2 uppercase tracking-widest text-brand-bg">
-                Pasifika Grounded
-              </h3>
-              <p className="text-sm text-[#a3a89e] leading-relaxed">
-                Our values, culture and
-                <br />
-                faith guide us.
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col items-center text-center gap-3">
-            <Shield className="text-brand-orange w-12 h-12 flex-shrink-0" />
-            <div>
-              <h3 className="font-heading font-semibold text-xl mb-2 uppercase tracking-widest text-brand-bg">
-                Safe & Confidential
-              </h3>
-              <p className="text-sm text-[#a3a89e] leading-relaxed">
-                A safe space to share,
-                <br />
-                be heard and supported.
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col items-center text-center gap-3">
-            <Users className="text-brand-orange w-12 h-12 flex-shrink-0" />
-            <div>
-              <h3 className="font-heading font-semibold text-xl mb-2 uppercase tracking-widest text-brand-bg">
-                Community Powered
-              </h3>
-              <p className="text-sm text-[#a3a89e] leading-relaxed">
-                Stronger together as
-                <br />
-                carers and aiga.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* Action Cards */}
       <section className="py-24 px-8 max-w-7xl mx-auto relative z-10 -mt-16 w-full">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Link
-            to="/start"
-            className="bg-[#fcfaf4] rounded-2xl p-8 text-center shadow-xl border border-[#e8e2d2] flex flex-col items-center hover:-translate-y-2 transition transform duration-300 group"
-          >
-            <div className="w-24 h-24 bg-brand-orange text-white rounded-full flex items-center justify-center mb-6 shadow-md border-4 border-white group-hover:scale-110 transition">
-              <Heart size={40} />
-            </div>
-            <h3 className="font-heading font-semibold text-2xl text-brand-orange mb-3 leading-tight uppercase tracking-wider">
-              I'm New
-              <br />
-              To Caring
-            </h3>
-            <p className="text-sm text-gray-700 mb-8 flex-1 font-medium px-4">
-              I don't know where to begin.
-            </p>
-            <div className="w-full bg-brand-orange text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 group-hover:bg-orange-800 transition shadow-md">
-              START HERE <ArrowRight size={18} />
-            </div>
-          </Link>
-          <Link
-            to="/support"
-            className="bg-[#fcfaf4] rounded-2xl p-8 text-center shadow-xl border border-[#e8e2d2] flex flex-col items-center hover:-translate-y-2 transition transform duration-300 group"
-          >
-            <div className="w-24 h-24 bg-brand-dark text-white rounded-full flex items-center justify-center mb-6 shadow-md border-4 border-white group-hover:scale-110 transition">
-              <Users size={40} />
-            </div>
-            <h3 className="font-heading font-semibold text-2xl text-brand-dark mb-3 leading-tight uppercase tracking-wider">
-              I Need
-              <br />
-              Support
-            </h3>
-            <p className="text-sm text-gray-700 mb-8 flex-1 font-medium px-4">
-              I need someone who understands.
-            </p>
-            <div className="w-full bg-brand-dark text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 group-hover:bg-[#202d15] transition shadow-md">
-              GET SUPPORT <ArrowRight size={18} />
-            </div>
-          </Link>
-          <Link
-            to="/get-involved"
-            className="bg-[#fcfaf4] rounded-2xl p-8 text-center shadow-xl border border-[#e8e2d2] flex flex-col items-center hover:-translate-y-2 transition transform duration-300 group"
-          >
-            <div className="w-24 h-24 bg-brand-orange text-white rounded-full flex items-center justify-center mb-6 shadow-md border-4 border-white group-hover:scale-110 transition">
-              <Users size={40} />
-            </div>
-            <h3 className="font-heading font-semibold text-2xl text-brand-orange mb-3 leading-tight uppercase tracking-wider">
-              Join Our
-              <br />
-              Community
-            </h3>
-            <p className="text-sm text-gray-700 mb-8 flex-1 font-medium px-4">
-              Connect with other carers and aiga.
-            </p>
-            <div className="w-full bg-brand-orange text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 group-hover:bg-orange-800 transition shadow-md">
-              JOIN NOW <ArrowRight size={18} />
-            </div>
-          </Link>
-          <Link
-            to="/resources"
-            className="bg-[#fcfaf4] rounded-2xl p-8 text-center shadow-xl border border-[#e8e2d2] flex flex-col items-center hover:-translate-y-2 transition transform duration-300 group"
-          >
-            <div className="w-24 h-24 bg-brand-dark text-white rounded-full flex items-center justify-center mb-6 shadow-md border-4 border-white group-hover:scale-110 transition">
-              <Globe size={40} />
-            </div>
-            <h3 className="font-heading font-semibold text-2xl text-brand-dark mb-3 leading-tight uppercase tracking-wider">
-              Carer
-              <br />
-              Resources
-            </h3>
-            <p className="text-sm text-gray-700 mb-8 flex-1 font-medium px-4">
-              Practical tools and information.
-            </p>
-            <div className="w-full bg-brand-dark text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 group-hover:bg-[#202d15] transition shadow-md">
-              EXPLORE RESOURCES <ArrowRight size={18} />
-            </div>
-          </Link>
+          {displayActionCards.map((card: any) => {
+            const isOrange = card.colorTheme === 'orange'
+            return (
+              <Link
+                key={card.id || card.title}
+                to={card.buttonUrl}
+                className="bg-[#fcfaf4] rounded-2xl p-8 text-center shadow-xl border border-[#e8e2d2] flex flex-col items-center hover:-translate-y-2 transition transform duration-300 group"
+              >
+                <div
+                  className={`w-24 h-24 ${
+                    isOrange ? 'bg-brand-orange' : 'bg-brand-dark'
+                  } text-white rounded-full flex items-center justify-center mb-6 shadow-md border-4 border-white group-hover:scale-110 transition`}
+                >
+                  {renderIcon(card.icon, 40)}
+                </div>
+                <h3
+                  className={`font-heading font-semibold text-2xl ${
+                    isOrange ? 'text-brand-orange' : 'text-brand-dark'
+                  } mb-3 leading-tight uppercase tracking-wider whitespace-pre-line`}
+                >
+                  {card.title}
+                </h3>
+                <p className="text-sm text-gray-700 mb-8 flex-1 font-medium px-4">
+                  {card.description}
+                </p>
+                <div
+                  className={`w-full ${
+                    isOrange ? 'bg-brand-orange group-hover:bg-orange-800' : 'bg-brand-dark group-hover:bg-[#202d15]'
+                  } text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition shadow-md`}
+                >
+                  {card.buttonLabel} <ArrowRight size={18} />
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </section>
 
