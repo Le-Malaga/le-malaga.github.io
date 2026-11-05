@@ -94,7 +94,13 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (teamRes.data && teamRes.data.length > 0) {
-          setTeamMembers(teamRes.data)
+          const mappedTeam = teamRes.data.map((m: any) => ({
+            ...m,
+            role: m.role || m.role_title || 'Co-Founder & Carer',
+            image_url: m.image_url || (m.photo_urls && m.photo_urls[0]) || '/images/flory1.jpg',
+            bio: m.bio || (Array.isArray(m.bio_paragraphs) ? m.bio_paragraphs.join('\n\n') : ''),
+          }))
+          setTeamMembers(mappedTeam)
         }
 
         if (storiesRes.data && storiesRes.data.length > 0) {
@@ -102,38 +108,47 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
           const merged = storiesRes.data.map((dbStory: any) => {
             const localMatch = defaultStories.find((s) => s.id === dbStory.id)
             const parsedSteps = parseMarkdownSections(dbStory.full_story)
+            const existingTimeline = Array.isArray(dbStory.timeline) && dbStory.timeline.length > 0 ? dbStory.timeline : null
+
             return {
               id: dbStory.id,
-              name: dbStory.author_name || dbStory.title || localMatch?.name || 'Carer',
-              shortTitle: dbStory.title || localMatch?.shortTitle || dbStory.author_name,
-              location: dbStory.caring_for
+              name: dbStory.name || dbStory.author_name || dbStory.title || localMatch?.name || 'Carer',
+              shortTitle: dbStory.short_title || dbStory.shortTitle || dbStory.title || localMatch?.shortTitle || dbStory.name,
+              location: dbStory.location || (dbStory.caring_for
                 ? `Caring for ${dbStory.caring_for}`
-                : localMatch?.location || 'Aotearoa',
-              quote: dbStory.quote || localMatch?.quote || dbStory.subtitle || '',
-              subquote: dbStory.excerpt || localMatch?.subquote || dbStory.subtitle || '',
-              image: dbStory.cover_image_url || localMatch?.image || '/images/SinaVera_1.png',
-              featured: dbStory.featured ?? true,
+                : localMatch?.location || 'Aotearoa'),
+              quote: dbStory.quote || dbStory.subtitle || localMatch?.quote || '',
+              subquote: dbStory.subquote || dbStory.excerpt || localMatch?.subquote || '',
+              image: dbStory.image || dbStory.cover_image_url || localMatch?.image || '/images/SinaVera_1.png',
+              featured: dbStory.featured ?? dbStory.is_featured_home ?? true,
               full_story: dbStory.full_story,
+              category: dbStory.category || 'CARER JOURNEY',
+              at_a_glance: dbStory.at_a_glance || (localMatch as any)?.at_a_glance,
               timeline:
-                localMatch?.timeline && parsedSteps.length === 0
-                  ? localMatch.timeline
-                  : parsedSteps.length > 0
+                parsedSteps.length > 0
                   ? parsedSteps.map((sec, idx) => ({
                       step: idx + 1,
                       title: sec.title,
                       text: sec.text,
                       image:
+                        existingTimeline?.[idx]?.image ||
                         localMatch?.timeline?.[idx]?.image ||
-                        (idx === 0 ? dbStory.cover_image_url : undefined),
+                        (idx === 0 ? (dbStory.image || dbStory.cover_image_url) : undefined),
                     }))
-                  : localMatch?.timeline || [],
+                  : existingTimeline || localMatch?.timeline || [],
             }
           })
           setCmsStories(merged)
         }
 
         if (eventsRes.data && eventsRes.data.length > 0) {
-          setEvents(eventsRes.data)
+          const mappedEvents = eventsRes.data.map((e: any) => ({
+            ...e,
+            date_text: e.date_text || (e.date_day ? `${e.date_day} ${e.date_month}` : 'TBA'),
+            cta_url: e.rsvp_url || e.cta_url || '/get-involved',
+            cta_label: e.cta_label || 'RSVP',
+          }))
+          setEvents(mappedEvents)
         }
 
         if (highlightsRes.data && highlightsRes.data.length > 0) {
@@ -141,7 +156,13 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (resourcesRes.data && resourcesRes.data.length > 0) {
-          setResources(resourcesRes.data)
+          const mappedResources = resourcesRes.data.map((r: any) => ({
+            ...r,
+            link_url: r.url || r.link_url || '#',
+            link_label: r.link_label || 'VIEW RESOURCE',
+            category: r.category || (r.section === 'reading' ? 'Reading' : 'System Guide'),
+          }))
+          setResources(mappedResources)
         }
       } catch (err) {
         console.warn('Using fallback static CMS data:', err)
