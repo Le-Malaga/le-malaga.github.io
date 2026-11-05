@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { Menu, X, Globe, User, MapPin } from 'lucide-react'
 import { useCms } from '../context/CmsContext'
@@ -11,6 +11,70 @@ export default function Layout() {
   const isActive = (path: string) => location.pathname === path
 
   const hf = siteSettings.header_footer || {}
+
+  // Dynamic Head, Favicon & SEO Management
+  useEffect(() => {
+    const baseSiteTitle = hf.siteTitle || 'Le Malaga'
+
+    const titles: Record<string, string> = {
+      '/': `${baseSiteTitle} | Walking Alongside Pasifika Dementia Carers`,
+      '/about': `About Us | ${baseSiteTitle}`,
+      '/carer-support': `Carer Support | ${baseSiteTitle}`,
+      '/resources': `Resources & Guides | ${baseSiteTitle}`,
+      '/sunday-sessions': `Sunday Sessions | ${baseSiteTitle}`,
+      '/events': `Events & Meetups | ${baseSiteTitle}`,
+      '/stories': `Our Stories | ${baseSiteTitle}`,
+      '/get-involved': `Get Involved | ${baseSiteTitle}`,
+      '/start': `Getting Started | ${baseSiteTitle}`,
+      '/privacy': `Privacy Policy | ${baseSiteTitle}`,
+      '/terms': `Terms of Use | ${baseSiteTitle}`,
+      '/safeguarding': `Safeguarding Policy | ${baseSiteTitle}`,
+      '/complaints': `Complaints Process | ${baseSiteTitle}`,
+    }
+
+    let resolvedTitle = titles[location.pathname]
+    if (!resolvedTitle) {
+      if (location.pathname.startsWith('/stories/')) {
+        const storyId = location.pathname.replace('/stories/', '')
+        resolvedTitle = `${storyId.charAt(0).toUpperCase() + storyId.slice(1)}'s Story | ${baseSiteTitle}`
+      } else {
+        resolvedTitle = `${baseSiteTitle} | Walking Alongside Pasifika Dementia Carers`
+      }
+    }
+    document.title = resolvedTitle
+
+    // Dynamic Favicon
+    const faviconUrl = hf.faviconUrl || '/images/logo.png'
+    let link: HTMLLinkElement | null = document.querySelector("link[rel~='icon']")
+    if (!link) {
+      link = document.createElement('link')
+      link.rel = 'icon'
+      document.head.appendChild(link)
+    }
+    link.href = faviconUrl
+
+    // Dynamic Meta Description
+    if (hf.metaDescription) {
+      let descTag = document.querySelector("meta[name='description']")
+      if (!descTag) {
+        descTag = document.createElement('meta')
+        descTag.setAttribute('name', 'description')
+        document.head.appendChild(descTag)
+      }
+      descTag.setAttribute('content', hf.metaDescription)
+    }
+
+    // Dynamic OG Image
+    if (hf.ogImageUrl) {
+      let ogImgTag = document.querySelector("meta[property='og:image']")
+      if (!ogImgTag) {
+        ogImgTag = document.createElement('meta')
+        ogImgTag.setAttribute('property', 'og:image')
+        document.head.appendChild(ogImgTag)
+      }
+      ogImgTag.setAttribute('content', hf.ogImageUrl)
+    }
+  }, [location.pathname, hf.siteTitle, hf.faviconUrl, hf.metaDescription, hf.ogImageUrl])
   const logoUrl = hf.logoUrl || '/images/logo.png'
   const donateLabel = hf.donateButtonLabel || 'DONATE'
   const donateUrl =
