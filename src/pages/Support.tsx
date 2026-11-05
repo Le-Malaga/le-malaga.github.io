@@ -26,9 +26,9 @@ export default function Support() {
           <h2 className="text-3xl font-heading font-semibold text-brand-dark uppercase tracking-wide mb-6">
             How we can help
           </h2>
-          <p className="text-lg text-gray-700 leading-relaxed">
-            Whether you need someone to talk to, practical advice on navigating the healthcare
-            system, or just a safe space to connect with other carers, Le Malaga is here for you.
+          <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
+            {supportPage.content_markdown ||
+              'Whether you need someone to talk to, practical advice on navigating the healthcare system, or just a safe space to connect with other carers, Le Malaga is here for you.'}
           </p>
         </div>
 

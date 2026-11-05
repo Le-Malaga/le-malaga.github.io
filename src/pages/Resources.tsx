@@ -25,10 +25,9 @@ export default function Resources() {
             <h2 className="text-3xl font-heading font-bold text-brand-dark mb-6">
               Navigating the System
             </h2>
-            <p className="text-gray-700 mb-8 leading-relaxed">
-              Understanding government subsidies, healthcare processes, and legal rights can be
-              overwhelming. We've simplified the essential information you need to advocate for your
-              aiga.
+            <p className="text-gray-700 mb-8 leading-relaxed whitespace-pre-line">
+              {resourcesPage.content_markdown ||
+                "Understanding government subsidies, healthcare processes, and legal rights can be overwhelming. We've simplified the essential information you need to advocate for your aiga."}
             </p>
             <div className="space-y-4">
               {resources.length > 0 ? (

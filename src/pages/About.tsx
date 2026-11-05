@@ -30,25 +30,31 @@ export default function About() {
         <h2 className="text-4xl font-heading font-bold text-brand-dark uppercase tracking-wide mb-8">
           Mission Statement
         </h2>
-        <div className="text-xl text-gray-700 leading-relaxed space-y-6">
-          <p>
-            Le Malaga exists to Uplift, Empower and walk alongside Carers on their journey. We are
-            Dementia specific but not exclusive. We are understanding that the feelings, emotions
-            and exhaustion of caring often overlap, no matter the situation. Our space is for anyone
-            carrying the weight of caring for someone that they love.
-          </p>
-          <p>
-            We are built on Lived Experience. Real stories, real struggles, real resilience. Our
-            group includes Carers at every stage – those just beginning, those in the middle, those
-            nearing the end and those who have already served their time. We know the journey
-            doesn't end when the Caring role does; the impact continues emotionally and spiritually.
-          </p>
-          <p className="font-semibold text-brand-orange">
-            Through Cultural connection, Honesty, Empathy and Togetherness, Le Malaga is here to
-            raise awareness, break the silence and ensure every Carer feels supported, celebrated
-            and guided with love.
-          </p>
-        </div>
+        {aboutPage.content_markdown ? (
+          <div className="text-xl text-gray-700 leading-relaxed space-y-6 whitespace-pre-line">
+            {aboutPage.content_markdown}
+          </div>
+        ) : (
+          <div className="text-xl text-gray-700 leading-relaxed space-y-6">
+            <p>
+              Le Malaga exists to Uplift, Empower and walk alongside Carers on their journey. We are
+              Dementia specific but not exclusive. We are understanding that the feelings, emotions
+              and exhaustion of caring often overlap, no matter the situation. Our space is for anyone
+              carrying the weight of caring for someone that they love.
+            </p>
+            <p>
+              We are built on Lived Experience. Real stories, real struggles, real resilience. Our
+              group includes Carers at every stage – those just beginning, those in the middle, those
+              nearing the end and those who have already served their time. We know the journey
+              doesn't end when the Caring role does; the impact continues emotionally and spiritually.
+            </p>
+            <p className="font-semibold text-brand-orange">
+              Through Cultural connection, Honesty, Empathy and Togetherness, Le Malaga is here to
+              raise awareness, break the silence and ensure every Carer feels supported, celebrated
+              and guided with love.
+            </p>
+          </div>
+        )}
       </div>
 
       <PageBlocksRenderer slug="about" />

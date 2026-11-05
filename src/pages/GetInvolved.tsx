@@ -23,10 +23,9 @@ export default function GetInvolved() {
           <h2 className="text-3xl font-heading font-semibold text-brand-dark uppercase tracking-wide mb-6">
             Join the Movement
           </h2>
-          <p className="text-lg text-gray-700 leading-relaxed">
-            Le Malaga thrives on the strength and generosity of our community. Whether you are a
-            carer looking for a safe space, a volunteer wanting to give back, or a sponsor looking
-            to support our mission, there is a place for you here.
+          <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
+            {involvedPage.content_markdown ||
+              'Le Malaga thrives on the strength and generosity of our community. Whether you are a carer looking for a safe space, a volunteer wanting to give back, or a sponsor looking to support our mission, there is a place for you here.'}
           </p>
         </div>
 

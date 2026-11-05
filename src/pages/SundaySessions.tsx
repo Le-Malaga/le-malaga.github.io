@@ -25,8 +25,9 @@ export default function SundaySessions() {
             <h2 className="text-3xl font-heading font-bold text-brand-dark mb-6">
               {nextSession.title || 'Join us this Sunday'}
             </h2>
-            <p className="text-lg text-gray-700 leading-relaxed mb-8">
-              {nextSession.description ||
+            <p className="text-lg text-gray-700 leading-relaxed mb-8 whitespace-pre-line">
+              {sessionPage.content_markdown ||
+                nextSession.description ||
                 'Our Sunday Sessions are the heartbeat of Le Malaga. We gather online to share a short devotion, hear from a guest speaker on topics relating to health and wellbeing, and most importantly, check in on one another.'}
             </p>
 
