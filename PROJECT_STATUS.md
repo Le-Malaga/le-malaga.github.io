@@ -17,6 +17,9 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
       - Resolved query mismatch between `sort_order` / `display_order`, `is_published` / `is_active`, and `role` / `role_title` by adding bi-directional sync triggers across `team_members`, `stories`, `events`, `community_highlights`, and `resources`.
       - Attached automatic `content_versions` audit triggers to all remaining content tables, enabling point-in-time snapshot history and 1-click restore across the entire portal.
       - Implemented bidirectional Markdown and timeline step parsing in `admin.lemalaga.org`, enabling the WYSIWYG editor to manage full 5-step story journeys.
+    - **Footer Quick Links & Top Nav Item Harmonization:**
+      - Resolved blank input issue in the Admin Portal by bridging property name differences (`label` vs `title` and `path` vs `url`).
+      - All 4 Footer Quick Links (Privacy Policy, Terms of Use, Safeguarding Policy, Complaints Process) and 8 Navigation Links now populate and update live.
     - **SEO, Favicon & Brand Identity Suite Live:**
       - Removed all "Prototype" labels from `index.html` and configured production metadata.
       - Implemented dynamic route-aware `<title>` management across all pages (`Our Stories | Le Malaga`, `About Us | Le Malaga`, etc.).
