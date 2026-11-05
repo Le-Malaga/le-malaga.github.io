@@ -98,8 +98,17 @@ export default function Layout() {
     { label: 'Complaints Process', path: '/complaints' },
   ]
 
-  const quickLinks =
-    Array.isArray(hf.quickLinks) && hf.quickLinks.length > 0 ? hf.quickLinks : defaultQuickLinks
+  const rawQuickLinks =
+    Array.isArray(hf.quickLinks) && hf.quickLinks.length > 0
+      ? hf.quickLinks
+      : Array.isArray(hf.quick_links) && hf.quick_links.length > 0
+      ? hf.quick_links
+      : defaultQuickLinks
+
+  const quickLinks = rawQuickLinks.map((ql: any) => ({
+    label: ql.label || ql.title || 'Link',
+    path: ql.path || ql.url || '/',
+  }))
 
   const defaultNavLinks = [
     { name: 'HOME', path: '/' },
@@ -112,12 +121,19 @@ export default function Layout() {
     { name: 'GET INVOLVED', path: '/get-involved' },
   ]
 
-  const navLinks =
+  const rawNavItems =
     Array.isArray(hf.navItems) && hf.navItems.length > 0
       ? hf.navItems
-          .filter((item: any) => item.visible !== false)
-          .map((item: any) => ({ name: item.label, path: item.path }))
+      : Array.isArray(hf.nav_links) && hf.nav_links.length > 0
+      ? hf.nav_links
       : defaultNavLinks
+
+  const navLinks = rawNavItems
+    .filter((item: any) => item.visible !== false)
+    .map((item: any) => ({
+      name: item.name || item.label || 'Link',
+      path: item.path || item.url || '/',
+    }))
 
   return (
     <div className="min-h-screen bg-brand-bg text-gray-800 font-sans flex flex-col">
