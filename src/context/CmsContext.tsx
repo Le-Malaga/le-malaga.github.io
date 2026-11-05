@@ -188,6 +188,37 @@ function parseMarkdownSections(md?: string): { title: string; text: string }[] {
   })
 }
 
+export function toVideoEmbedUrl(url: string): string {
+  if (!url || typeof url !== 'string') return ''
+  const trimmed = url.trim()
+
+  const shortsMatch = trimmed.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/)
+  if (shortsMatch) {
+    return `https://www.youtube-nocookie.com/embed/${shortsMatch[1]}`
+  }
+
+  const watchMatch = trimmed.match(/[?&]v=([a-zA-Z0-9_-]+)/)
+  if (watchMatch) {
+    return `https://www.youtube-nocookie.com/embed/${watchMatch[1]}`
+  }
+
+  const shortlinkMatch = trimmed.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)
+  if (shortlinkMatch) {
+    return `https://www.youtube-nocookie.com/embed/${shortlinkMatch[1]}`
+  }
+
+  if (trimmed.includes('youtube.com/embed/')) {
+    return trimmed.replace('youtube.com/embed/', 'youtube-nocookie.com/embed/')
+  }
+
+  const vimeoMatch = trimmed.match(/vimeo\.com\/(\d+)/)
+  if (vimeoMatch && !trimmed.includes('player.vimeo.com')) {
+    return `https://player.vimeo.com/video/${vimeoMatch[1]}`
+  }
+
+  return trimmed
+}
+
 export function PageBlocksRenderer({ slug }: { slug: string }) {
   const { pages } = useCms()
   const page = pages[slug]
@@ -210,13 +241,15 @@ export function PageBlocksRenderer({ slug }: { slug: string }) {
           blk.align === 'left' ? 'mr-auto' : blk.align === 'right' ? 'ml-auto' : 'mx-auto'
 
         if (blk.type === 'video' && blk.mediaUrl) {
+          const embedUrl = toVideoEmbedUrl(blk.mediaUrl)
           return (
             <div key={blk.id || i} className={`${widthClass} ${alignClass}`}>
               <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-black aspect-video">
                 <iframe
-                  src={blk.mediaUrl}
+                  src={embedUrl}
                   title={blk.caption || 'Video'}
                   className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
               </div>
