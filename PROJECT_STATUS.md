@@ -13,6 +13,14 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
     - Expanded dashboard container from restrictive `max-w-7xl` to a responsive, spacious layout (`w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8`) with 2-column sidebar and 10-column workspace.
     - Built and integrated `MarkdownEditor` component featuring a rich formatting toolbar (Bold, Italic, H2, H3, Bullet list, Numbered list, Blockquote, Link, Code, Divider), live side-by-side split view, and Pasifika-styled typography preview.
     - Added structured visual card management sections for Home Features, Home Action Cards (with WebP upload), Support Services ("How We Can Help"), Sunday Session Callouts ("Open Talanoa" & "Cameras Optional"), Recommended Reading, Movement Cards, and Footer Quick Links.
+  - **Automatic Content Versioning & Audit Trail (`content_versions`):**
+    - Created `public.content_versions` with automated PostgreSQL triggers (`trg_version_site_pages`, `trg_version_site_settings`) that capture full JSON point-in-time snapshots whenever content is edited, including timestamp and admin email.
+    - Added "Revision History" modal to the Admin Portal allowing editors to view past changes and restore older versions with 1 click.
+  - **Admin User Profile & Google Photo Sync:**
+    - Added `avatar_url` to `admin_users` table with self-update RLS policy.
+    - Automatically syncs Google display name and Google profile picture upon login, and provides an "Edit Profile" modal to customize display names and upload custom WebP avatars.
+  - **Smart YouTube & Vimeo Embed Normalizer:**
+    - Integrated automatic URL parser that converts standard YouTube links (`youtube.com/watch?v=...`, `youtu.be/...`, or Shorts) into privacy-friendly embed links (`youtube-nocookie.com/embed/...`) with live preview in the Admin Portal and responsive 16:9 playback on public pages.
   - **Google OAuth Login Activated:** Wired Google Identity Client ID (`85563814161-b7qo7n2t89jsf921f531qn7hqk35emh0.apps.googleusercontent.com`) into `admin.lemalaga.org` with Supabase OAuth callback configured to `https://admin.lemalaga.org`.
   - **Supabase Cloudflare Proxy:** Operating on `https://api.lemalaga.org` proxying to `ybovhrbnbednnxppofmv.supabase.co`.
   - Authored and committed `CARER_PORTAL_SPECS.md` and interactive prototype `prototype/index.html` detailing the full Carer Community & Patient Safety Portal architecture.
