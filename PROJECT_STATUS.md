@@ -17,6 +17,12 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
       - Resolved query mismatch between `sort_order` / `display_order`, `is_published` / `is_active`, and `role` / `role_title` by adding bi-directional sync triggers across `team_members`, `stories`, `events`, `community_highlights`, and `resources`.
       - Attached automatic `content_versions` audit triggers to all remaining content tables, enabling point-in-time snapshot history and 1-click restore across the entire portal.
       - Implemented bidirectional Markdown and timeline step parsing in `admin.lemalaga.org`, enabling the WYSIWYG editor to manage full 5-step story journeys.
+    - **SEO, Favicon & Brand Identity Suite Live:**
+      - Removed all "Prototype" labels from `index.html` and configured production metadata.
+      - Implemented dynamic route-aware `<title>` management across all pages (`Our Stories | Le Malaga`, `About Us | Le Malaga`, etc.).
+      - Integrated customizable Favicon upload and dynamic head injector (`link[rel='icon']`).
+      - Added full OpenGraph (OG) and Twitter Card tags (`og:title`, `og:description`, `og:image`, `og:url`, `twitter:card`).
+      - Created SEO management suite in Tab 1 of `admin.lemalaga.org` allowing editors to customize Site Title, Meta Description, Favicon, Social Share Cards, and Search Keywords directly.
     - **Cross-Domain Image 404 Fix & Migration (`20261106000004_convert_relative_media_to_absolute_urls.sql`):**
       - Fixed cross-domain 404s in the Admin Portal where relative paths (`/images/...`) attempted to resolve to `admin.lemalaga.org` instead of the public assets.
       - Synchronized all 36 public image assets to `admin.lemalaga.org/public/images/`.
