@@ -5,6 +5,7 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
 ## 🚧 Current Status
 - **Phase:** LIVE SUPABASE PUBLIC CMS & INVITE-ONLY ADMIN PORTAL DEPLOYED
 - **Recent Milestones:**
+  - **Google OAuth Login Activated:** Wired Google Identity Client ID (`85563814161-b7qo7n2t89jsf921f531qn7hqk35emh0.apps.googleusercontent.com`) into `admin.lemalaga.org` via GitHub Actions secret `VITE_GOOGLE_CLIENT_ID` with automatic token-based sign-in.
   - **Supabase Database & Storage (`ybovhrbnbednnxppofmv`, Oceania Sydney `ap-southeast-2`):**
     - Created and pushed SQL migrations (`20261102000001_public_cms_and_admin_auth.sql` & `20261102000002_seed_public_cms_content.sql`) establishing `admin_users` (invite-only Google OAuth allowlist seeded with `elijahmondero@gmail.com` as `super_admin`), `site_settings`, `site_pages`, `team_members`, `stories`, `events`, `community_highlights`, `resources`, and the `site-media` Storage bucket with strict Row Level Security (RLS).
   - **Separate Admin & Public Website CMS Repository (`https://github.com/Le-Malaga/admin.lemalaga.org`):**
