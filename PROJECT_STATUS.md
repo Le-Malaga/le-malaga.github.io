@@ -3,8 +3,14 @@
 This file tracks the progress of the Le Malaga project so that any new agent joining the repository has immediate context on what has been built, what is currently in progress, and what remains to be done.
 
 ## 🚧 Current Status
-- **Phase:** 100% DYNAMIC CMS WITH AUDITABLE VERSIONING & SYNCHRONIZED CRUD ENGINE LIVE
+- **Phase:** 100% DYNAMIC CMS WITH REALTIME PRESENCE, AUDITABLE VERSIONING & SYNCHRONIZED CRUD ENGINE LIVE
 - **Recent Milestones:**
+  - **Live Realtime Admin Presence & Concurrent Editing Alerts (`admin.lemalaga.org`):**
+    - Integrated Supabase Realtime Presence WebSockets across the entire admin portal, tracking active admins with zero server overhead.
+    - Added live top header status indicator (`🟢 {count} Online` with animated radar dot, avatar stack, and interactive dropdown revealing active admins, their profile photos, and the exact section or page they are currently editing).
+    - Added concurrent editing collision alerts in Tab 2 (Public Pages) and Tab 4 (Our Stories) displaying amber alert banners when multiple admins have the same page or carer story open at the same time.
+    - Added live navigation indicators on sidebar tabs and page/story selector pills with pulsing badges highlighting where other team members are actively browsing.
+    - Configured direct Supabase endpoint routing (`https://ybovhrbnbednnxppofmv.supabase.co`) in `src/lib/supabase.ts` to ensure 100% WebSocket upgrade compatibility.
   - **Complete Content Harmonization & Migration Verified:**
     - Confirmed all public website components are 100% stored in Supabase and live editable:
       - **Header & Footer:** Global logo, navigation items, donate CTA button/destination, contact email, phone, location, cultural acknowledgement, and legal quick links (`site_settings.header_footer`).
