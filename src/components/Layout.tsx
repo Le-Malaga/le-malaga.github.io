@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { Menu, X, Globe, User, MapPin } from 'lucide-react'
+import { Menu, X, Globe, User, MapPin, CheckCircle } from 'lucide-react'
 import { useCms } from '../context/CmsContext'
 
 export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [newsletterEmail, setNewsletterEmail] = useState('')
+  const [isSubscribed, setIsSubscribed] = useState(false)
   const location = useLocation()
   const { siteSettings } = useCms()
 
@@ -221,15 +223,18 @@ export default function Layout() {
       </main>
 
       <footer className="bg-brand-footer text-white mt-12">
-        <div className="max-w-7xl mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
+          <div className="lg:col-span-3 space-y-4">
             <img
               src={logoUrl}
               alt="Le Malaga"
-              className="h-20 bg-[#fbf8f3] p-2 rounded-xl object-contain mb-4"
+              className="h-20 bg-[#fbf8f3] p-2 rounded-xl object-contain"
             />
+            <p className="text-gray-400 text-sm leading-relaxed">
+              {hf.headerTagline || 'A safe space for carers to rest, share, and walk together.'}
+            </p>
           </div>
-          <div>
+          <div className="lg:col-span-3">
             <h3 className="text-xl font-heading font-bold mb-4 uppercase tracking-wide">
               Contact Us
             </h3>
@@ -245,7 +250,7 @@ export default function Layout() {
               </li>
             </ul>
           </div>
-          <div>
+          <div className="lg:col-span-2">
             <h3 className="text-xl font-heading font-bold mb-4 uppercase tracking-wide">
               Quick Links
             </h3>
@@ -259,23 +264,48 @@ export default function Layout() {
               ))}
             </ul>
           </div>
-          <div>
-            <h3 className="text-xl font-heading font-bold mb-4 uppercase tracking-wide">
-              We Acknowledge
-            </h3>
-            <p className="text-gray-400 mb-6 text-sm leading-relaxed">{weAcknowledge}</p>
-            <div className="bg-white/10 p-4 rounded-xl border border-white/5">
-              <h4 className="font-bold mb-3 tracking-wide">STAY CONNECTED</h4>
-              <div className="flex shadow-inner rounded-md overflow-hidden">
+          <div className="lg:col-span-4 space-y-4">
+            <div>
+              <h3 className="text-xl font-heading font-bold mb-3 uppercase tracking-wide">
+                We Acknowledge
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">{weAcknowledge}</p>
+            </div>
+            <div className="bg-white/10 p-4 sm:p-5 rounded-2xl border border-white/10 shadow-sm">
+              <h4 className="font-heading font-bold text-sm tracking-wider uppercase text-white mb-3">
+                STAY CONNECTED
+              </h4>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  if (newsletterEmail) {
+                    setIsSubscribed(true)
+                    setNewsletterEmail('')
+                    setTimeout(() => setIsSubscribed(false), 5000)
+                  }
+                }}
+                className="flex items-center shadow-inner rounded-xl overflow-hidden border border-white/15 focus-within:ring-2 focus-within:ring-brand-orange bg-white"
+              >
                 <input
                   type="email"
+                  required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
                   placeholder="Email address"
-                  className="flex-1 px-4 py-2.5 text-black outline-none text-sm font-medium"
+                  className="flex-1 min-w-0 px-3.5 py-2.5 text-gray-900 bg-transparent outline-none text-sm font-medium placeholder:text-gray-400"
                 />
-                <button className="bg-brand-orange px-5 py-2.5 font-bold hover:bg-orange-800 transition text-sm">
+                <button
+                  type="submit"
+                  className="bg-brand-orange hover:bg-orange-700 text-white px-4 sm:px-5 py-2.5 font-heading font-bold uppercase tracking-wider text-xs sm:text-sm whitespace-nowrap shrink-0 transition"
+                >
                   SUBSCRIBE
                 </button>
-              </div>
+              </form>
+              {isSubscribed && (
+                <p className="text-xs text-brand-orange font-bold mt-2.5 flex items-center gap-1.5 animate-pulse">
+                  <CheckCircle size={14} className="shrink-0" /> Thank you for subscribing to Le Malaga!
+                </p>
+              )}
             </div>
           </div>
         </div>
