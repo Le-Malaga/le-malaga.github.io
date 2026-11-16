@@ -10,12 +10,39 @@ import {
 } from 'lucide-react'
 import { useCms } from '../context/CmsContext'
 
+function isPlaceholderText(text?: string | null): boolean {
+  return (
+    !text ||
+    text.includes('[Update this section') ||
+    text.includes('[Please update this section')
+  )
+}
+
+function getStoryParagraphs(story: any): string[] {
+  const rawFull = story?.fullStory || story?.full_story || ''
+  if (rawFull && !isPlaceholderText(rawFull)) {
+    const cleaned = rawFull
+      .replace(/^##\s+.*$/gm, '')
+      .split(/\n\s*\n/)
+      .map((p: string) => p.trim())
+      .filter((p: string) => p.length > 0 && !isPlaceholderText(p))
+
+    if (cleaned.length > 0) return cleaned
+  }
+
+  return (story?.timeline || [])
+    .map((step: any) => (step?.text || '').trim())
+    .filter((t: string) => t.length > 0 && !isPlaceholderText(t))
+}
+
 export default function StoryDetail() {
   const { id } = useParams()
   const { stories } = useCms()
   const story = stories.find((s: any) => s.id === id)
 
   if (!story) return <div className="p-20 text-center">Story not found.</div>
+
+  const storyParagraphs = getStoryParagraphs(story)
 
   return (
     <div className="w-full bg-[#fcfaf4] min-h-screen pb-20 font-sans">
@@ -61,8 +88,62 @@ export default function StoryDetail() {
         </div>
       </div>
 
-      {/* 3 Column Layout */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 mt-16 flex flex-col lg:flex-row gap-10">
+      {/* Full Story Directly */}
+      <div className="max-w-4xl mx-auto px-4 md:px-8 mt-16">
+        <h2 className="font-script text-5xl text-brand-dark mb-10 transform -rotate-1">
+          Their Story
+        </h2>
+
+        <div className="bg-white p-8 md:p-14 rounded-3xl shadow-md border border-[#e8e3d5]">
+          <div className="space-y-6">
+            {storyParagraphs.map((paragraph, idx) => (
+              <p
+                key={idx}
+                className="text-[#5b3c31] text-lg md:text-xl leading-relaxed mb-6 whitespace-pre-line last:mb-0"
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          {story.image && (
+            <div className="mt-12 pt-8 border-t border-[#e8e3d5] flex justify-center">
+              <div className="inline-block bg-white p-4 pb-16 shadow-xl rounded-sm border border-gray-200 transform rotate-2 transition duration-500 hover:scale-105 relative">
+                <img
+                  src={story.image}
+                  alt={story.name}
+                  className="w-56 sm:w-72 h-56 sm:h-72 object-cover object-top rounded-sm bg-gray-100"
+                />
+                <p className="absolute bottom-4 left-0 right-0 text-center font-script text-3xl text-gray-700 transform -rotate-1">
+                  Memories...
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Share Your Story Callout */}
+        <div className="mt-12 bg-[#1e2a24] text-white p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="max-w-xl relative z-10">
+            <h3 className="font-script text-4xl mb-3 transform -rotate-1">
+              Your story matters
+            </h3>
+            <p className="text-white/80 text-sm md:text-base leading-relaxed">
+              If you've walked a caring journey, your story could help someone else feel seen, heard
+              and understood.
+            </p>
+          </div>
+          <Link
+            to="/get-involved"
+            className="w-full md:w-auto shrink-0 bg-[#d95a2b] text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-white hover:text-[#d95a2b] transition tracking-widest text-sm text-center relative z-10"
+          >
+            SHARE YOUR STORY &rarr;
+          </Link>
+        </div>
+      </div>
+
+      {/* Temporarily Hidden: 3 Column Layout (At a glance, 5-step Timeline sections, Read/Listen/Watch options) */}
+      <div className="hidden max-w-7xl mx-auto px-4 md:px-8 mt-16 flex-col lg:flex-row gap-10">
         {/* Left Col: At a Glance */}
         <div className="w-full lg:w-[25%] space-y-12">
           <div className="bg-[#f5f1e6] p-8 rounded-3xl shadow-sm border border-[#e8e3d5]">

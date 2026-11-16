@@ -86,7 +86,7 @@ export default function Stories() {
       </div>
 
       {/* Filters Row */}
-      <div className="max-w-6xl mx-auto px-4 py-8 border-b border-[#e8e3d5]">
+      <div className="hidden max-w-6xl mx-auto px-4 py-8 border-b border-[#e8e3d5]">
         <div className="flex flex-wrap items-center justify-center gap-3">
           {categories.map((cat, i) => (
             <button

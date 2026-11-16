@@ -104,11 +104,31 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (storiesRes.data && storiesRes.data.length > 0) {
-          // Merge Supabase story fields with rich local timeline fallback so existing 5-step polaroid layouts work seamlessly
+          const isPlaceholderText = (text?: string | null) =>
+            !text ||
+            text.includes('[Update this section') ||
+            text.includes('[Please update this section')
+
+          // Merge Supabase story fields with rich local fallback data
           const merged = storiesRes.data.map((dbStory: any) => {
             const localMatch = defaultStories.find((s) => s.id === dbStory.id)
-            const parsedSteps = parseMarkdownSections(dbStory.full_story)
-            const existingTimeline = Array.isArray(dbStory.timeline) && dbStory.timeline.length > 0 ? dbStory.timeline : null
+            const rawDbFullStory =
+              typeof dbStory.full_story === 'string' ? dbStory.full_story.trim() : ''
+            const resolvedFullStory =
+              rawDbFullStory && !isPlaceholderText(rawDbFullStory)
+                ? rawDbFullStory
+                : (localMatch as any)?.fullStory || ''
+
+            const parsedSteps = parseMarkdownSections(resolvedFullStory).filter(
+              (sec) => !isPlaceholderText(sec.text)
+            )
+            const existingTimeline =
+              Array.isArray(dbStory.timeline) && dbStory.timeline.length > 0
+                ? dbStory.timeline.filter((step: any) => !isPlaceholderText(step?.text))
+                : null
+            const cleanLocalTimeline = (localMatch?.timeline || []).filter(
+              (step: any) => !isPlaceholderText(step?.text)
+            )
 
             return {
               id: dbStory.id,
@@ -121,7 +141,8 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
               subquote: dbStory.subquote || dbStory.excerpt || localMatch?.subquote || '',
               image: dbStory.image || dbStory.cover_image_url || localMatch?.image || '/images/SinaVera_1.png',
               featured: dbStory.featured ?? dbStory.is_featured_home ?? true,
-              full_story: dbStory.full_story,
+              full_story: resolvedFullStory,
+              fullStory: resolvedFullStory,
               category: dbStory.category || 'CARER JOURNEY',
               at_a_glance: dbStory.at_a_glance || (localMatch as any)?.at_a_glance,
               timeline:
@@ -132,10 +153,12 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
                       text: sec.text,
                       image:
                         existingTimeline?.[idx]?.image ||
-                        localMatch?.timeline?.[idx]?.image ||
+                        cleanLocalTimeline?.[idx]?.image ||
                         (idx === 0 ? (dbStory.image || dbStory.cover_image_url) : undefined),
                     }))
-                  : existingTimeline || localMatch?.timeline || [],
+                  : existingTimeline && existingTimeline.length > 0
+                  ? existingTimeline
+                  : cleanLocalTimeline,
             }
           })
           setCmsStories(merged)
@@ -199,7 +222,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
 }
 
 function parseMarkdownSections(md?: string): { title: string; text: string }[] {
-  if (!md) return []
+  if (!md || !/^##\s+/m.test(md)) return []
   const parts = md.split(/^##\s+/m).filter(Boolean)
   return parts.map((part) => {
     const lines = part.trim().split('\n')

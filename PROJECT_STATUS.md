@@ -5,6 +5,9 @@ This file tracks the progress of the Le Malaga project so that any new agent joi
 ## 🚧 Current Status
 - **Phase:** 100% DYNAMIC CMS WITH REALTIME PRESENCE, AUDITABLE VERSIONING & SYNCHRONIZED CRUD ENGINE LIVE
 - **Recent Milestones:**
+  - **Direct Full-Story Display & Story Options Cleanup (`/stories` & `/stories/:id`):**
+    - Temporarily hid unfinished story options and timeline section headers (`At a glance`, `READ THE FULL STORY` button, numbered `BEFORE CARING` / `WHEN THINGS CHANGED` / `THE UNSEEN DAYS` / `THE TURNING POINT` / `TODAY` steps, `HOW {CARER} SHARED IT: READ / LISTEN / WATCH` options on `/stories/:id`, and non-functional category filter buttons on `/stories`) so visitors see each carer's full story directly.
+    - Populated complete, authentic multi-paragraph carer stories (from Notion CMS) across `src/data/stories.ts` and Supabase `public.stories` (via migration `20261117000001_populate_full_stories.sql` in `admin.lemalaga.org`), and filtered out all `[Update this section...]` / `[Please update this section...]` placeholders in `CmsContext.tsx` and `StoryDetail.tsx`.
   - **Live Realtime Admin Presence & Concurrent Editing Alerts (`admin.lemalaga.org`):**
     - Integrated Supabase Realtime Presence WebSockets across the entire admin portal, tracking active admins with zero server overhead.
     - Added live top header status indicator (`🟢 {count} Online` with animated radar dot, avatar stack, and interactive dropdown revealing active admins, their profile photos, and the exact section or page they are currently editing).
